@@ -50,19 +50,28 @@ app.route("/budgets")
                 console.log(result);
             }
         });
-        res.redirect("/");
+        res.redirect("/budgets");
+    })
+    .patch((req, res) => {
+        let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
+        sqlconnection.query(sql, [req.body.category, req.body.budgeted, req.body.categoryId], (err, result) => {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("updated budget " + result);
+            res.redirect("/budgets");
+        });
     })
     .delete((req, res) => {
         console.log(req.body.categoryId);
         let sql = "DELETE FROM budgets WHERE id=?";
-        sqlconnection.query(sql, req.body.categoryId, (err, result, fields) => {
+        sqlconnection.query(sql, req.body.categoryId, (err, result) => {
             if (err) {
                 return console.log(err);
             }
             console.log(result);
-            console.log("deleted row" + fields);
         });
-        res.redirect("/"); // change to /budgets once route is handled
+        res.redirect("/budgets"); // change to /budgets once route is handled
     });
 
 app.listen(port, () => {
