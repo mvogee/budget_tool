@@ -33,20 +33,34 @@ app.get("/", (req, res) => {
     });
 });
 
-app.post("/budgets", (req, res) => {
-    // need category and budgeted
-    console.log(req.body.category + " " + req.body.budgeted);
-    let sql = "INSERT INTO budgets(category, budget) VALUES (\"" + req.body.category + "\"," + req.body.budgeted + ")";
-    sqlconnection.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
+
+app.route("/budgets")
+    .post((req, res) => {
+        // need category and budgeted
+        console.log(req.body.category + " " + req.body.budgeted);
+        let sql = "INSERT INTO budgets(category, budget) VALUES (\"" + req.body.category + "\"," + req.body.budgeted + ")";
+        sqlconnection.query(sql, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log(result);
+            }
+        });
+        res.redirect("/");
+    })
+    .delete((req, res) => {
+        console.log(req.body.categoryId);
+        let sql = "DELETE FROM budgets WHERE id=?";
+        sqlconnection.query(sql, req.body.categoryId, (err, result, fields) => {
+            if (err) {
+                return console.log(err);
+            }
             console.log(result);
-        }
+            console.log("deleted row" + fields);
+        });
+        res.redirect("/"); // change to /budgets once route is handled
     });
-    res.redirect("/");
-});
 
 app.listen(port, () => {
     console.log("hello world");
