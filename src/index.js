@@ -35,6 +35,9 @@ app.get("/", (req, res) => {
 
 
 app.route("/budgets")
+    .get((req, res) => {
+        res.render("budgets");
+    })
     .post((req, res) => {
         // need category and budgeted
         console.log(req.body.category + " " + req.body.budgeted);
