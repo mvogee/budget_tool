@@ -23,14 +23,19 @@ const port = 3000;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 
+// app.get("/", (req, res) => {
+//     sqlconnection.query('SELECT * FROM budgets', (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log(result);
+//         res.send(result);
+//     });
+// });
+
+
 app.get("/", (req, res) => {
-    sqlconnection.query('SELECT * FROM budgets', (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(result);
-        res.send(result);
-    });
+    res.render("home");
 });
 
 
