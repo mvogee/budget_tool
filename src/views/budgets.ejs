@@ -1,5 +1,6 @@
 <%- include("partials/header.ejs") %>
 <%- include("partials/nav.ejs") %>
+<!-- requires a budget: [{category, budgeted}] -->
 <h1>Budgets</h1>
         
         <table>
@@ -10,10 +11,12 @@
                         </tr>
                 </thead>
                 <tbody>
+                        <% for (var i = 0; i < budgets.length; i++) { %>
                         <tr>
-                                <td>rent</td>
-                                <td>$2404.00</td>
+                                <td><%= budgets[i].category %> </td>
+                                <td>$ <%= budgets[i].budget %> </td>
                         </tr>
+                        <% } %>
                 </tbody>
         </table>
         <form action="/addBudgetItm" method="POST" name="newBudgetItm">

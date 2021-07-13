@@ -41,7 +41,15 @@ app.get("/", (req, res) => {
 
 app.route("/budgets")
     .get((req, res) => {
-        res.render("budgets");
+        let sql = "SELECT * FROM budgets";
+        sqlconnection.query(sql, (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            console.log(result);
+            let ejsObj = {budgets: result}
+            res.render("budgets", ejsObj);
+        });
     })
     .post((req, res) => {
         // need category and budgeted
