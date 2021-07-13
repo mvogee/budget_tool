@@ -2,6 +2,25 @@
 <%- include("partials/nav.ejs") %>
 <h1>Budgets</h1>
         
+        <table>
+                <thead>
+                        <tr>
+                                <th>category</th>
+                                <th>budgeted</th>
+                        </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                                <td>rent</td>
+                                <td>$2404.00</td>
+                        </tr>
+                </tbody>
+        </table>
+        <form action="/addBudgetItm" method="POST" name="newBudgetItm">
+                <input type="text" autocomplete="off" name="category" placeholder="category">
+                <input type="number" name="budget" placeholder="100">
+                <button type="submit">Add</button>
+        </form>
         <script src="" async defer></script>
     
 <%- include("partials/footer.ejs") %> 
