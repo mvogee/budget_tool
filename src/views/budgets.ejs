@@ -15,13 +15,17 @@
                         <tr>
                                 <td><%= budgets[i].category %> </td>
                                 <td>$ <%= budgets[i].budget %> </td>
+                                <form action="/deleteBudgetItm" method="POST">
+                                        <input name="deleteCategory" value="<%= budgets[i].id %>" hidden>
+                                        <td><button class="deleteBtn" type="submit">delete</button></td>
+                                </form>
                         </tr>
                         <% } %>
                 </tbody>
         </table>
-        <form action="/addBudgetItm" method="POST" name="newBudgetItm">
+        <form action="/budgets" method="POST" name="newBudgetItm">
                 <input type="text" autocomplete="off" name="category" placeholder="category">
-                <input type="number" name="budget" placeholder="100">
+                <input type="number" name="budgeted" placeholder="100">
                 <button type="submit">Add</button>
         </form>
         <script src="" async defer></script>
