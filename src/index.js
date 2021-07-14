@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
 
+var helpers = require("./js/helpers");
 
 const sqlconnection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -38,6 +39,14 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
+app.get("/income", (req, res) => {
+    res.send("income");
+});
+
+app.get("/thisMonth", (req, res) => {
+    res.send("thisMonth");
+});
+
 // * this is my currently how i delete category items from the user facing page.
 app.post("/deleteBudgetItm", (req, res) => {
     console.log("I'm going to delete something");
@@ -61,7 +70,10 @@ app.route("/budgets")
                 return (console.log(err));
             }
             console.log(result);
-            let ejsObj = {budgets: result}
+            let ejsObj = {
+                budgets: result,
+                budgetTotal: helpers.addBudgetTotals(result)
+            }
             res.render("budgets", ejsObj);
         });
     })
