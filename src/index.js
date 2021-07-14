@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/income", (req, res) => {
-    res.send("income");
+    res.render("income");
 });
 
 app.get("/thisMonth", (req, res) => {

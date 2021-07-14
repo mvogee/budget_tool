@@ -1,0 +1,14 @@
+<%- include("./partials/header.ejs") %>
+<%- include("./partials/nav.ejs") %>
+<h1>Projected Income</h1>
+
+<form action="/projectedIncome" method="POST" name="newBudgetItm">
+    <input type="text" required autofocus placeholder="income name">
+    <input type="number" step=".01" required placeholder="hourly Rate">
+    <input type="number" step=".01" placeholder="tax rate">
+    <input type="number" step=".01" placeholder="tithe %">
+    <input type="number" step=".01" placeholder="retirement %">
+    <button typoe="submit">add</button>
+</form>
+
+<%- include("./partials/footer.ejs") %> 
