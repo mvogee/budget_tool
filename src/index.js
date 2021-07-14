@@ -40,11 +40,20 @@ app.get("/", (req, res) => {
 });
 
 app.get("/income", (req, res) => {
-    res.render("income");
+    let sql = "SELECT * FROM projectedIncome";
+    sqlconnection.query(sql, (err, result) => {
+        if (err) {
+            return (console.log(err));
+        }
+        ejsObj = {
+            incomes: result
+        };
+        res.render("income", ejsObj);
+    });
 });
 
 app.get("/thisMonth", (req, res) => {
-    res.send("thisMonth");
+    res.render("thisMonth");
 });
 
 // * this is my currently how i delete category items from the user facing page.

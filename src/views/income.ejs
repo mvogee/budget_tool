@@ -1,5 +1,8 @@
 <%- include("./partials/header.ejs") %>
 <%- include("./partials/nav.ejs") %>
+
+<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}] -->
+
 <h1>Projected Income</h1>
 
 <form action="/projectedIncome" method="POST" name="newBudgetItm">
@@ -10,5 +13,28 @@
     <input type="number" step=".01" placeholder="retirement %">
     <button typoe="submit">add</button>
 </form>
+
+<table>
+    <thead>
+        <tr>
+            <td>Income Name</td>
+            <td>Hourly Rate</td>
+            <td>Tax Rate</td>
+            <td>Tithe</td>
+            <td>Retirement</td>
+        </tr>
+    </thead>
+    <tbody>
+        <% incomes.forEach(element => { %>
+        <tr>
+            <td><%= element.incomeName %></td>
+            <td><%= element.hourlyRate %></td>
+            <td><%= element.taxRate %></td>
+            <td><%= element.tithe %></td>
+            <td><%= element.retirement %></td>
+        </tr>
+       <% }); %> 
+    </tbody>
+</table>
 
 <%- include("./partials/footer.ejs") %> 
