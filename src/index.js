@@ -51,6 +51,8 @@ app.get("/income", (req, res) => {
         res.render("income", ejsObj);
     });
 });
+
+
 app.post("/projectedIncome", (req, res) => {
     console.log("adding item to projectedIncome");
     let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement) VALUES(?,?,?,?,?)";
@@ -63,6 +65,18 @@ app.post("/projectedIncome", (req, res) => {
         });
         res.redirect("income");
 });
+app.post("/deleteIncomeItm", (req, res) => {
+    console.log("deleting income item");
+    let sql = "DELETE FROM projectedIncome WHERE id=?";
+    sqlconnection.query(sql, req.body.deleteIncome, (err, result) => {
+        if (err) {
+            return (console.log(err));
+        }
+        console.log(result);
+        res.redirect("/income");
+    });
+});
+
 
 app.get("/thisMonth", (req, res) => {
     res.render("thisMonth");

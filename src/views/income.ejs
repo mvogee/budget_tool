@@ -32,6 +32,12 @@
             <td><%= element.taxRate %></td>
             <td><%= element.tithe %></td>
             <td><%= element.retirement %></td>
+            <td>
+            <form action="/deleteIncomeItm" method="POST">
+                <input name="deleteIncome" value="<%= element.id %>" hidden>
+                <button class="deleteBtn" type="submit">delete</button>
+            </form>
+        </td>
         </tr>
        <% }); %> 
     </tbody>
