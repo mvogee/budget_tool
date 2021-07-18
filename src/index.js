@@ -51,6 +51,18 @@ app.get("/income", (req, res) => {
         res.render("income", ejsObj);
     });
 });
+app.post("/projectedIncome", (req, res) => {
+    console.log("adding item to projectedIncome");
+    let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement) VALUES(?,?,?,?,?)";
+    sqlconnection.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement],
+        (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            console.log(result);
+        });
+        res.redirect("income");
+});
 
 app.get("/thisMonth", (req, res) => {
     res.render("thisMonth");
@@ -89,8 +101,8 @@ app.route("/budgets")
     .post((req, res) => {
         // need category and budgeted
         console.log(req.body.category + " " + req.body.budgeted);
-        let sql = "INSERT INTO budgets(category, budget) VALUES (\"" + req.body.category + "\"," + req.body.budgeted + ")";
-        sqlconnection.query(sql, (err, result) => {
+        let sql = "INSERT INTO budgets(category, budget) VALUES (?, ?)";
+        sqlconnection.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
             if (err) {
                 console.log(err);
             }

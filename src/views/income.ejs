@@ -6,12 +6,12 @@
 <h1>Projected Income</h1>
 
 <form action="/projectedIncome" method="POST" name="newBudgetItm">
-    <input type="text" required autofocus placeholder="income name">
-    <input type="number" step=".01" required placeholder="hourly Rate">
-    <input type="number" step=".01" placeholder="tax rate">
-    <input type="number" step=".01" placeholder="tithe %">
-    <input type="number" step=".01" placeholder="retirement %">
-    <button typoe="submit">add</button>
+    <input name="incomeName" type="text" required autofocus placeholder="income name">
+    <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
+    <input name="taxRate" type="number" step=".01" placeholder="tax rate">
+    <input name="tithe" type="number" step=".01" placeholder="tithe %">
+    <input name="retirement" type="number" step=".01" placeholder="retirement %">
+    <button type="submit">add</button>
 </form>
 
 <table>
