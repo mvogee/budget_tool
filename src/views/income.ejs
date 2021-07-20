@@ -34,9 +34,9 @@
         <tr>
             <td><%= element.incomeName %></td>
             <td><%= element.hourlyRate %></td>
-            <td><%= element.taxRate %></td>
-            <td><%= element.tithe %></td>
-            <td><%= element.retirement %></td>
+            <td><%= element.taxRate %> | <%= helpers.getTaxAmount(element) %> </td>
+            <td><%= element.tithe %> | <%= helpers.getTitheAmount(element) %> </td>
+            <td><%= element.retirement %> | <%= helpers.getRetirementAmount(element) %> </td>
             <td><%= helpers.getMonthlyGrossIncome(element) %> </td>
             <td><%= helpers.getMonthlyNetIncome(element) %> </td>
             <td>

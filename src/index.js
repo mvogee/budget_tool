@@ -24,6 +24,7 @@ const port = 3000;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(express.static(__dirname + '/public'));
 // app.get("/", (req, res) => {
 //     sqlconnection.query('SELECT * FROM budgets', (err, result) => {
 //         if (err) {
