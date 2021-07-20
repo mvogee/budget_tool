@@ -1,7 +1,7 @@
 <%- include("./partials/header.ejs") %>
 <%- include("./partials/nav.ejs") %>
 
-<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}] -->
+<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}], grossIncomeAll, netIncomeAll, helpers-->
 
 <h1>Projected Income</h1>
 
@@ -13,7 +13,10 @@
     <input name="retirement" type="number" step=".01" placeholder="retirement %">
     <button type="submit">add</button>
 </form>
-
+<div>
+    <p>Gross income: <%= grossIncomeAll %> </p>
+    <p>Net income:  <%= netIncomeAll %> </p>
+</div>
 <table>
     <thead>
         <tr>
@@ -22,6 +25,8 @@
             <td>Tax Rate</td>
             <td>Tithe</td>
             <td>Retirement</td>
+            <td>Gross income</td>
+            <td>Net Income</td>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +37,8 @@
             <td><%= element.taxRate %></td>
             <td><%= element.tithe %></td>
             <td><%= element.retirement %></td>
+            <td><%= helpers.getMonthlyGrossIncome(element) %> </td>
+            <td><%= helpers.getMonthlyNetIncome(element) %> </td>
             <td>
             <form action="/deleteIncomeItm" method="POST">
                 <input name="deleteIncome" value="<%= element.id %>" hidden>

@@ -46,7 +46,10 @@ app.get("/income", (req, res) => {
             return (console.log(err));
         }
         ejsObj = {
-            incomes: result
+            incomes: result,
+            grossIncomeAll: helpers.getMonthlyGrossIncomeAll(result),
+            netIncomeAll: helpers.getMonthlyNetIncomeAll(result),
+            helpers: helpers
         };
         res.render("income", ejsObj);
     });
