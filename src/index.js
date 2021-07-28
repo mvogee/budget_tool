@@ -9,7 +9,8 @@ const sqlconnection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    multipleStatements: true
 });
 
 sqlconnection.connect();
@@ -83,7 +84,26 @@ app.post("/deleteIncomeItm", (req, res) => {
 
 
 app.get("/thisMonth", (req, res) => {
-    res.render("thisMonth");
+    let monthStart = helpers.getMonthStart(new Date());    
+    let monthEnd = helpers.getMonthEnd(new Date());
+    let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
+    sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
+    sql += "SELECT * FROM budgets;";
+    sqlconnection.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
+        if (err) {
+            return (console.log(err));
+        }
+        let ejsObj = {
+            deposits: result[0],
+            purchases: result[1],
+            budgets: result[2],
+            month: helpers.getMonthName(new Date()),
+            date: helpers.getStandardDateFormat(new Date()),
+            getCategoryName: helpers.getCategoryName,
+            formatDate: helpers.getStandardDateFormat
+        }
+        res.render("thisMonth", ejsObj);
+    });
 });
 
 // * this is my currently how i delete category items from the user facing page.

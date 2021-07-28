@@ -62,6 +62,57 @@ function getRetirementAmount(income) {
     return (thisGross * income.retirement);
 };
 
+function getStandardDateFormat(date) {
+    let m = (date.getMonth() + 1).toString();
+    let y = date.getFullYear().toString();
+    let d = date.getDate().toString();
+    if (date.getMonth() + 1 < 10) {
+        m = "0" + m;
+    }
+    if (date.getDate() < 10) {
+        d = "0" + d;
+    }
+    return (y + "-" + m + "-" + d);
+}
+
+function getMonthStart(date) {
+    let m = (date.getMonth() + 1).toString();
+    if (date.getMonth() + 1 < 10) {
+        m = "0" + m;
+    }
+    let y = date.getFullYear().toString();
+    let monthStart = y + "-" + m + "-01";
+    return (monthStart);
+};
+
+function getMonthEnd(date) {
+    let y = date.getFullYear().toString();
+    let m = (date.getMonth() + 1).toString();
+    if (date.getMonth() + 1 < 10) {
+        m = "0" + m;
+    }
+    let d = new Date(y,m, 0).getDate().toString();
+    return (y+"-" + m + "-" +d);
+}
+
+function getMonthName(date) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[date.getMonth()];
+}
+
+
+function getCategoryName(categorys, id) {
+    if (id === 0) {
+        return ("uncategorized");
+    }
+    for (let i = 0; i < categorys.length; i++) {
+        if (categorys[i].id === id) {
+            return (categorys[i].category);
+        }
+    }
+    return ("uncategorized");
+}
+
 module.exports = {
     addBudgetTotals: addBudgetTotals,
     getMonthlyGrossIncome: getMonthlyGrossIncome,
@@ -70,5 +121,10 @@ module.exports = {
     getMonthlyGrossIncomeAll: getMonthlyGrossIncomeAll,
     getTitheAmount: getTitheAmount,
     getTaxAmount: getTaxAmount,
-    getRetirementAmount: getRetirementAmount
+    getRetirementAmount: getRetirementAmount,
+    getMonthStart: getMonthStart,
+    getMonthEnd: getMonthEnd,
+    getMonthName: getMonthName,
+    getStandardDateFormat: getStandardDateFormat,
+    getCategoryName: getCategoryName
 }
