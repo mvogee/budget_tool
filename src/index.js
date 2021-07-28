@@ -1,23 +1,13 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const mysql = require("mysql");
 
+const mysql = require("./js/db/mysql.js").pool;
 var helpers = require("./js/helpers");
 
-const sqlconnection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    multipleStatements: true
-});
-
-sqlconnection.connect();
 
 
-
-// what services do I need to get form the sever?
+mysql.query("SELECT * FROM budgets", (err, result) => {console.log(result)});
 
 app = express();
 const port = 3000;
@@ -27,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + '/public'));
 // app.get("/", (req, res) => {
-//     sqlconnection.query('SELECT * FROM budgets', (err, result) => {
+//     mysql.query('SELECT * FROM budgets', (err, result) => {
 //         if (err) {
 //             console.log(err);
 //         }
@@ -43,7 +33,7 @@ app.get("/", (req, res) => {
 
 app.get("/income", (req, res) => {
     let sql = "SELECT * FROM projectedIncome";
-    sqlconnection.query(sql, (err, result) => {
+    mysql.query(sql, (err, result) => {
         if (err) {
             return (console.log(err));
         }
@@ -61,7 +51,7 @@ app.get("/income", (req, res) => {
 app.post("/projectedIncome", (req, res) => {
     console.log("adding item to projectedIncome");
     let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement) VALUES(?,?,?,?,?)";
-    sqlconnection.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement],
+    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement],
         (err, result) => {
             if (err) {
                 return (console.log(err));
@@ -73,7 +63,7 @@ app.post("/projectedIncome", (req, res) => {
 app.post("/deleteIncomeItm", (req, res) => {
     console.log("deleting income item");
     let sql = "DELETE FROM projectedIncome WHERE id=?";
-    sqlconnection.query(sql, req.body.deleteIncome, (err, result) => {
+    mysql.query(sql, req.body.deleteIncome, (err, result) => {
         if (err) {
             return (console.log(err));
         }
@@ -89,7 +79,7 @@ app.get("/thisMonth", (req, res) => {
     let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
     sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
     sql += "SELECT * FROM budgets;";
-    sqlconnection.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
+    mysql.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
         if (err) {
             return (console.log(err));
         }
@@ -107,7 +97,7 @@ app.get("/thisMonth", (req, res) => {
 });
 app.post("/spendingItem", (req, res) => {
     let sql = "INSERT INTO monthSpending(itmDescription, ammount, category, purchaseDate) VALUES(?, ?, ?, ?)";
-    sqlconnection.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
+    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
         if (err) {
             return (console.log(err));
         }
@@ -117,7 +107,7 @@ app.post("/spendingItem", (req, res) => {
 });
 app.post("/incomeItem", (req, res) => {
     let sql = "INSERT INTO monthIncome(inDescription, ammount, depositDate) VALUES(?, ?, ?)";
-    sqlconnection.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
+    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
         if (err) {
             return (console.log(err));
         }
@@ -131,7 +121,7 @@ app.post("/deleteBudgetItm", (req, res) => {
     console.log("I'm going to delete something");
         console.log(req.body.deleteCategory);
         let sql = "DELETE FROM budgets WHERE id=?";
-        sqlconnection.query(sql, req.body.deleteCategory, (err, result) => {
+        mysql.query(sql, req.body.deleteCategory, (err, result) => {
             if (err) {
                 return console.log(err);
             }
@@ -144,7 +134,7 @@ app.route("/budgets")
     .get((req, res) => {
         console.log("get");
         let sql = "SELECT * FROM budgets";
-        sqlconnection.query(sql, (err, result) => {
+        mysql.query(sql, (err, result) => {
             if (err) {
                 return (console.log(err));
             }
@@ -160,7 +150,7 @@ app.route("/budgets")
         // need category and budgeted
         console.log(req.body.category + " " + req.body.budgeted);
         let sql = "INSERT INTO budgets(category, budget) VALUES (?, ?)";
-        sqlconnection.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
+        mysql.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
             if (err) {
                 console.log(err);
             }
@@ -172,7 +162,7 @@ app.route("/budgets")
     })
     .patch((req, res) => {
         let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
-        sqlconnection.query(sql, [req.body.category, req.body.budgeted, req.body.categoryId], (err, result) => {
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.categoryId], (err, result) => {
             if (err) {
                 return console.log(err);
             }
@@ -184,7 +174,7 @@ app.route("/budgets")
         console.log("I'm going to delete something");
         console.log(req.body.categoryId);
         let sql = "DELETE FROM budgets WHERE id=?";
-        sqlconnection.query(sql, req.body.deleteCategory, (err, result) => {
+        mysql.query(sql, req.body.deleteCategory, (err, result) => {
             if (err) {
                 return console.log(err);
             }
