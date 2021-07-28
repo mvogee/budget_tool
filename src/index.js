@@ -128,8 +128,8 @@ app.post("/spendingItem", (req, res) => {
             return (console.log(err));
         }
         console.log(result);
+        res.redirect("/thisMonth");
     });
-    res.redirect("/thisMonth");
 });
 app.post("/incomeItem", (req, res) => {
     let sql = "INSERT INTO monthIncome(inDescription, ammount, depositDate) VALUES(?, ?, ?)";
