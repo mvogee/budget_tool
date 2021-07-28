@@ -5,7 +5,11 @@
 <!-- expenses/incomes can be pulled from database based on the month they are for -->
 <h1><%= month %> </h1>
 <p><%= budgets[1].category %> </p>
-<input type="month" name="month" value="2021-07" onchange="submit"><!-- populate the table based on the date here defualt should be today -->
+<form action="/changeMonth" method="POST">
+  <input type="month" name="month" value="2021-07" onChange="this.form.submit()">
+</form>
+
+<!-- populate the table based on the date here defualt should be today -->
 <div class="spending">
   <label for="spendingItem">spending</label>
   <form id="spendingItem" class="" action="/spendingItem" method="post">
@@ -15,7 +19,7 @@
       <option value="0" default>uncategorized</option>
 
       <% budgets.forEach(element => { %> 
-        <option value="<%= element.id %> "> <%= element.category %> </option>
+        <option value="<%= element.id %>"> <%= element.category %> </option>
       <% }); %>
       <!-- populates based on budget categories -->
     </select>
@@ -36,7 +40,7 @@
       <% purchases.forEach(element => { %>
         <tr>
           <td><%= element.itmDescription %> </td>
-          <td><%= element.ammount %> </td>
+          <td>$<%= element.ammount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
         </tr>
@@ -67,7 +71,7 @@
       <% deposits.forEach(element => { %>
         <tr>
           <td><%= element.inDescription %> </td>
-          <td><%= element.ammount %> </td>
+          <td>$<%= element.ammount %> </td>
           <td><%= formatDate(element.depositDate) %> </td>
         </tr>
       <% }); %> 
