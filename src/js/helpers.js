@@ -45,8 +45,6 @@ function getMonthlyNetIncomeAll(incomes) {
 };
 
 
-
-
 function getTitheAmount(income) {
     let thisGross = getMonthlyGrossIncome(income);
     return (thisGross * income.tithe);
@@ -72,6 +70,7 @@ function getStandardDateFormat(date) {
     if (date.getDate() < 10) {
         d = "0" + d;
     }
+
     return (y + "-" + m + "-" + d);
 }
 

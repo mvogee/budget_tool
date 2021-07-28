@@ -6,7 +6,7 @@
 <h1><%= month %> </h1>
 <p><%= budgets[1].category %> </p>
 <form action="/changeMonth" method="POST">
-  <input type="month" name="month" value="2021-07" onChange="this.form.submit()">
+  <input type="month" name="month" value="<%= date.slice(0,7) %>" onChange="this.form.submit()">
 </form>
 
 <!-- populate the table based on the date here defualt should be today -->
@@ -23,7 +23,7 @@
       <% }); %>
       <!-- populates based on budget categories -->
     </select>
-    <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= date %>"> <!-- max should be today -->
+    <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
     <button type="submit" name="button">add</button>
   </form>
 
@@ -55,7 +55,7 @@
   <form id="incomeItem" action="/incomeItem" method="post">
     <input type="text" name="itemName" placeholder="name">
     <input type="number" step="0.01" name="amount" placeholder="amount">
-    <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= date %>"> <!-- max should be today-->
+    <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today-->
     <button type="submit" name="button">add</button>
   </form>
 

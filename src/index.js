@@ -6,9 +6,6 @@ const mysql = require("./js/db/mysql.js").pool;
 var helpers = require("./js/helpers");
 
 
-
-mysql.query("SELECT * FROM budgets", (err, result) => {console.log(result)});
-
 app = express();
 const port = 3000;
 
@@ -25,12 +22,13 @@ app.use(express.static(__dirname + '/public'));
 //         res.send(result);
 //     });
 // });
-
-
+var dt = new Date();
+//! home page routes
 app.get("/", (req, res) => {
     res.render("home");
 });
 
+ //! Income routes
 app.get("/income", (req, res) => {
     let sql = "SELECT * FROM projectedIncome";
     mysql.query(sql, (err, result) => {
@@ -73,22 +71,50 @@ app.post("/deleteIncomeItm", (req, res) => {
 });
 
 
+
+// ! thisMonth routes
+
+// function renderThisMonth(date, res) {
+//     date = new Date(date);
+//     let monthStart = helpers.getMonthStart(date);
+//     let monthEnd = helpers.getMonthEnd(date);
+//     let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
+//     sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
+//     sql += "SELECT * FROM budgets;";
+//     mysql.query(sql, [monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
+//         if (err) {
+//             return (console.log(err));
+//         }
+//         let ejsObj = {
+//             deposits: result[0],
+//             purchases: result[1],
+//             budgets: result[2],
+//             month: helpers.getMonthName(date),
+//             date: helpers.getStandardDateFormat(date),
+//             getCategoryName: helpers.getCategoryName,
+//             formatDate: helpers.getStandardDateFormat
+//         }
+//         res.render("thisMonth", ejsObj);
+//     });
+// }
+
 app.get("/thisMonth", (req, res) => {
-    let monthStart = helpers.getMonthStart(new Date());    
-    let monthEnd = helpers.getMonthEnd(new Date());
-    let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
-    sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
-    sql += "SELECT * FROM budgets;";
-    mysql.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
-        if (err) {
+     let monthStart = helpers.getMonthStart(dt);
+     let monthEnd = helpers.getMonthEnd(dt);
+     let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
+     sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
+     sql += "SELECT * FROM budgets;";
+     mysql.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
+         if (err) {
             return (console.log(err));
         }
         let ejsObj = {
+            today: new Date(),
             deposits: result[0],
             purchases: result[1],
             budgets: result[2],
-            month: helpers.getMonthName(new Date()),
-            date: helpers.getStandardDateFormat(new Date()),
+            month: helpers.getMonthName(dt),
+            date: helpers.getStandardDateFormat(dt),
             getCategoryName: helpers.getCategoryName,
             formatDate: helpers.getStandardDateFormat
         }
@@ -114,9 +140,12 @@ app.post("/incomeItem", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
+app.post("/changeMonth", (req, res) => {
+    dt = new Date(req.body.month + "-02");
+    res.redirect("/thisMonth");
+});
 
-
-// * this is my currently how i delete category items from the user facing page.
+//! routes for budgets
 app.post("/deleteBudgetItm", (req, res) => {
     console.log("I'm going to delete something");
         console.log(req.body.deleteCategory);
