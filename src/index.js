@@ -106,16 +106,25 @@ app.get("/thisMonth", (req, res) => {
     });
 });
 app.post("/spendingItem", (req, res) => {
-    console.log(req.body);
-    sql = "INSERT INTO monthSpending(itmDescription, ammount, category, purchaseDate) VALUES(?, ?, ?, ?)";
-    sqlconnection.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, res) => {
+    let sql = "INSERT INTO monthSpending(itmDescription, ammount, category, purchaseDate) VALUES(?, ?, ?, ?)";
+    sqlconnection.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
         if (err) {
             return (console.log(err));
         }
-        console.log(res);
+        console.log(result);
     });
     res.redirect("/thisMonth");
 });
+app.post("/incomeItem", (req, res) => {
+    let sql = "INSERT INTO monthIncome(inDescription, ammount, depositDate) VALUES(?, ?, ?)";
+    sqlconnection.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
+        if (err) {
+            return (console.log(err));
+        }
+        res.redirect("/thisMonth");
+    });
+});
+
 
 // * this is my currently how i delete category items from the user facing page.
 app.post("/deleteBudgetItm", (req, res) => {
