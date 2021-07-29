@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const mysql = require("./js/db/mysql.js").pool;
-var helpers = require("./js/helpers");
+var helpers = require("./js/utils.js");
 
 
 app = express();
