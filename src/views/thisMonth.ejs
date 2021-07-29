@@ -4,7 +4,6 @@
 <!-- select a month -->
 <!-- expenses/incomes can be pulled from database based on the month they are for -->
 <h1><%= month %> </h1>
-<p><%= budgets[1].category %> </p>
 <form action="/changeMonth" method="POST">
   <input type="month" name="month" value="<%= date.slice(0,7) %>" onChange="this.form.submit()">
 </form>
@@ -43,6 +42,12 @@
           <td>$<%= element.ammount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
+          <td>
+            <form action="/deleteSpendingItm" method="POST">
+              <input hidden name="deleteSpendingItm" value="<%= element.id %>">
+              <button class="deleteBtn" type="submit">delete</button>
+            </form>
+        </td>
         </tr>
       <%}); %> 
     </tbody>
@@ -73,6 +78,12 @@
           <td><%= element.inDescription %> </td>
           <td>$<%= element.ammount %> </td>
           <td><%= formatDate(element.depositDate) %> </td>
+          <td>
+            <form action="/deleteMonthIncomeItm" method="POST">
+            <input hidden name="deleteIncomeItm" value="<%= element.id %>">
+            <button class="deleteBtn" type="submit" name="deleteBtn">delete</button>
+            </form>
+          </td>
         </tr>
       <% }); %> 
     </tbody>

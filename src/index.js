@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const mysql = require("./js/db/mysql.js").pool;
-var helpers = require("./js/utils.js");
+var utils = require("./js/utils.js");
 
 
 app = express();
@@ -22,7 +22,8 @@ app.use(express.static(__dirname + '/public'));
 //         res.send(result);
 //     });
 // });
-var dt = new Date();
+
+var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
 app.get("/", (req, res) => {
     res.render("home");
@@ -37,9 +38,9 @@ app.get("/income", (req, res) => {
         }
         ejsObj = {
             incomes: result,
-            grossIncomeAll: helpers.getMonthlyGrossIncomeAll(result),
-            netIncomeAll: helpers.getMonthlyNetIncomeAll(result),
-            helpers: helpers
+            grossIncomeAll: utils.getMonthlyGrossIncomeAll(result),
+            netIncomeAll: utils.getMonthlyNetIncomeAll(result),
+            utils: utils
         };
         res.render("income", ejsObj);
     });
@@ -76,8 +77,8 @@ app.post("/deleteIncomeItm", (req, res) => {
 
 // function renderThisMonth(date, res) {
 //     date = new Date(date);
-//     let monthStart = helpers.getMonthStart(date);
-//     let monthEnd = helpers.getMonthEnd(date);
+//     let monthStart = utils.getMonthStart(date);
+//     let monthEnd = utils.getMonthEnd(date);
 //     let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
 //     sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
 //     sql += "SELECT * FROM budgets;";
@@ -89,18 +90,18 @@ app.post("/deleteIncomeItm", (req, res) => {
 //             deposits: result[0],
 //             purchases: result[1],
 //             budgets: result[2],
-//             month: helpers.getMonthName(date),
-//             date: helpers.getStandardDateFormat(date),
-//             getCategoryName: helpers.getCategoryName,
-//             formatDate: helpers.getStandardDateFormat
+//             month: utils.getMonthName(date),
+//             date: utils.getStandardDateFormat(date),
+//             getCategoryName: utils.getCategoryName,
+//             formatDate: utils.getStandardDateFormat
 //         }
 //         res.render("thisMonth", ejsObj);
 //     });
 // }
 
 app.get("/thisMonth", (req, res) => {
-     let monthStart = helpers.getMonthStart(dt);
-     let monthEnd = helpers.getMonthEnd(dt);
+     let monthStart = utils.getMonthStart(dt);
+     let monthEnd = utils.getMonthEnd(dt);
      let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
      sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
      sql += "SELECT * FROM budgets;";
@@ -113,10 +114,10 @@ app.get("/thisMonth", (req, res) => {
             deposits: result[0],
             purchases: result[1],
             budgets: result[2],
-            month: helpers.getMonthName(dt),
-            date: helpers.getStandardDateFormat(dt),
-            getCategoryName: helpers.getCategoryName,
-            formatDate: helpers.getStandardDateFormat
+            month: utils.getMonthName(dt),
+            date: utils.getStandardDateFormat(dt),
+            getCategoryName: utils.getCategoryName,
+            formatDate: utils.getStandardDateFormat
         }
         res.render("thisMonth", ejsObj);
     });
@@ -144,6 +145,28 @@ app.post("/changeMonth", (req, res) => {
     dt = new Date(req.body.month + "-02");
     res.redirect("/thisMonth");
 });
+app.post("/deleteSpendingItm", (req, res) => {
+    console.log("deleting income item");
+    let sql = "DELETE FROM monthSpending WHERE id=?";
+    mysql.query(sql, req.body.deleteSpendingItm ,(err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        res.redirect("/thisMonth");
+    });
+});
+app.post("/deleteMonthIncomeItm", (req, res) => {
+    let sql = "DELETE FROM monthIncome WHERE id=?";
+    console.log(req.body.deleteIncomeItm);
+    mysql.query(sql, req.body.deleteIncomeItm, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        res.redirect("/thisMonth");
+    });
+});
 
 //! routes for budgets
 app.post("/deleteBudgetItm", (req, res) => {
@@ -160,9 +183,10 @@ app.post("/deleteBudgetItm", (req, res) => {
 });
 
 app.route("/budgets")
-    .get((req, res) => {
+    .get(async (req, res) => {
         console.log("get");
         let sql = "SELECT * FROM budgets";
+        
         mysql.query(sql, (err, result) => {
             if (err) {
                 return (console.log(err));
@@ -170,7 +194,7 @@ app.route("/budgets")
             console.log(result);
             let ejsObj = {
                 budgets: result,
-                budgetTotal: helpers.addBudgetTotals(result)
+                budgetTotal: utils.addBudgetTotals(result)
             }
             res.render("budgets", ejsObj);
         });

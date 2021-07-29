@@ -1,7 +1,7 @@
 <%- include("./partials/header.ejs") %>
 <%- include("./partials/nav.ejs") %>
 
-<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}], grossIncomeAll, netIncomeAll, helpers-->
+<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}], grossIncomeAll, netIncomeAll, utils-->
 
 <h1>Projected Income</h1>
 
@@ -34,11 +34,11 @@
         <tr>
             <td><%= element.incomeName %></td>
             <td><%= element.hourlyRate %></td>
-            <td><%= element.taxRate %> | <%= helpers.getTaxAmount(element) %> </td>
-            <td><%= element.tithe %> | <%= helpers.getTitheAmount(element) %> </td>
-            <td><%= element.retirement %> | <%= helpers.getRetirementAmount(element) %> </td>
-            <td><%= helpers.getMonthlyGrossIncome(element) %> </td>
-            <td><%= helpers.getMonthlyNetIncome(element) %> </td>
+            <td><%= element.taxRate %> | <%= utils.getTaxAmount(element) %> </td>
+            <td><%= element.tithe %> | <%= utils.getTitheAmount(element) %> </td>
+            <td><%= element.retirement %> | <%= utils.getRetirementAmount(element) %> </td>
+            <td><%= utils.getMonthlyGrossIncome(element) %> </td>
+            <td><%= utils.getMonthlyNetIncome(element) %> </td>
             <td>
             <form action="/deleteIncomeItm" method="POST">
                 <input name="deleteIncome" value="<%= element.id %>" hidden>
