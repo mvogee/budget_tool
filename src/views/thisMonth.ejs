@@ -7,7 +7,9 @@
 <form action="/changeMonth" method="POST">
   <input type="month" name="month" value="<%= date.slice(0,7) %>" onChange="this.form.submit()">
 </form>
-
+<p>total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
+<p>total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
+<p>savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
 <!-- populate the table based on the date here defualt should be today -->
 <div class="spending">
   <label for="spendingItem">spending</label>
@@ -39,7 +41,7 @@
       <% purchases.forEach(element => { %>
         <tr>
           <td><%= element.itmDescription %> </td>
-          <td>$<%= element.ammount %> </td>
+          <td id="spendingAmount">$<%= element.ammount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
           <td>
@@ -76,7 +78,7 @@
       <% deposits.forEach(element => { %>
         <tr>
           <td><%= element.inDescription %> </td>
-          <td>$<%= element.ammount %> </td>
+          <td id="incomeAmount">$<%= element.ammount %> </td>
           <td><%= formatDate(element.depositDate) %> </td>
           <td>
             <form action="/deleteMonthIncomeItm" method="POST">
@@ -89,3 +91,5 @@
     </tbody>
   </table>
 </div>
+
+<script src="./js/thisMonthTotal.js" ></script>
