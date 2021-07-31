@@ -44,6 +44,7 @@
           <td id="spendingAmount">$<%= element.ammount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
+          <td><button>edit</button></td> <!-- ! I want to put a popup form here to update fields-->
           <td>
             <form action="/deleteSpendingItm" method="POST">
               <input hidden name="deleteSpendingItm" value="<%= element.id %>">
@@ -91,5 +92,5 @@
     </tbody>
   </table>
 </div>
-
+<%- include("./partials/footer.ejs"); %> 
 <script src="./js/thisMonthTotal.js" ></script>
