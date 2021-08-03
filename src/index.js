@@ -132,6 +132,16 @@ app.post("/spendingItem", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
+app.post("/spendingItemUpdate", (req, res) => {
+    let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=?";
+    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        res.redirect("/thisMonth");
+    });
+});
 app.post("/incomeItem", (req, res) => {
     let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {

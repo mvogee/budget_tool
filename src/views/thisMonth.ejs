@@ -27,7 +27,7 @@
     <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
     <button type="submit" name="button">add</button>
   </form>
-
+  <%-  include("./partials/spendPopEdit", {budgets: budgets});  %>
   <table>
     <thead>
       <tr>
@@ -46,6 +46,7 @@
           <td><%= formatDate(element.purchaseDate) %> </td>
           <td>
             <button class="editButton"
+            itmId = "<%= element.id %> "
             name = "<%= element.itmDescription %>"
             purchaseAmount="<%= element.amount %>"
             categoryId="<%= element.category %>"
@@ -61,11 +62,9 @@
         </td>
         </tr>
       <%}); %>
-    <%-  include("./partials/spendPopEdit", {budgets: budgets});  %>
     </tbody>
   </table>
 </div>
-
 
 <div class="income">
   <label for="incomeItem">Income</label>

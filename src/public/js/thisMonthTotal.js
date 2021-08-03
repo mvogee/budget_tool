@@ -33,20 +33,22 @@ editBtn.forEach(btn => {
 });
 
 function editButtonClick(event) {
-    console.log(event);
+    let itmId = event.target.getAttribute("itmId");
     let name = event.target.getAttribute("name");
     let purchaseAmount = event.target.getAttribute("purchaseAmount");
     let categoryId = event.target.getAttribute("categoryId");
     let pdate = event.target.getAttribute("purchaseDate");
+
     let nameField = document.querySelector(".editNameInput");
     let amountField = document.querySelector(".editAmountInput");
     let categoryField = document.querySelector(".editCategoryInput");
     let dateField = document.querySelector(".editDateInput");
-    console.log("i was used");
+    let idField = document.querySelector(".itmId");
+
     nameField.setAttribute("Value", name);
     amountField.setAttribute("Value", purchaseAmount);
     categoryField.value = categoryId;
     dateField.setAttribute("Value", pdate);
-
-
+    idField.setAttribute("Value", itmId);
+    
 };
