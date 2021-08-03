@@ -15,7 +15,7 @@
       </select>
       <input class="editDateInput" type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
       <button type="submit" name="save">save</button> <!-- ! this needs to make an update call to the db-->
-      <button type="button" name="cancel" onclick="cancle.js"></button> <!-- !make this close out the popup -->
+      <button id="editCancelBtn" type="button" name="cancel" onclick="cancleButtonClick()")">Cancle</button> <!-- !make this close out the popup -->
     </form>
 
 </div>
