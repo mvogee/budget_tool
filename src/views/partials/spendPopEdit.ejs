@@ -1,19 +1,18 @@
 <!-- gets budgets, itmName, amount, categoryId, date -->
 <div class="popupEdit">
-
     <label for="spendingItem">spending</label>
-    <form id="spendingItem" class="" action="/spendingItemUpdate" method="post">
-      <input type="text" name="itemName" placeholder="name" required autofocus>
-      <input type="number" step="0.01" name="amount" placeholder="ammount" required>
-      <select name="category" form="spendingItem">
-        <option value="0" default>uncategorized</option>
-  
-        <% budgets.forEach(element => { %> 
-          <option value="<%= element.id %>"> <%= element.category %> </option>
+    <form id="spendingItem" class="" action="/spendingItemUpdate" method="post"> <!-- make route to handle thisß-->
+      <input class="editNameInput" type="text" name="itemName" placeholder="name" value="name" required autofocus>
+      <input class="editAmountInput" type="number" step="0.01" name="amount" placeholder="amount" value="0" required>
+      <select class="editCategoryInput" name="category" form="spendingItem">
+        <option value="0">uncategorized</option>
+
+        <% budgets.forEach(element => { %>
+          <option value="<%= element.id %>" name="<%= element.category %>" > <%= element.category %> </option> <!-- Make element.category the default-->
         <% }); %>
         <!-- populates based on budget categories -->
       </select>
-      <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
+      <input class="editDateInput" type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
       <button type="submit" name="save">save</button>
       <button type="button" name="cancel" onclick="cancle.js"></button> <!-- !make this close out the popup -->
     </form>

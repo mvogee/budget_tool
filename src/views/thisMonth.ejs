@@ -15,11 +15,11 @@
   <label for="spendingItem">spending</label>
   <form id="spendingItem" class="" action="/spendingItem" method="post">
     <input type="text" name="itemName" placeholder="name" required autofocus>
-    <input type="number" step="0.01" name="amount" placeholder="ammount" required>
+    <input type="number" step="0.01" name="amount" placeholder="amount" required>
     <select name="category" form="spendingItem">
       <option value="0" default>uncategorized</option>
 
-      <% budgets.forEach(element => { %> 
+      <% budgets.forEach(element => { %>
         <option value="<%= element.id %>"> <%= element.category %> </option>
       <% }); %>
       <!-- populates based on budget categories -->
@@ -32,8 +32,8 @@
     <thead>
       <tr>
         <td>Description</td>
-        <td>amount</td>
-        <td>category</td>
+        <td>Amount</td>
+        <td>Category</td>
         <td>Date</td>
       </tr>
     </thead>
@@ -41,10 +41,18 @@
       <% purchases.forEach(element => { %>
         <tr>
           <td><%= element.itmDescription %> </td>
-          <td id="spendingAmount">$<%= element.ammount %> </td>
+          <td id="spendingAmount">$<%= element.amount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
-          <td><button>edit</button></td> <!-- ! I want to put a popup form here to update fields-->
+          <td>
+            <button class="editButton"
+            name = "<%= element.itmDescription %>"
+            purchaseAmount="<%= element.amount %>"
+            categoryId="<%= element.category %>"
+            purchaseDate="<%= formatDate(element.purchaseDate) %>"
+            >edit
+          </button>
+          </td>
           <td>
             <form action="/deleteSpendingItm" method="POST">
               <input hidden name="deleteSpendingItm" value="<%= element.id %>">
@@ -52,7 +60,8 @@
             </form>
         </td>
         </tr>
-      <%}); %> 
+      <%}); %>
+    <%-  include("./partials/spendPopEdit", {budgets: budgets});  %>
     </tbody>
   </table>
 </div>
@@ -79,7 +88,7 @@
       <% deposits.forEach(element => { %>
         <tr>
           <td><%= element.inDescription %> </td>
-          <td id="incomeAmount">$<%= element.ammount %> </td>
+          <td id="incomeAmount">$<%= element.amount %> </td>
           <td><%= formatDate(element.depositDate) %> </td>
           <td>
             <form action="/deleteMonthIncomeItm" method="POST">
@@ -88,9 +97,9 @@
             </form>
           </td>
         </tr>
-      <% }); %> 
+      <% }); %>
     </tbody>
   </table>
 </div>
-<%- include("./partials/footer.ejs"); %> 
+<%- include("./partials/footer.ejs"); %>
 <script src="./js/thisMonthTotal.js" ></script>

@@ -123,7 +123,7 @@ app.get("/thisMonth", (req, res) => {
     });
 });
 app.post("/spendingItem", (req, res) => {
-    let sql = "INSERT INTO monthSpending(itmDescription, ammount, category, purchaseDate) VALUES(?, ?, ?, ?)";
+    let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate) VALUES(?, ?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
         if (err) {
             return (console.log(err));
@@ -133,7 +133,7 @@ app.post("/spendingItem", (req, res) => {
     });
 });
 app.post("/incomeItem", (req, res) => {
-    let sql = "INSERT INTO monthIncome(inDescription, ammount, depositDate) VALUES(?, ?, ?)";
+    let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
         if (err) {
             return (console.log(err));
@@ -186,7 +186,7 @@ app.route("/budgets")
     .get(async (req, res) => {
         console.log("get");
         let sql = "SELECT * FROM budgets";
-        
+
         mysql.query(sql, (err, result) => {
             if (err) {
                 return (console.log(err));
