@@ -25,12 +25,16 @@ function editButtonClick(event) {
     categoryField.value = categoryId;
     dateField.setAttribute("Value", pdate);
     idField.setAttribute("Value", itmId);
-    // Should also toggle the popup menu to display block
+    //! Should toggle the popup menu to display block
+    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
 };
+
+// Cancle button functionality
 let cancelEditBtn = document.querySelector("#editCancelBtn");
 cancelEditBtn.addEventListener("click", (eventSource) => {
     console.log("cancle was pressed");
-    cancleButtonClick(eventSource)
+    cancleButtonClick(eventSource);
+    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
 });
 
 function cancleButtonClick(event) {
@@ -45,5 +49,6 @@ function cancleButtonClick(event) {
     categoryField.value = 0;
     dateField.setAttribute("Value", "");
     idField.setAttribute("Value", 0);
+    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
     // should also toggle popup menu to disply none
 };

@@ -20,14 +20,3 @@ let dif = (incomeTotal - spendingTotal).toFixed(2);
 monthSpending.innerHTML = spendingTotal;
 monthIncome.innerHTML = incomeTotal;
 savings.innerHTML = dif;
-
-// edit button behavior
-
-let editBtn = document.querySelectorAll(".editButton");
-editBtn.forEach(btn => {
-    btn.addEventListener("click", (EventSource) => {
-        console.log("button was pressed");
-        console.log(EventSource.target.getAttribute("purchaseAmount"));
-        editButtonClick(EventSource);
-    });
-});

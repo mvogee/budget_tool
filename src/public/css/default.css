@@ -28,3 +28,11 @@ table {
     padding: .5em;
     border: 1px solid lightgrey;
   }
+
+  .popupEdit {
+    display: block;
+  }
+
+  .hidePopupEdit {
+    display: none;
+  }
