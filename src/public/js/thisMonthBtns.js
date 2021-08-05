@@ -1,24 +1,24 @@
 
-let editBtn = document.querySelectorAll(".editButton");
-editBtn.forEach(btn => {
+let editBtnSpending = document.querySelectorAll(".editBtnSpend");
+editBtnSpending.forEach(btn => {
     btn.addEventListener("click", (EventSource) => {
         console.log("edit button was pressed");
-        editButtonClick(EventSource);
+        editButtonSpendigClick(EventSource);
     });
 });
 
-function editButtonClick(event) {
+function editButtonSpendigClick(event) {
     let itmId = event.target.getAttribute("itmId");
     let name = event.target.getAttribute("name");
     let purchaseAmount = event.target.getAttribute("purchaseAmount");
     let categoryId = event.target.getAttribute("categoryId");
     let pdate = event.target.getAttribute("purchaseDate");
 
-    let nameField = document.querySelector(".editNameInput");
-    let amountField = document.querySelector(".editAmountInput");
-    let categoryField = document.querySelector(".editCategoryInput");
-    let dateField = document.querySelector(".editDateInput");
-    let idField = document.querySelector(".itmId");
+    let nameField = document.querySelector("#updateSpendingItem .editNameInput");
+    let amountField = document.querySelector("#updateSpendingItem .editAmountInput");
+    let categoryField = document.querySelector("#updateSpendingItem .editCategoryInput");
+    let dateField = document.querySelector("#updateSpendingItem .editDateInput");
+    let idField = document.querySelector("#updateSpendingItem .itmId");
 
     nameField.setAttribute("Value", name);
     amountField.setAttribute("Value", purchaseAmount);
@@ -30,11 +30,38 @@ function editButtonClick(event) {
     document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
 };
 
+let editButtonIncome = document.querySelectorAll(".editBtnIncome");
+editButtonIncome.forEach(btn => {
+    btn.addEventListener("click", (event) => {
+        let itmId = event.target.getAttribute("itmId");
+        let name = event.target.getAttribute("name");
+        let incomeAmount = event.target.getAttribute("incomeAmount");
+        let ddate = event.target.getAttribute("depositDate");
+
+        let nameField =  document.querySelector("#updateIncomeItem .editNameInput");
+        let amountField = document.querySelector("#updateIncomeItem .editAmountInput");
+        let dateField = document.querySelector("#updateIncomeItem .editDateInput");
+        let idField = document.querySelector("#updateIncomeItem .itmId");
+
+        nameField.setAttribute("Value", name);
+        amountField.setAttribute("Value", incomeAmount);
+        dateField.setAttribute("Value", ddate);
+        idField.setAttribute("Value", itmId);
+    });
+});
+
+
 // Cancle button functionality
-let cancelEditBtn = document.querySelector("#editCancelBtnSpending");
-cancelEditBtn.addEventListener("click", (event) => {
+let cancelEditBtnSpending = document.querySelector("#editCancelBtnSpending");
+cancelEditBtnSpending.addEventListener("click", (type) => {
     console.log("cancle was pressed");
     document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
     document.querySelector("#updateIncomeItem").reset();
 });
 
+let cancelEditBtnIncome = document.querySelector("#editCancleBtnIncome");
+cancelEditBtnIncome.addEventListener("click", (type) => {
+    console.log("cancel was pressed");
+    document.querySelector("#popupEditIncome").classList.toggle("hidePopupEdit");
+    document.querySelector("#updateIncomeItem").reset();
+});
