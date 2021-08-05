@@ -26,29 +26,15 @@ function editButtonClick(event) {
     dateField.setAttribute("Value", pdate);
     idField.setAttribute("Value", itmId);
     //! Should toggle the popup menu to display block
-    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
+    //! Should see if hidePopupEdit is already in classList or not and toggle based on that
+    document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
 };
 
 // Cancle button functionality
-let cancelEditBtn = document.querySelector("#editCancelBtn");
-cancelEditBtn.addEventListener("click", (eventSource) => {
+let cancelEditBtn = document.querySelector("#editCancelBtnSpending");
+cancelEditBtn.addEventListener("click", (event) => {
     console.log("cancle was pressed");
-    cancleButtonClick(eventSource);
-    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
+    document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
+    document.querySelector("#updateIncomeItem").reset();
 });
 
-function cancleButtonClick(event) {
-    let nameField = document.querySelector(".editNameInput");
-    let amountField = document.querySelector(".editAmountInput");
-    let categoryField = document.querySelector(".editCategoryInput");
-    let dateField = document.querySelector(".editDateInput");
-    let idField = document.querySelector(".itmId");
-
-    nameField.setAttribute("Value", "");
-    amountField.setAttribute("Value", "");
-    categoryField.value = 0;
-    dateField.setAttribute("Value", "");
-    idField.setAttribute("Value", 0);
-    document.querySelector(".popupEdit").classList.toggle("hidePopupEdit");
-    // should also toggle popup menu to disply none
-};

@@ -1,5 +1,5 @@
 <!-- gets budgets, itmName, amount, categoryId, date -->
-<div class="popupEdit hidePopupEdit">
+<div id="popupEditSpending" class="popupEdit hidePopupEdit">
     <label for="updateSpendingItem">spending</label>
     <form id="updateSpendingItem" class="updateForm" action="/spendingItemUpdate" method="post">
         <input hidden class="itmId" name="itmId" value="0">
@@ -14,8 +14,8 @@
         <!-- populates based on budget categories -->
       </select>
       <input class="editDateInput" type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
-      <button type="submit" name="save">save</button> <!-- ! this needs to make an update call to the db-->
-      <button id="editCancelBtn" type="button" name="cancel" onclick="cancleButtonClick()")">Cancle</button> <!-- !make this close out the popup -->
+      <button type="submit" name="save">save</button>
+      <button id="editCancelBtnSpending" type="button" name="cancel" onclick="cancleButtonClick()">Cancle</button>
     </form>
 
 </div>
