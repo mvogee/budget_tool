@@ -1,15 +1,16 @@
-<div class="popupEdit">
-    <form action="/updateIncomeItem" method="post">
+<div id="popupIncomeItemUpdate" class="popupEdit hidePopupEdit">
+    <form class="incomeItemUpdate" action="/updateIncomeItem" method="post">
         <label for="incomeName">Income Name</label>
-        <input name="incomeName" type="text" required autofocus value="">
+        <input class="nameInput" name="incomeName" type="text" required autofocus value="">
         <label for="hourlyRate"> Hourly Rate</label>
-        <input name="hourlyRate" type="number" step=".01" required value="">
+        <input class="hourlyRateInput" name="hourlyRate" type="number" step=".01" required value="">
         <label for="taxRate">Tax Rate</label>
-        <input name="taxRate" type="number" step=".01" value="">
+        <input class="taxRateInput" name="taxRate" type="number" step=".01" value="">
         <label for="tithe">Tithe</label>
-        <input name="tithe" type="number" step=".01" value="">
+        <input class="titheInput" name="tithe" type="number" step=".01" value="">
         <label for="retirement">Retirement</label>
-        <input name="retirement" type="number" step=".01" value="">
+        <input class="retirementInput" name="retirement" type="number" step=".01" value="">
+        <input hidden class="idInput" name="itmId" value="0">
     <button class="submitBtn" type="submit">Save</button>
     <button class="cancelBtn" type="button">Cancel</button>
     </form>
