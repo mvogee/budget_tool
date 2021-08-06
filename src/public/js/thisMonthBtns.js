@@ -33,6 +33,7 @@ function editButtonSpendigClick(event) {
 let editButtonIncome = document.querySelectorAll(".editBtnIncome");
 editButtonIncome.forEach(btn => {
     btn.addEventListener("click", (event) => {
+        console.log("btn clicked");
         let itmId = event.target.getAttribute("itmId");
         let name = event.target.getAttribute("name");
         let incomeAmount = event.target.getAttribute("incomeAmount");
@@ -47,6 +48,9 @@ editButtonIncome.forEach(btn => {
         amountField.setAttribute("Value", incomeAmount);
         dateField.setAttribute("Value", ddate);
         idField.setAttribute("Value", itmId);
+        //! Should toggle the popup menu to display block
+        //! Should see if hidePopupEdit is already in classList or not and toggle based on that
+        document.querySelector("#popupEditIncome").classList.toggle("hidePopupEdit");
     });
 });
 
@@ -56,10 +60,10 @@ let cancelEditBtnSpending = document.querySelector("#editCancelBtnSpending");
 cancelEditBtnSpending.addEventListener("click", (type) => {
     console.log("cancle was pressed");
     document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
-    document.querySelector("#updateIncomeItem").reset();
+    document.querySelector("#updateSpendingItem").reset();
 });
 
-let cancelEditBtnIncome = document.querySelector("#editCancleBtnIncome");
+let cancelEditBtnIncome = document.querySelector("#editCancelBtnIncome");
 cancelEditBtnIncome.addEventListener("click", (type) => {
     console.log("cancel was pressed");
     document.querySelector("#popupEditIncome").classList.toggle("hidePopupEdit");

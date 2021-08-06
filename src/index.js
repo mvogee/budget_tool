@@ -151,6 +151,16 @@ app.post("/incomeItem", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
+app.post("/updateIncomeItem", (req, res) => {
+    let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=?";
+    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        res.redirect("/thisMonth");
+    });
+});
+
 app.post("/changeMonth", (req, res) => {
     dt = new Date(req.body.month + "-02");
     res.redirect("/thisMonth");

@@ -7,9 +7,9 @@
 <form action="/changeMonth" method="POST">
   <input type="month" name="month" value="<%= date.slice(0,7) %>" onChange="this.form.submit()">
 </form>
-<p>total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
-<p>total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
-<p>savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
+<p>Total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
+<p>Total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
+<p>Savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
 <!-- populate the table based on the date here defualt should be today -->
 <div class="spending">
   <label for="spendingItem">spending</label>
@@ -57,7 +57,7 @@
           <td>
             <form action="/deleteSpendingItm" method="POST">
               <input hidden name="deleteSpendingItm" value="<%= element.id %>">
-              <button class="deleteBtn" type="submit">delete</button>
+              <button class="deleteBtn" type="submit">Delete</button>
             </form>
         </td>
         </tr>
@@ -72,7 +72,7 @@
     <input type="text" name="itemName" placeholder="name">
     <input type="number" step="0.01" name="amount" placeholder="amount">
     <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today-->
-    <button type="submit" name="button">add</button>
+    <button type="submit" name="button">Add</button>
   </form>
   <%- include("partials/incomePopEdit.ejs");%>
   <table>
@@ -101,7 +101,7 @@
           <td>
             <form action="/deleteMonthIncomeItm" method="POST">
             <input hidden name="deleteIncomeItm" value="<%= element.id %>">
-            <button class="deleteBtn" type="submit" name="deleteBtn">delete</button>
+            <button class="deleteBtn" type="submit" name="deleteBtn">Delete</button>
             </form>
           </td>
         </tr>
