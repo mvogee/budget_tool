@@ -1,0 +1,10 @@
+<div id="popupEditDeposit" class="popupEdit hidePopupEdit">
+    <form id="updateDepositItem" action="/updateDepositItem" method="post"> <!-- handle route -->
+        <input hidden class="itmId" name="itmId" value="0">
+        <input class="editNameInput" type="text" name="itemName" placeholder="name" value="">
+        <input class="editAmountInput" type="number" step="0.01" name="amount" placeholder="amount" value="">
+        <input class="editDateInput" type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today-->
+        <button type="submit" name="button">Save</button>
+        <button id="editCancelBtnDeposit" type="button" name="cancel">Cancle</button>
+      </form>
+</div>

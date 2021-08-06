@@ -12,10 +12,13 @@
 <p>Savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
 <!-- populate the table based on the date here defualt should be today -->
 <div class="spending">
-  <label for="spendingItem">spending</label>
+  <label for="spendingItem">Spending</label>
   <form id="spendingItem" class="" action="/spendingItem" method="post">
+    <label for="itemName">Description</label>
     <input type="text" name="itemName" placeholder="name" required autofocus>
+    <label for="amount">Amount</label>
     <input type="number" step="0.01" name="amount" placeholder="amount" required>
+    <label for="category">Category</label>
     <select name="category" form="spendingItem">
       <option value="0" default>uncategorized</option>
 
@@ -24,6 +27,7 @@
       <% }); %>
       <!-- populates based on budget categories -->
     </select>
+    <label for="date">Date</label>
     <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today -->
     <button type="submit" name="button">add</button>
   </form>
@@ -66,15 +70,18 @@
   </table>
 </div>
 
-<div class="income">
-  <label for="incomeItem">Income</label>
-  <form id="incomeItem" action="/incomeItem" method="post">
+<div class="deposit">
+  <label for="depositItem">Deposits</label>
+  <form id="depsitItem" action="/depositItem" method="post">
+    <label for="itemName">Name</label>
     <input type="text" name="itemName" placeholder="name">
+    <label for="amount">Amount</label>
     <input type="number" step="0.01" name="amount" placeholder="amount">
+    <label for="date">Date</label>
     <input type="date" name="date" value="<%= date %>" min="2010-01-01" max="<%= today %>"> <!-- max should be today-->
     <button type="submit" name="button">Add</button>
   </form>
-  <%- include("partials/incomePopEdit.ejs");%>
+  <%- include("partials/depositPopEdit.ejs");%>
   <table>
     <thead>
       <tr>
@@ -95,7 +102,7 @@
             name = "<%= element.inDescription %>"
             incomeAmount="<%= element.amount %>"
             depositDate="<%= formatDate(element.depositDate); %>"
-            >edit
+            >Edit
           </button>
           </td>
           <td>

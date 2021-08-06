@@ -39,10 +39,10 @@ editButtonIncome.forEach(btn => {
         let incomeAmount = event.target.getAttribute("incomeAmount");
         let ddate = event.target.getAttribute("depositDate");
 
-        let nameField =  document.querySelector("#updateIncomeItem .editNameInput");
-        let amountField = document.querySelector("#updateIncomeItem .editAmountInput");
-        let dateField = document.querySelector("#updateIncomeItem .editDateInput");
-        let idField = document.querySelector("#updateIncomeItem .itmId");
+        let nameField =  document.querySelector("#updateDepositItem .editNameInput");
+        let amountField = document.querySelector("#updateDepositItem .editAmountInput");
+        let dateField = document.querySelector("#updateDepositItem .editDateInput");
+        let idField = document.querySelector("#updateDepositItem .itmId");
 
         nameField.setAttribute("Value", name);
         amountField.setAttribute("Value", incomeAmount);
@@ -50,7 +50,7 @@ editButtonIncome.forEach(btn => {
         idField.setAttribute("Value", itmId);
         //! Should toggle the popup menu to display block
         //! Should see if hidePopupEdit is already in classList or not and toggle based on that
-        document.querySelector("#popupEditIncome").classList.toggle("hidePopupEdit");
+        document.querySelector("#popupEditDeposit").classList.toggle("hidePopupEdit");
     });
 });
 
@@ -63,9 +63,9 @@ cancelEditBtnSpending.addEventListener("click", (type) => {
     document.querySelector("#updateSpendingItem").reset();
 });
 
-let cancelEditBtnIncome = document.querySelector("#editCancelBtnIncome");
+let cancelEditBtnIncome = document.querySelector("#editCancelBtnDeposit");
 cancelEditBtnIncome.addEventListener("click", (type) => {
     console.log("cancel was pressed");
-    document.querySelector("#popupEditIncome").classList.toggle("hidePopupEdit");
-    document.querySelector("#updateIncomeItem").reset();
+    document.querySelector("#popupEditDeposit").classList.toggle("hidePopupEdit");
+    document.querySelector("#updateDepositItem").reset();
 });

@@ -13,8 +13,8 @@ function getTotal(elementArray) {
     return (total);
 };
 
-let spendingTotal = getTotal(spendingItms);
-let incomeTotal = getTotal(incomeItms);
+let spendingTotal = getTotal(spendingItms).toFixed(2);
+let incomeTotal = getTotal(incomeItms).toFixed(2);
 let dif = (incomeTotal - spendingTotal).toFixed(2);
 
 monthSpending.innerHTML = spendingTotal;

@@ -13,15 +13,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + '/public'));
-// app.get("/", (req, res) => {
-//     mysql.query('SELECT * FROM budgets', (err, result) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//         console.log(result);
-//         res.send(result);
-//     });
-// });
 
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
@@ -45,7 +36,6 @@ app.get("/income", (req, res) => {
         res.render("income", ejsObj);
     });
 });
-
 
 app.post("/projectedIncome", (req, res) => {
     console.log("adding item to projectedIncome");
@@ -74,30 +64,6 @@ app.post("/deleteIncomeItm", (req, res) => {
 
 
 // ! thisMonth routes
-
-// function renderThisMonth(date, res) {
-//     date = new Date(date);
-//     let monthStart = utils.getMonthStart(date);
-//     let monthEnd = utils.getMonthEnd(date);
-//     let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
-//     sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
-//     sql += "SELECT * FROM budgets;";
-//     mysql.query(sql, [monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
-//         if (err) {
-//             return (console.log(err));
-//         }
-//         let ejsObj = {
-//             deposits: result[0],
-//             purchases: result[1],
-//             budgets: result[2],
-//             month: utils.getMonthName(date),
-//             date: utils.getStandardDateFormat(date),
-//             getCategoryName: utils.getCategoryName,
-//             formatDate: utils.getStandardDateFormat
-//         }
-//         res.render("thisMonth", ejsObj);
-//     });
-// }
 
 app.get("/thisMonth", (req, res) => {
      let monthStart = utils.getMonthStart(dt);
@@ -142,7 +108,7 @@ app.post("/spendingItemUpdate", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
-app.post("/incomeItem", (req, res) => {
+app.post("/depositItem", (req, res) => {
     let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
         if (err) {
@@ -151,7 +117,7 @@ app.post("/incomeItem", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
-app.post("/updateIncomeItem", (req, res) => {
+app.post("/updateDepositItem", (req, res) => {
     let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=?";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId], (err, result) => {
         if (err) {

@@ -5,26 +5,32 @@
 
 <h1>Projected Income</h1>
 
-<form action="/projectedIncome" method="POST" name="newBudgetItm">
+<form action="/projectedIncome" method="POST" name="newIncomeItm">
+    <label for="incomeName">Income Name</label>
     <input name="incomeName" type="text" required autofocus placeholder="income name">
+    <label for="hourlyRate">Hourly Rate</label>
     <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
+    <label for="taxRrate">Tax Rate</label>
     <input name="taxRate" type="number" step=".01" placeholder="tax rate">
+    <label for="tithe">Tithe</label>
     <input name="tithe" type="number" step=".01" placeholder="tithe %">
+    <label for="retirement">retirement</label>
     <input name="retirement" type="number" step=".01" placeholder="retirement %">
-    <button type="submit">add</button>
+    <button type="submit">Add</button>
 </form>
 <div>
     <p>Gross income: <%= grossIncomeAll %> </p>
     <p>Net income:  <%= netIncomeAll %> </p>
 </div>
+<%- include("./partials/incomePopEdit.ejs") %> 
 <table>
     <thead>
         <tr>
             <td>Income Name</td>
             <td>Hourly Rate</td>
-            <td>Tax Rate</td>
-            <td>Tithe</td>
-            <td>Retirement</td>
+            <td colspan="2">Tax Rate</td>
+            <td colspan="2">Tithe</td>
+            <td colspan="2">Retirement</td>
             <td>Gross income</td>
             <td>Net Income</td>
         </tr>
@@ -34,15 +40,27 @@
         <tr>
             <td><%= element.incomeName %></td>
             <td><%= element.hourlyRate %></td>
-            <td><%= element.taxRate %> | <%= utils.getTaxAmount(element) %> </td>
-            <td><%= element.tithe %> | <%= utils.getTitheAmount(element) %> </td>
-            <td><%= element.retirement %> | <%= utils.getRetirementAmount(element) %> </td>
+            <td ><%= element.taxRate %></td>
+            <td><%= utils.getTaxAmount(element) %></td>
+            <td><%= element.tithe %></td>
+            <td><%= utils.getTitheAmount(element) %></td>
+            <td><%= element.retirement %></td>
+            <td><%= utils.getRetirementAmount(element) %></td>
             <td><%= utils.getMonthlyGrossIncome(element) %> </td>
             <td><%= utils.getMonthlyNetIncome(element) %> </td>
             <td>
+                <button class="editButton editButtonIncome" type="button"
+                itmId="<%= element.id %> "
+                name="<%= element.incomeName %>"
+                hourlyRate="<%= element.hourlyRate %>"
+                taxRate="<%= element.taxRate %>"
+                tithe="<%= element.tithe %>"
+                >Edit</button>
+            </td>
+            <td>
             <form action="/deleteIncomeItm" method="POST">
                 <input name="deleteIncome" value="<%= element.id %>" hidden>
-                <button class="deleteBtn" type="submit">delete</button>
+                <button class="deleteBtn" type="submit">Delete</button>
             </form>
         </td>
         </tr>
