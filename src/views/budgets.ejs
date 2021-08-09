@@ -20,6 +20,12 @@
                         <tr>
                                 <td><%= budgets[i].category %> </td>
                                 <td>$ <%= budgets[i].budget %> </td>
+                                <td>
+                                        <button class="editButton editButtonBudgets" type="button"
+                                        category="<%= budgets[i].category %>"
+                                        budget="<%= budgets[i].budget %>"
+                                        >Edit</button>
+                                </td>
                                 <form action="/deleteBudgetItm" method="POST">
                                         <input name="deleteCategory" value="<%= budgets[i].id %>" hidden>
                                         <td><button class="deleteBtn" type="submit">delete</button></td>
