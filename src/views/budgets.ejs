@@ -28,7 +28,7 @@
                                         budget="<%= budgets[i].budget %>"
                                         >Edit</button>
                                 </td>
-                                <form action="/deleteBudgetItm" method="POST">
+                                <form onsubmit="deleteBudgetItem(this)">
                                         <input name="deleteCategory" value="<%= budgets[i].id %>" hidden>
                                         <td><button class="deleteBtn" type="submit">delete</button></td>
                                 </form>

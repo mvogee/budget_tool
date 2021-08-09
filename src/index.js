@@ -167,18 +167,19 @@ app.post("/deleteMonthIncomeItm", (req, res) => {
 });
 
 //! routes for budgets
-app.post("/deleteBudgetItm", (req, res) => {
-    console.log("I'm going to delete something");
-        console.log(req.body.deleteCategory);
-        let sql = "DELETE FROM budgets WHERE id=?";
-        mysql.query(sql, req.body.deleteCategory, (err, result) => {
-            if (err) {
-                return console.log(err);
-            }
-            console.log(result);
-        });
-        res.redirect("/budgets");
-});
+// app.post("/deleteBudgetItm", (req, res) => {
+//     console.log("I'm going to delete something");
+//         console.log(req.body.deleteCategory);
+//         let sql = "DELETE FROM budgets WHERE id=?";
+//         mysql.query(sql, req.body.deleteCategory, (err, result) => {
+//             if (err) {
+//                 return console.log(err);
+//             }
+//             console.log(result);
+//         });
+//         res.redirect("/budgets");
+// });
+//* now handeled through the DELETE route below
 
 app.route("/budgets")
     .get(async (req, res) => {
