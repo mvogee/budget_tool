@@ -12,6 +12,7 @@ function edtiIncomeBtnClick(event) {
     let itmId = event.target.getAttribute("itmId");
     let name = event.target.getAttribute("name");
     let hourlyRate = event.target.getAttribute("hourlyRate");
+    let hoursPerWeek = event.target.getAttribute("hoursPerWeek");
     let taxRate = event.target.getAttribute("taxRate");
     let tithe = event.target.getAttribute("tithe");
     let retirement = event.target.getAttribute("retirement");
@@ -19,6 +20,7 @@ function edtiIncomeBtnClick(event) {
     let idField = document.querySelector(".incomeItemUpdate .idInput");
     let nameField = document.querySelector(".incomeItemUpdate .nameInput");
     let hourlyRateField = document.querySelector(".incomeItemUpdate .hourlyRateInput");
+    let hoursPerWeekField = document.querySelector(".incomeItemUpdate .hoursPerWeek");
     let taxRateField = document.querySelector(".incomeItemUpdate .taxRateInput");
     let titheFeild = document.querySelector(".incomeItemUpdate .titheInput");
     let retirementField = document.querySelector(".incomeItemUpdate .retirementInput");
@@ -26,6 +28,7 @@ function edtiIncomeBtnClick(event) {
     idField.setAttribute("value", itmId);
     nameField.setAttribute("value", name);
     hourlyRateField.setAttribute("value", hourlyRate);
+    hoursPerWeekField.setAttribute("value", hoursPerWeek);
     taxRateField.setAttribute("value", taxRate);
     titheFeild.setAttribute("value", tithe);
     retirementField.setAttribute("value", retirement);

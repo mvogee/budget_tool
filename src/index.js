@@ -39,8 +39,8 @@ app.get("/income", (req, res) => {
 
 app.post("/projectedIncome", (req, res) => {
     console.log("adding item to projectedIncome");
-    let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement) VALUES(?,?,?,?,?)";
-    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement],
+    let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement, hoursPerWeek) VALUES(?,?,?,?,?,?)";
+    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek],
         (err, result) => {
             if (err) {
                 return (console.log(err));
@@ -60,7 +60,18 @@ app.post("/deleteIncomeItm", (req, res) => {
         res.redirect("/income");
     });
 });
-
+app.post("/updateIncomeItem", (req, res) => {
+    console.log("updating income item");
+    let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, tithe=?, retirement=?, hoursPerWeek=? WHERE id=?";
+    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId],
+        (err, result) => {
+            if (err) {
+            console.log(err)
+            }
+            console.log(result);
+            res.redirect("/income");
+        });
+});
 
 
 // ! thisMonth routes

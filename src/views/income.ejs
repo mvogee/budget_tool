@@ -10,6 +10,8 @@
     <input name="incomeName" type="text" required autofocus placeholder="income name">
     <label for="hourlyRate">Hourly Rate</label>
     <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
+    <label for="hoursPerWeek">Hrs/Week</label>
+    <input name="hoursPerWeek" type="number" step="0.01" required placeholder="40">
     <label for="taxRrate">Tax Rate</label>
     <input name="taxRate" type="number" step=".01" placeholder="tax rate">
     <label for="tithe">Tithe</label>
@@ -28,6 +30,7 @@
         <tr>
             <td>Income Name</td>
             <td>Hourly Rate</td>
+            <td>Hr/Week</td>
             <td colspan="2">Tax Rate</td>
             <td colspan="2">Tithe</td>
             <td colspan="2">Retirement</td>
@@ -40,6 +43,7 @@
         <tr>
             <td><%= element.incomeName %></td>
             <td><%= element.hourlyRate %></td>
+            <td><%= element.hoursPerWeek %> </td>
             <td ><%= element.taxRate %></td>
             <td><%= utils.getTaxAmount(element) %></td>
             <td><%= element.tithe %></td>
@@ -50,9 +54,10 @@
             <td><%= utils.getMonthlyNetIncome(element) %> </td>
             <td>
                 <button class="editButton editButtonIncome" type="button"
-                itmId="<%= element.id %> "
+                itmId="<%= element.id %>"
                 name="<%= element.incomeName %>"
                 hourlyRate="<%= element.hourlyRate %>"
+                hoursPerWeek="<%= element.hoursPerWeek %>"
                 taxRate="<%= element.taxRate %>"
                 tithe="<%= element.tithe %>"
                 retirement="<%= element.retirement %>"

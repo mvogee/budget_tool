@@ -11,12 +11,11 @@ function addBudgetTotals(budgets) {
 
 // gross
 function getMonthlyGrossIncomeAll(incomes) {
-    let workHoursPerWeek = 40;
     let workWeeksPerMonth = 4;
     let grossIncome = 0;
     // income.incomeName, income.hourlyRate, income.taxRate, income.tithe income.retirement
     incomes.forEach(element => {
-        grossIncome += (element.hourlyRate * workHoursPerWeek * workWeeksPerMonth);
+        grossIncome += (element.hourlyRate * element.hoursPerWeek * workWeeksPerMonth);
     });
     return (grossIncome);
 };
@@ -24,7 +23,7 @@ function getMonthlyGrossIncomeAll(incomes) {
 function getMonthlyGrossIncome(income) {
     let workHoursPerWeek = 40;
     let workWeeksPerMonth = 4;
-    return (income.hourlyRate * workHoursPerWeek * workWeeksPerMonth);
+    return (income.hourlyRate * income.hoursPerWeek * workWeeksPerMonth);
 };
 
 // net
