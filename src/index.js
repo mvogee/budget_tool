@@ -181,7 +181,6 @@ app.post("/deleteBudgetItm", (req, res) => {
 
 app.route("/budgets")
     .get(async (req, res) => {
-        console.log("get");
         let sql = "SELECT * FROM budgets;";
         sql += "SELECT * FROM projectedIncome;";
 
@@ -233,7 +232,16 @@ app.route("/budgets")
         });
         res.redirect("/budgets");
     });
-
+    app.post("/updateBudgetItm", (req, res) => {
+        let sql = "UPDATE budgets SET category=?, budget=? WHERE id=?";
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.id], (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(result);
+            res.redirect("/budgets");
+        });
+    });
 app.listen(port, () => {
     console.log("hello world");
 });

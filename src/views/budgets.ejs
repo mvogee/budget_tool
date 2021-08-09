@@ -8,6 +8,7 @@
         <p>Projected Income: $<%= projectedIncome %> </p>
         <p>lef to alocate: <%= projectedIncome - budgetTotal %>  </p>
         </div>
+        <%- include("./partials/budgetPopEdit.ejs") %> 
         <table>
                 <thead>
                         <tr>
@@ -22,6 +23,7 @@
                                 <td>$ <%= budgets[i].budget %> </td>
                                 <td>
                                         <button class="editButton editButtonBudgets" type="button"
+                                        itmId="<%= budgets[i].id %>"
                                         category="<%= budgets[i].category %>"
                                         budget="<%= budgets[i].budget %>"
                                         >Edit</button>
@@ -39,6 +41,6 @@
                 <input type="number" step=".01" name="budgeted" placeholder="100" required>
                 <button type="submit">Add</button>
         </form>
-        <script src="" async defer></script>
+        <script src="./js/budgetBtns.js" async defer></script>
     
 <%- include("partials/footer.ejs") %> 

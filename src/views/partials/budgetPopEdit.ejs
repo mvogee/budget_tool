@@ -1,0 +1,9 @@
+<div id="popupBudgetItemUpdate" class="popupEdit hidePopupEdit">
+    <form class="budgetItemUpdate" action="/updateBudgetItm" method="POST" name="updateBudgetItm">
+        <input class="categoryInput" type="text" autocomplete="off" name="category" placeholder="category" value="" required>
+        <input class="amountInput" type="number" step=".01" name="budgeted" placeholder="100" value="" required>
+        <input hidden class="idInput" name="id" value="">
+        <button class="submitBtn" type="submit">Save</button>
+        <button class="cancelBtn" type="button">Cancel</button>
+    </form>
+</div>
