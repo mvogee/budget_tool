@@ -26,3 +26,4 @@ document.querySelector("#popupBudgetItemUpdate .cancelBtn").addEventListener("cl
     document.querySelector(".budgetItemUpdate").reset;
     document.querySelector("#popupBudgetItemUpdate").classList.toggle("hidePopupEdit");
 });
+

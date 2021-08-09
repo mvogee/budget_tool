@@ -36,11 +36,12 @@
                         <% } %>
                 </tbody>
         </table>
-        <form action="/budgets" method="POST" name="newBudgetItm">
+        <form name="newBudgetItm" onsubmit="newBudgetItem(this)">
                 <input type="text" autocomplete="off" name="category" placeholder="category" autofocus required>
                 <input type="number" step=".01" name="budgeted" placeholder="100" required>
                 <button type="submit">Add</button>
         </form>
-        <script src="./js/budgetBtns.js" async defer></script>
-    
-<%- include("partials/footer.ejs") %> 
+        <script src="./js/forms.js"></script>
+        <script src="./js/budgetBtns.js"></script>
+        
+<%- include("partials/footer.ejs") %>
