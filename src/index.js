@@ -182,16 +182,17 @@ app.post("/deleteBudgetItm", (req, res) => {
 app.route("/budgets")
     .get(async (req, res) => {
         console.log("get");
-        let sql = "SELECT * FROM budgets";
+        let sql = "SELECT * FROM budgets;";
+        sql += "SELECT * FROM projectedIncome;";
 
         mysql.query(sql, (err, result) => {
             if (err) {
                 return (console.log(err));
             }
-            console.log(result);
             let ejsObj = {
-                budgets: result,
-                budgetTotal: utils.addBudgetTotals(result)
+                budgets: result[0],
+                budgetTotal: utils.addBudgetTotals(result[0]),
+                projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
             }
             res.render("budgets", ejsObj);
         });
@@ -207,8 +208,8 @@ app.route("/budgets")
             else {
                 console.log(result);
             }
+            res.redirect("/budgets");
         });
-        res.redirect("/budgets");
     })
     .patch((req, res) => {
         let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
