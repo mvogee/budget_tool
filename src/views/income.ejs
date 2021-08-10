@@ -5,7 +5,7 @@
 
 <h1>Projected Income</h1>
 
-<form action="/projectedIncome" method="POST" name="newIncomeItm">
+<form name="newIncomeItm" onsubmit="newIncomeItem(this)">
     <label for="incomeName">Income Name</label>
     <input name="incomeName" type="text" required autofocus placeholder="income name">
     <label for="hourlyRate">Hourly Rate</label>
@@ -64,7 +64,7 @@
                 >Edit</button>
             </td>
             <td>
-            <form action="/deleteIncomeItm" method="POST">
+            <form onsubmit="deleteIncomeItem(this)">
                 <input name="deleteIncome" value="<%= element.id %>" hidden>
                 <button class="deleteBtn" type="submit">Delete</button>
             </form>
@@ -75,4 +75,5 @@
 </table>
 
 <%- include("./partials/footer.ejs") %>
+<script src="./js/forms.js"></script>
 <script src="./js/incomeBtns.js"></script>

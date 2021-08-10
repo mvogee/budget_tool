@@ -1,5 +1,5 @@
 <div id="popupIncomeItemUpdate" class="popupEdit hidePopupEdit">
-    <form class="incomeItemUpdate" action="/updateIncomeItem" method="post">
+    <form class="incomeItemUpdate" onsubmit="updateIncomeItem(this)">
         <label for="incomeName">Income Name</label>
         <input class="nameInput" name="incomeName" type="text" required autofocus value="">
         <label for="hourlyRate"> Hourly Rate</label>

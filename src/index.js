@@ -22,7 +22,8 @@ app.get("/", (req, res) => {
 });
 
  //! Income routes
-app.get("/income", (req, res) => {
+app.route("/income")
+.get((req, res) => {
     let sql = "SELECT * FROM projectedIncome";
     mysql.query(sql, (err, result) => {
         if (err) {
@@ -36,9 +37,8 @@ app.get("/income", (req, res) => {
         };
         res.render("income", ejsObj);
     });
-});
-
-app.post("/projectedIncome", (req, res) => {
+})
+.post((req, res) => {
     console.log("adding item to projectedIncome");
     let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement, hoursPerWeek) VALUES(?,?,?,?,?,?)";
     mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek],
@@ -48,9 +48,9 @@ app.post("/projectedIncome", (req, res) => {
             }
             console.log(result);
         });
-        res.redirect("income");
-});
-app.post("/deleteIncomeItm", (req, res) => {
+        res.redirect("/income");
+})
+.delete((req, res) => {
     console.log("deleting income item");
     let sql = "DELETE FROM projectedIncome WHERE id=?";
     mysql.query(sql, req.body.deleteIncome, (err, result) => {
@@ -60,8 +60,8 @@ app.post("/deleteIncomeItm", (req, res) => {
         console.log(result);
         res.redirect("/income");
     });
-});
-app.post("/updateIncomeItem", (req, res) => {
+})
+.patch((req, res) => {
     console.log("updating income item");
     let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, tithe=?, retirement=?, hoursPerWeek=? WHERE id=?";
     mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId],
