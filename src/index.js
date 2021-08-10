@@ -214,7 +214,7 @@ app.route("/budgets")
     })
     .patch((req, res) => {
         let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
-        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.categoryId], (err, result) => {
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId], (err, result) => {
             if (err) {
                 return console.log(err);
             }
@@ -234,6 +234,7 @@ app.route("/budgets")
         });
         res.redirect("/budgets");
     });
+
     app.post("/updateBudgetItm", (req, res) => {
         let sql = "UPDATE budgets SET category=?, budget=? WHERE id=?";
         mysql.query(sql, [req.body.category, req.body.budgeted, req.body.id], (err, result) => {

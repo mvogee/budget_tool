@@ -3,28 +3,32 @@ async function newBudgetItem(form) {
         category: form.category.value,
         budgeted: form.budgeted.value
     };
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    fetch("/budgets", {
-        headers: myHeaders,
-        body: JSON.stringify(data),
-        method: "POST"
-    })
-    .then(location.reload());
-    return true;
+    fetchCall(data, "POST", "/budgets");
 };
 
 async function deleteBudgetItem(form) {
     let data = {
         deleteCategory: form.deleteCategory.value,
     };
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    fetch("/budgets", {
-        headers: myHeaders,
-        body: JSON.stringify(data),
-        method: "DELETE"
-    })
-    .then(location.reload);
-    return true;
+    fetchCall(data, "DELETE", "/budgets");
+};
+
+async function updateBudgetItem(form) {
+    let data = {
+        category: form.category.value,
+        budgeted: form.budgeted.value,
+        itemId: form.id.value
+    }
+    await fetchCall(data, "PATCH", "/budgets");
+};
+
+async function fetchCall(data, method, route) {
+        let myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        fetch(route, {
+            headers: myHeaders,
+            body: JSON.stringify(data),
+            method: method
+        })
+        .then(location.reload());
 };
