@@ -72,3 +72,36 @@ async function updateIncomeItem(form) {
     await fetchCall(data, "PATCH", "/income");
     location.reload();
 };
+
+// * THIS MONTH FORMS
+
+async function newSpendingItem(form) {
+    let data = {
+        itemName: form.itemName.value,
+        amount: form.amount.value,
+        category: form.category.value,
+        date: form.date.value
+    };
+    await fetchCall(data, "POST", "/thisMonth");
+    location.reload();
+};
+
+async function deleteSpendingItem(form) {
+    let data = {
+        deleteSpendingItm: form.deleteSpendingItm.value
+    };
+    await fetchCall(data, "DELETE", "/thisMonth");
+    location.reload();
+};
+
+async function updateSpendingItem(form) {
+    let data = {
+        itemName: form.itemName.value,
+        amount: form.amount.value,
+        category: form.category.value,
+        date: form.date.value,
+        itmId: form.itmId.value
+    };
+    await fetchCall(data, "PATCH", "/thisMonth");
+    location.reload();
+}

@@ -13,7 +13,7 @@
 <!-- populate the table based on the date here defualt should be today -->
 <div class="spending">
   <label for="spendingItem">Spending</label>
-  <form id="spendingItem" class="" action="/spendingItem" method="post">
+  <form id="spendingItem" class="" onsubmit="newSpendingItem(this)">
     <label for="itemName">Description</label>
     <input type="text" name="itemName" placeholder="name" required autofocus>
     <label for="amount">Amount</label>
@@ -59,7 +59,7 @@
           </button>
           </td>
           <td>
-            <form action="/deleteSpendingItm" method="POST">
+            <form onsubmit="deleteSpendingItem(this)">
               <input hidden name="deleteSpendingItm" value="<%= element.id %>">
               <button class="deleteBtn" type="submit">Delete</button>
             </form>
@@ -117,5 +117,6 @@
   </table>
 </div>
 <%- include("./partials/footer.ejs"); %>
+<script src="./js/forms.js"></script>
 <script src="./js/thisMonthBtns.js"></script>
 <script src="./js/thisMonthTotal.js" ></script>

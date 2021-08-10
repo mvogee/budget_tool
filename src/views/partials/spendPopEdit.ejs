@@ -1,7 +1,7 @@
 <!-- gets budgets, itmName, amount, categoryId, date -->
 <div id="popupEditSpending" class="popupEdit hidePopupEdit">
     <label for="updateSpendingItem">spending</label>
-    <form id="updateSpendingItem" class="updateForm" action="/spendingItemUpdate" method="post">
+    <form id="updateSpendingItem" class="updateForm" onsubmit="updateSpendingItem(this)">
         <input hidden class="itmId" name="itmId" value="0">
       <input class="editNameInput" type="text" name="itemName" placeholder="name" value="name" required autofocus>
       <input class="editAmountInput" type="number" step="0.01" name="amount" placeholder="amount" value="0" required>
