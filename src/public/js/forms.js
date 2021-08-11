@@ -104,4 +104,33 @@ async function updateSpendingItem(form) {
     };
     await fetchCall(data, "PATCH", "/thisMonth");
     location.reload();
+};
+
+async function newDepositItem(form) {
+    let data = {
+        itemName: form.itemName.value,
+        amount: form.amount.value,
+        date: form.date.value
+    };
+    await fetchCall(data, "POST", "/depositItem");
+    location.reload();
+};
+
+async function deleteDepositItem(form) {
+    let data = {
+        deleteIncomeItm: form.deleteIncomeItm.value
+    }
+    await fetchCall(data, "DELETE", "/depositItem");
+    location.reload();
+}
+
+async function updateDepositItem(form) {
+    let data = {
+        itemName: form.itemName.value,
+        amount: form.amount.value,
+        date: form.date.value,
+        itmId: form.itmId.value
+    };
+    await fetchCall(data, "PATCH", "/depositItem");
+    location.reload();
 }

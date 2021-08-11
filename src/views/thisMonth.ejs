@@ -72,7 +72,7 @@
 
 <div class="deposit">
   <label for="depositItem">Deposits</label>
-  <form id="depsitItem" action="/depositItem" method="post">
+  <form id="depsitItem" onsubmit="newDepositItem(this)">
     <label for="itemName">Name</label>
     <input type="text" name="itemName" placeholder="name">
     <label for="amount">Amount</label>
@@ -106,7 +106,7 @@
           </button>
           </td>
           <td>
-            <form action="/deleteMonthIncomeItm" method="POST">
+            <form onsubmit="deleteDepositItem(this)">
             <input hidden name="deleteIncomeItm" value="<%= element.id %>">
             <button class="deleteBtn" type="submit" name="deleteBtn">Delete</button>
             </form>

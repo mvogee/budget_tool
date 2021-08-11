@@ -132,7 +132,9 @@ app.route("/thisMonth")
     });
 });
 
-app.post("/depositItem", (req, res) => {
+
+app.route("/depositItem")
+.post((req, res) => {
     let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
         if (err) {
@@ -140,8 +142,8 @@ app.post("/depositItem", (req, res) => {
         }
         res.redirect("/thisMonth");
     });
-});
-app.post("/updateDepositItem", (req, res) => {
+})
+.patch((req, res) => {
     let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=?";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId], (err, result) => {
         if (err) {
@@ -149,15 +151,9 @@ app.post("/updateDepositItem", (req, res) => {
         }
         res.redirect("/thisMonth");
     });
-});
-
-app.post("/changeMonth", (req, res) => {
-    dt = new Date(req.body.month + "-02");
-    res.redirect("/thisMonth");
-});
-app.post("/deleteMonthIncomeItm", (req, res) => {
+})
+.delete((req, res) => {
     let sql = "DELETE FROM monthIncome WHERE id=?";
-    console.log(req.body.deleteIncomeItm);
     mysql.query(sql, req.body.deleteIncomeItm, (err, result) => {
         if (err) {
             console.log(err);
@@ -166,6 +162,11 @@ app.post("/deleteMonthIncomeItm", (req, res) => {
         res.redirect("/thisMonth");
     });
 });
+app.post("/changeMonth", (req, res) => {
+    dt = new Date(req.body.month + "-02");
+    res.redirect("/thisMonth");
+});
+
 
 //! routes for budgets
 // app.post("/deleteBudgetItm", (req, res) => {

@@ -1,5 +1,5 @@
 <div id="popupEditDeposit" class="popupEdit hidePopupEdit">
-    <form id="updateDepositItem" action="/updateDepositItem" method="post"> <!-- handle route -->
+    <form id="updateDepositItem" onsubmit="updateDepositItem(this)"> <!-- handle route -->
         <input hidden class="itmId" name="itmId" value="0">
         <input class="editNameInput" type="text" name="itemName" placeholder="name" value="">
         <input class="editAmountInput" type="number" step="0.01" name="amount" placeholder="amount" value="">
