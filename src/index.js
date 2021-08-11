@@ -99,7 +99,8 @@ app.route("/thisMonth")
         }
         res.render("thisMonth", ejsObj);
     });
-})
+});
+app.route("/spendingItem")
 .post((req, res) => {
     let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate) VALUES(?, ?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {

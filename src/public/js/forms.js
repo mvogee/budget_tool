@@ -74,7 +74,7 @@ async function updateIncomeItem(form) {
 };
 
 // * THIS MONTH FORMS
-
+// - spending items
 async function newSpendingItem(form) {
     let data = {
         itemName: form.itemName.value,
@@ -82,7 +82,7 @@ async function newSpendingItem(form) {
         category: form.category.value,
         date: form.date.value
     };
-    await fetchCall(data, "POST", "/thisMonth");
+    await fetchCall(data, "POST", "/spendingItem");
     location.reload();
 };
 
@@ -90,7 +90,7 @@ async function deleteSpendingItem(form) {
     let data = {
         deleteSpendingItm: form.deleteSpendingItm.value
     };
-    await fetchCall(data, "DELETE", "/thisMonth");
+    await fetchCall(data, "DELETE", "/spendingItem");
     location.reload();
 };
 
@@ -102,10 +102,11 @@ async function updateSpendingItem(form) {
         date: form.date.value,
         itmId: form.itmId.value
     };
-    await fetchCall(data, "PATCH", "/thisMonth");
+    await fetchCall(data, "PATCH", "/spendingItem");
     location.reload();
 };
 
+// deposit items
 async function newDepositItem(form) {
     let data = {
         itemName: form.itemName.value,
