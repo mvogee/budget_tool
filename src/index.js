@@ -44,21 +44,27 @@ app.route("/income")
     mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek],
         (err, result) => {
             if (err) {
-                return (console.log(err));
+                console.log(err);
+                res.send(err);
             }
-            console.log(result);
-        });
-        res.redirect("/income");
+            else {
+                console.log(result);
+                res.send(result);
+            }
+    });
 })
 .delete((req, res) => {
     console.log("deleting income item");
     let sql = "DELETE FROM projectedIncome WHERE id=?";
     mysql.query(sql, req.body.deleteIncome, (err, result) => {
         if (err) {
-            return (console.log(err));
+            console.log(err);
+            res.send(err);
         }
-        console.log(result);
-        res.redirect("/income");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 })
 .patch((req, res) => {
@@ -67,10 +73,13 @@ app.route("/income")
     mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId],
         (err, result) => {
             if (err) {
-            console.log(err)
+                console.log(err);
+                res.send(err);
             }
-            console.log(result);
-            res.redirect("/income");
+            else {
+                console.log(result);
+                res.send(result);
+            }
         });
 });
 
@@ -105,10 +114,13 @@ app.route("/spendingItem")
     let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate) VALUES(?, ?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
         if (err) {
-            return (console.log(err));
+            console.log(err);
+            res.send(err);
         }
-        console.log(result);
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 })
 .delete((req, res) => {
@@ -117,9 +129,12 @@ app.route("/spendingItem")
     mysql.query(sql, req.body.deleteSpendingItm ,(err, result) => {
         if (err) {
             console.log(err);
+            res.send(err);
         }
-        console.log(result);
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 })
 .patch((req, res) => {
@@ -127,9 +142,12 @@ app.route("/spendingItem")
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId], (err, result) => {
         if (err) {
             console.log(err);
+            res.send(err);
         }
-        console.log(result);
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 });
 
@@ -139,9 +157,13 @@ app.route("/depositItem")
     let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
         if (err) {
-            return (console.log(err));
+            console.log(err);
+            res.send(err);
         }
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 })
 .patch((req, res) => {
@@ -149,8 +171,12 @@ app.route("/depositItem")
     mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId], (err, result) => {
         if (err) {
             console.log(err);
+            res.send(err);
         }
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 })
 .delete((req, res) => {
@@ -158,11 +184,15 @@ app.route("/depositItem")
     mysql.query(sql, req.body.deleteIncomeItm, (err, result) => {
         if (err) {
             console.log(err);
+            res.send(err);
         }
-        console.log(result);
-        res.redirect("/thisMonth");
+        else {
+            console.log(result);
+            res.send(result);
+        }
     });
 });
+
 app.post("/changeMonth", (req, res) => {
     dt = new Date(req.body.month + "-02");
     res.redirect("/thisMonth");
@@ -170,84 +200,79 @@ app.post("/changeMonth", (req, res) => {
 
 
 //! routes for budgets
-// app.post("/deleteBudgetItm", (req, res) => {
-//     console.log("I'm going to delete something");
-//         console.log(req.body.deleteCategory);
-//         let sql = "DELETE FROM budgets WHERE id=?";
-//         mysql.query(sql, req.body.deleteCategory, (err, result) => {
-//             if (err) {
-//                 return console.log(err);
-//             }
-//             console.log(result);
-//         });
-//         res.redirect("/budgets");
-// });
-//* now handeled through the DELETE route below
 
 app.route("/budgets")
-    .get(async (req, res) => {
-        let sql = "SELECT * FROM budgets;";
-        sql += "SELECT * FROM projectedIncome;";
-
-        mysql.query(sql, (err, result) => {
-            if (err) {
-                return (console.log(err));
-            }
-            let ejsObj = {
-                budgets: result[0],
-                budgetTotal: utils.addBudgetTotals(result[0]),
-                projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
-            }
-            res.render("budgets", ejsObj);
-        });
-    })
-    .post((req, res) => {
-        // need category and budgeted
-        console.log(req.body.category + " " + req.body.budgeted);
-        let sql = "INSERT INTO budgets(category, budget) VALUES (?, ?)";
-        mysql.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log(result);
-            }
-            res.redirect("/budgets");
-        });
-    })
-    .patch((req, res) => {
-        let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
-        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId], (err, result) => {
-            if (err) {
-                return console.log(err);
-            }
-            console.log("updated budget " + result);
-            res.redirect("/budgets");
-        });
-    })
-    .delete((req, res) => {
-        console.log("I'm going to delete something");
-        console.log(req.body.categoryId);
-        let sql = "DELETE FROM budgets WHERE id=?";
-        mysql.query(sql, req.body.deleteCategory, (err, result) => {
-            if (err) {
-                return console.log(err);
-            }
-            console.log(result);
-        });
-        res.redirect("/budgets");
+.get((req, res) => {
+    let sql = "SELECT * FROM budgets;";
+    sql += "SELECT * FROM projectedIncome;";
+    mysql.query(sql, (err, result) => {
+        if (err) {
+        return (console.log(err));
+        }
+        let ejsObj = {
+            budgets: result[0],
+            budgetTotal: utils.addBudgetTotals(result[0]),
+            projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
+        }
+        res.render("budgets", ejsObj);
     });
-
-    app.post("/updateBudgetItm", (req, res) => {
-        let sql = "UPDATE budgets SET category=?, budget=? WHERE id=?";
-        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.id], (err, result) => {
-            if (err) {
-                console.log(err);
-            }
+})
+.post((req, res) => {
+    console.log(req.body.category + " " + req.body.budgeted);
+    let sql = "INSERT INTO budgets(category, budget) VALUES (?, ?)";
+    mysql.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        else {
             console.log(result);
-            res.redirect("/budgets");
-        });
+            res.send(result);
+        }
     });
+})
+.patch((req, res) => {
+    let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
+    mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        else {
+            console.log(result);
+            res.send(result);
+        }
+    });
+})
+.delete((req, res) => {
+    console.log(req.body.categoryId);
+    let sql = "DELETE FROM budgets WHERE id=?";
+    mysql.query(sql, req.body.deleteCategory, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        else {
+            console.log(result);
+            res.send(result);
+        }
+    });
+});
+
+    // app.post("/updateBudgetItm", (req, res) => {
+    //     let sql = "UPDATE budgets SET category=?, budget=? WHERE id=?";
+    //     mysql.query(sql, [req.body.category, req.body.budgeted, req.body.id], (err, result) => {
+    //         if (err) {
+    //             console.log(err);
+    //             res.send(err);
+    //         }
+    //         else {
+    //             console.log(result);
+    //             res.send(result);
+    //         }
+    //     });
+    // });
+
 app.listen(port, () => {
     console.log("hello world");
 });

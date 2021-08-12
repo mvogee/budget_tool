@@ -1,11 +1,34 @@
+
+//* OLD fetchCall. - would load page before database update completed
+// async function fetchCall(data, method, route) {
+//     let myHeaders = new Headers();
+//     myHeaders.append('Content-Type', 'application/json');
+//     fetch(route, {
+//         headers: myHeaders,
+//         body: JSON.stringify(data),
+//         method: method
+//     });
+// };
+
 async function fetchCall(data, method, route) {
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    fetch(route, {
-        headers: myHeaders,
-        body: JSON.stringify(data),
-        method: method
-    });
+    return (new Promise(function (resolve, reject) {
+        let myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        fetch(route, {
+            headers: myHeaders,
+            body: JSON.stringify(data),
+            method: method
+        }).then(() => {
+            console.log("fetch resolve");
+            resolve("done");
+        })
+        .catch(() => {
+            console.log("in catch condition fetchTestCall");
+            reject(new Error("An error occured"));
+        });
+        //! how to handle errors?
+    })
+    );
 };
 
 // * BUDGET FORMS
@@ -14,16 +37,30 @@ async function newBudgetItem(form) {
         category: form.category.value,
         budgeted: form.budgeted.value
     };
-    await fetchCall(data, "POST", "/budgets");
-    location.reload();
+    let fcPromise = fetchCall(data, "POST", "/budgets");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    })
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function deleteBudgetItem(form) {
     let data = {
         deleteCategory: form.deleteCategory.value,
     };
-    await fetchCall(data, "DELETE", "/budgets");
-    location.reload();
+    let fcPromise = fetchCall(data, "DELETE", "/budgets");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function updateBudgetItem(form) {
@@ -32,8 +69,15 @@ async function updateBudgetItem(form) {
         budgeted: form.budgeted.value,
         itemId: form.id.value
     };
-    await fetchCall(data, "PATCH", "/budgets");
-    location.reload();
+    let fcPromise = fetchCall(data, "PATCH", "/budgets");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 // * INCOME FORMS
@@ -47,16 +91,30 @@ async function newIncomeItem(form) {
         retirement: form.retirement.value,
         hoursPerWeek: form.hoursPerWeek.value
     };
-    await fetchCall(data, "POST", "/income");
-    location.reload();
+    let fcPromise =  fetchCall(data, "POST", "/income");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function deleteIncomeItem(form) {
     let data = {
         deleteIncome: form.deleteIncome.value
     };
-    await fetchCall(data, "DELETE", "/income");
-    location.reload();
+    let fcPromise = fetchCall(data, "DELETE", "/income");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function updateIncomeItem(form) {
@@ -69,8 +127,15 @@ async function updateIncomeItem(form) {
         hoursPerWeek: form.hoursPerWeek.value,
         itmId: form.itmId.value
     };
-    await fetchCall(data, "PATCH", "/income");
-    location.reload();
+    let fcPromise = fetchCall(data, "PATCH", "/income");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 // * THIS MONTH FORMS
@@ -82,16 +147,30 @@ async function newSpendingItem(form) {
         category: form.category.value,
         date: form.date.value
     };
-    await fetchCall(data, "POST", "/spendingItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "POST", "/spendingItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function deleteSpendingItem(form) {
     let data = {
         deleteSpendingItm: form.deleteSpendingItm.value
     };
-    await fetchCall(data, "DELETE", "/spendingItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "DELETE", "/spendingItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function updateSpendingItem(form) {
@@ -102,8 +181,15 @@ async function updateSpendingItem(form) {
         date: form.date.value,
         itmId: form.itmId.value
     };
-    await fetchCall(data, "PATCH", "/spendingItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "PATCH", "/spendingItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 // deposit items
@@ -113,16 +199,30 @@ async function newDepositItem(form) {
         amount: form.amount.value,
         date: form.date.value
     };
-    await fetchCall(data, "POST", "/depositItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "POST", "/depositItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 };
 
 async function deleteDepositItem(form) {
     let data = {
         deleteIncomeItm: form.deleteIncomeItm.value
     }
-    await fetchCall(data, "DELETE", "/depositItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "DELETE", "/depositItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 }
 
 async function updateDepositItem(form) {
@@ -132,6 +232,13 @@ async function updateDepositItem(form) {
         date: form.date.value,
         itmId: form.itmId.value
     };
-    await fetchCall(data, "PATCH", "/depositItem");
-    location.reload();
+    let fcPromise = fetchCall(data, "PATCH", "/depositItem");
+    fcPromise.then(() => {
+        console.log("fcPromise resolved, page reloading");
+        location.reload();
+    });
+    fcPromise.catch(() => {
+        location.reload();
+        console.log(fcPromise);
+    });
 }
