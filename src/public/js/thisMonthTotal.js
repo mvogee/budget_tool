@@ -20,3 +20,23 @@ let dif = (incomeTotal - spendingTotal).toFixed(2);
 monthSpending.innerHTML = spendingTotal;
 monthIncome.innerHTML = incomeTotal;
 savings.innerHTML = dif;
+
+// * Budget +-
+
+const budgetrows = document.querySelectorAll(".budgetProgress tbody tr");
+budgetrows.forEach(element => {
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    let category = element.getAttribute("catId");
+    // make request to server for all the spending items from monthSpending with the current dt purchaseDate and with ccategory = category
+    let data = {
+        categoryId: category,
+    }
+    fetch("/queryBudgetItem",
+            {headers: myHeaders,
+            body: JSON.stringify(data),
+            method: "POST"})
+            .then(response => response.json()
+                .then(data => element.querySelector(".spent").innerHTML = "$"+ data.total)
+            );
+});

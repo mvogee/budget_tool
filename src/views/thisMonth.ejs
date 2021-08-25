@@ -116,6 +116,30 @@
     </tbody>
   </table>
 </div>
+
+<div class="budgetProgress">
+<!-- budget item progress. display current budget items statuses -->
+<table>
+  <thead>
+    <tr>
+      <td>Category</td>
+      <td>budgeted</td>
+      <td>spent</td>
+      <td>left in budget</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% budgets.forEach(element => { %>
+      <tr catId="<%= element.id %>">
+        <td><%= element.category %></td>
+        <td><%= element.budget %> </td>
+        <td class="spent">$</td>
+        <td class="leftInBudget">$</td>
+      </tr>
+    <% }) %>  
+  </tbody>
+</table>
+</div>
 <%- include("./partials/footer.ejs"); %>
 <script src="./js/forms.js"></script>
 <script src="./js/thisMonthBtns.js"></script>
