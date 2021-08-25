@@ -131,8 +131,8 @@
   <tbody>
     <% budgets.forEach(element => { %>
       <tr catId="<%= element.id %>">
-        <td><%= element.category %></td>
-        <td><%= element.budget %> </td>
+        <td class="catName"><%= element.category %></td>
+        <td class="budgeted">$<%= element.budget.toFixed(2) %></td>
         <td class="spent">$</td>
         <td class="leftInBudget">$</td>
       </tr>

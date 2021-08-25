@@ -37,6 +37,13 @@ budgetrows.forEach(element => {
             body: JSON.stringify(data),
             method: "POST"})
             .then(response => response.json()
-                .then(data => element.querySelector(".spent").innerHTML = "$"+ data.total)
+                .then(data => {
+                    let totalSpent = data.total.toFixed(2);
+                    let budgeted = element.querySelector(".budgeted").innerText.substring(1);
+                    element.querySelector(".spent").innerHTML = "$"+ totalSpent;
+                    console.log(budgeted - totalSpent);
+                    element.querySelector(".leftInBudget").innerHTML = "$"+(budgeted - totalSpent).toFixed(2);
+
+                })
             );
 });

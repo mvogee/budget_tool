@@ -156,13 +156,10 @@ app.post("/queryBudgetItem", (req, res) => {
     let monthEnd = utils.getMonthEnd(dt);
     let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
     mysql.query(sql, [req.body.categoryId, monthStart, monthEnd], (err, result) => {
-        // console.log(req.body.categoryId);
-        // console.log(result);
         let total = 0;
         result.forEach(element => {
             total += element.amount;
         });
-        console.log(total);
         res.send({total: total});
     });
 });
