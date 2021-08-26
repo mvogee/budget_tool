@@ -22,7 +22,7 @@ async function fetchCall(data, method, route) {
             console.log("fetch resolve");
             resolve("done");
         })
-        .catch(() => {
+        .catch(() => { // this is sometimes triggering before the database is updated
             console.log("in catch condition fetchTestCall");
             reject(new Error("An error occured"));
         });

@@ -1,0 +1,44 @@
+<%- include("./partials/header.ejs") %>
+<%- include("./partials/nav.ejs") %>
+<!-- Page should include * -->
+
+
+
+
+<h1>Overview</h1>
+
+<!-- ! need javascript to fill in stats -->
+<div class="stat monthTotals">
+    <h3>This month overview</h3>
+    <p>Total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
+    <p>Total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
+    <p>Savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
+</div>
+
+<!-- * this months any budget items this month that are %10 or less until out or over budget-->
+
+<div class="watch criticalBudgetItems">
+    <h3>Critical budget items</h3>
+    <!-- going to be a table?? or just a list?? -->
+    
+</div>
+
+<!-- * stats: years total +- -->
+<div class="stat yearSavings">
+    <h3>Savings for the whole year</h3>
+    <p>This years savings: $<span class="stat yearSavings">00.00</span></p>
+</div>
+
+<!-- * each month so far savings and losses. (could be a good opportunity for a graph??) -->
+<div class="stats graph monthToMonthSavings">
+    <h3>Month to month graph</h3>
+</div>
+
+<!-- * pie chart of spending for chosen month -->
+<div>
+    <h3>Pie chart of spending this month</h3>
+</div>
+
+
+
+<%- include("./partials/footer.ejs") %> 

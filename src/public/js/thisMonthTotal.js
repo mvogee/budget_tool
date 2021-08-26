@@ -2,8 +2,8 @@ const monthSpending = document.querySelector("#totalSpending");
 const monthIncome = document.querySelector("#totalIncome");
 const savings = document.querySelector("#totalSavings");
 
-const spendingItms = document.querySelectorAll("#spendingAmount");
-const incomeItms = document.querySelectorAll("#incomeAmount");
+const spendingItms = document.querySelectorAll(".spendingAmount");
+const incomeItms = document.querySelectorAll(".incomeAmount");
 
 function getTotal(elementArray) {
     let total = 0.00;

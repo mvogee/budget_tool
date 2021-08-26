@@ -45,7 +45,7 @@
       <% purchases.forEach(element => { %>
         <tr>
           <td><%= element.itmDescription %> </td>
-          <td id="spendingAmount">$<%= element.amount %> </td>
+          <td class="spendingAmount">$<%= element.amount %> </td>
           <td><%= getCategoryName(budgets, element.category) %> </td>
           <td><%= formatDate(element.purchaseDate) %> </td>
           <td>
@@ -94,7 +94,7 @@
       <% deposits.forEach(element => { %>
         <tr>
           <td><%= element.inDescription %> </td>
-          <td id="incomeAmount">$<%= element.amount %> </td>
+          <td class="incomeAmount">$<%= element.amount %> </td>
           <td><%= formatDate(element.depositDate) %> </td>
           <td>
             <button class="editButton editBtnDeposit"

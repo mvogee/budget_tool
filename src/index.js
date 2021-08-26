@@ -21,6 +21,12 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
+//! Overview routes
+app.route("/overview")
+.get((req, res) => {
+    res.render("overview");
+});
+
  //! Income routes
 app.route("/income")
 .get((req, res) => {
