@@ -118,7 +118,7 @@ function getCriticalBudgetItems(mysql) {
     let criticalItms = [];
      return new Promise((resolve, reject) => {
         let budgetsPromise = new Promise((res, rej) => {
-            mysql.query("SELECT * FROM budgets", (err, budgets) => {
+            mysql.query("SELECT * FROM budgets;", (err, budgets) => {
                 if (err) {
                     console.log(err);
                     rej(err);
@@ -134,6 +134,7 @@ function getCriticalBudgetItems(mysql) {
                 let tenPC = (budgetItm.budget / 10).toFixed(2);
                 let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
                 //! BUG IS THAT query is not blocking !!!!
+                //! data has to be returned from inside the sql qeury callback
                 mysql.query(sql, [budgetItm.id, monthStart, monthEnd], (error, amounts) => {
                     let totalSpent = 0;
                     if (error) {
@@ -154,6 +155,53 @@ function getCriticalBudgetItems(mysql) {
     });
 };
 
+
+async function getCritItms(mysql) {
+    let monthStart = getMonthStart(new Date());
+    let monthEnd = getMonthEnd(new Date());
+    let critItms = [];
+    
+    let budgetItms = await getBudgetItms(mysql);
+    // loop through budget items
+    budgetItms.forEach(budgetItm => {
+        let itmTotal = getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd);
+        console.log(itmTotal);
+    });
+}
+//* THIS IS WORKING CORRECTLY
+async function getBudgetItms(mysql) {
+    let sql = "SELECT * FROM BUDGETS;";
+    let myPromise = new Promise((resolve, reject) => {
+        mysql.query(sql, (err, budgets) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            resolve(budgets);
+        });
+    });
+    return(await myPromise);
+};
+
+// * this will return the total spend of a category after
+async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd) {
+    
+    let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
+    let myPromise = new Promise((resolve, reject) => {
+        let totalSpend = 0;
+        mysql.query(sql, [categoryItmId, monthStart, monthEnd], (err, amounts) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            amounts.forEach(amount => totalSpend += amount.amount);
+            resolve(totalSpend);
+        });
+    });
+    return (await myPromise);
+};
+
+//! END BUG SECTION
 module.exports = {
     addBudgetTotals: addBudgetTotals,
     getMonthlyGrossIncome: getMonthlyGrossIncome,
@@ -168,5 +216,8 @@ module.exports = {
     getMonthName: getMonthName,
     getStandardDateFormat: getStandardDateFormat,
     getCategoryName: getCategoryName,
-    getCriticalBudgetItems: getCriticalBudgetItems
+    getCriticalBudgetItems: getCriticalBudgetItems,
+
+    //!tests
+    getCritItms: getCritItms
 }

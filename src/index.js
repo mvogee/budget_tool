@@ -23,16 +23,17 @@ app.get("/", (req, res) => {
 
 //! Overview routes
 app.route("/overview")
-.get((req, res) => {
+.get(async (req, res) => {
     // get critical budget items here
-    let critItms = utils.getCriticalBudgetItems(mysql);
-    let ejsObj = {
-        critBudgetItems: critItms
-    }
-    critItms.then(values => {
-        console.log(critItms);
-        console.log("critItms: "+ values)
-    });
+    //let critItms = utils.getCriticalBudgetItems(mysql);
+    let critItms = await utils.getCritItms(mysql);
+    //* let ejsObj = {
+    //*     critBudgetItems: critItms
+    //* }
+    //* critItms.then(values => {
+    //*     console.log(critItms);
+    //*     console.log("critItms: "+ values)
+    //* });
 
     // // ! TEST DELETE
     // let sql = "SELECT amount FROM monthSpending WHERE category=8 AND purchaseDate >= ? AND purchaseDate <= ?;";
@@ -53,7 +54,7 @@ app.route("/overview")
     //     return(100);
     // }).then(value => {console.log("new value: " + value)});
     // //! END TEST
-    res.render("overview", ejsObj);
+    res.render("overview");
 });
 
  //! Income routes
