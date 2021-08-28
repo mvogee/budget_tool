@@ -110,6 +110,49 @@ function getCategoryName(categorys, id) {
     }
     return ("uncategorized");
 }
+ // !BUG--- FIX ME
+ //? promise is being resolved before database queries are finished executing
+function getCriticalBudgetItems(mysql) {
+    let monthStart = getMonthStart(new Date());
+    let monthEnd = getMonthEnd(new Date());
+    let criticalItms = [];
+     return new Promise((resolve, reject) => {
+        let budgetsPromise = new Promise((res, rej) => {
+            mysql.query("SELECT * FROM budgets", (err, budgets) => {
+                if (err) {
+                    console.log(err);
+                    rej(err);
+                }
+                else {
+                    res(budgets);
+                }
+            });
+        });
+        budgetsPromise.then(budgets => {
+            budgets.forEach(budgetItm => {
+                console.log("topForEach")
+                let tenPC = (budgetItm.budget / 10).toFixed(2);
+                let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
+                //! BUG IS THAT query is not blocking !!!!
+                mysql.query(sql, [budgetItm.id, monthStart, monthEnd], (error, amounts) => {
+                    let totalSpent = 0;
+                    if (error) {
+                        console.log(error);
+                        reject(error);
+                    }
+                    amounts.forEach(amount => totalSpent += amount.amount);
+                    if (budgetItm.budget - totalSpent <= tenPC) {
+                        criticalItms.push({[budgetItm.category] : (budgetItm.budget - totalSpent).toFixed(2)});
+                    }
+                    console.log("done query Call back");
+                })
+            });
+            //! Resolving before any database calls are made.
+            console.log("resolving criticalItms");
+            resolve(criticalItms);
+        });
+    });
+};
 
 module.exports = {
     addBudgetTotals: addBudgetTotals,
@@ -124,5 +167,6 @@ module.exports = {
     getMonthEnd: getMonthEnd,
     getMonthName: getMonthName,
     getStandardDateFormat: getStandardDateFormat,
-    getCategoryName: getCategoryName
+    getCategoryName: getCategoryName,
+    getCriticalBudgetItems: getCriticalBudgetItems
 }

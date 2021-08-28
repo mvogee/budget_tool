@@ -24,7 +24,36 @@ app.get("/", (req, res) => {
 //! Overview routes
 app.route("/overview")
 .get((req, res) => {
-    res.render("overview");
+    // get critical budget items here
+    let critItms = utils.getCriticalBudgetItems(mysql);
+    let ejsObj = {
+        critBudgetItems: critItms
+    }
+    critItms.then(values => {
+        console.log(critItms);
+        console.log("critItms: "+ values)
+    });
+
+    // // ! TEST DELETE
+    // let sql = "SELECT amount FROM monthSpending WHERE category=8 AND purchaseDate >= ? AND purchaseDate <= ?;";
+    // let myPromise = new Promise((resolve, reject) => {
+    //     mysql.query(sql, [utils.getMonthStart(dt), utils.getMonthEnd(dt)], (err, result) => {
+    //         if (err) {
+    //             console.log(err);
+    //         }
+    //         resolve(result);
+    //     });
+    // });
+    // myPromise.then(value => {
+    //     let total = 0;
+    //     value.forEach(value => total += value.amount)
+    //     return(total);
+    // }).then(value => {
+    //     console.log("MEEEEE!!! " + value)
+    //     return(100);
+    // }).then(value => {console.log("new value: " + value)});
+    // //! END TEST
+    res.render("overview", ejsObj);
 });
 
  //! Income routes
