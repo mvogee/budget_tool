@@ -19,7 +19,12 @@
 
 <div class="watch criticalBudgetItems">
     <h3>Critical budget items</h3>
-    
+    <ul>
+        <li>category : remaining</li>
+        <% critBudgetItems.forEach(element => { %>
+            <li><%= element.category %>: $<%= element.amountLeft %>  </li>
+        <%}); %>
+    </ul> 
     <!-- going to be a table?? or just a list?? -->
     <!-- how am i getting this data?? same way as in monthTotal? -->
 </div>

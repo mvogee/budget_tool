@@ -91,12 +91,12 @@ function getMonthEnd(date) {
     }
     let d = new Date(y,m, 0).getDate().toString();
     return (y+"-" + m + "-" +d);
-}
+};
 
 function getMonthName(date) {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     return months[date.getMonth()];
-}
+};
 
 
 function getCategoryName(categorys, id) {
@@ -109,66 +109,25 @@ function getCategoryName(categorys, id) {
         }
     }
     return ("uncategorized");
-}
- // !BUG--- FIX ME
- //? promise is being resolved before database queries are finished executing
-function getCriticalBudgetItems(mysql) {
-    let monthStart = getMonthStart(new Date());
-    let monthEnd = getMonthEnd(new Date());
-    let criticalItms = [];
-     return new Promise((resolve, reject) => {
-        let budgetsPromise = new Promise((res, rej) => {
-            mysql.query("SELECT * FROM budgets;", (err, budgets) => {
-                if (err) {
-                    console.log(err);
-                    rej(err);
-                }
-                else {
-                    res(budgets);
-                }
-            });
-        });
-        budgetsPromise.then(budgets => {
-            budgets.forEach(budgetItm => {
-                console.log("topForEach")
-                let tenPC = (budgetItm.budget / 10).toFixed(2);
-                let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
-                //! BUG IS THAT query is not blocking !!!!
-                //! data has to be returned from inside the sql qeury callback
-                mysql.query(sql, [budgetItm.id, monthStart, monthEnd], (error, amounts) => {
-                    let totalSpent = 0;
-                    if (error) {
-                        console.log(error);
-                        reject(error);
-                    }
-                    amounts.forEach(amount => totalSpent += amount.amount);
-                    if (budgetItm.budget - totalSpent <= tenPC) {
-                        criticalItms.push({[budgetItm.category] : (budgetItm.budget - totalSpent).toFixed(2)});
-                    }
-                    console.log("done query Call back");
-                })
-            });
-            //! Resolving before any database calls are made.
-            console.log("resolving criticalItms");
-            resolve(criticalItms);
-        });
-    });
 };
 
-
+//* CRITICAL BUDGET ITEMS
 async function getCritItms(mysql) {
     let monthStart = getMonthStart(new Date());
     let monthEnd = getMonthEnd(new Date());
     let critItms = [];
     
     let budgetItms = await getBudgetItms(mysql);
-    // loop through budget items
-    budgetItms.forEach(budgetItm => {
-        let itmTotal = getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd);
-        console.log(itmTotal);
-    });
-}
-//* THIS IS WORKING CORRECTLY
+    for (budgetItm of budgetItms) {
+        let tenPc = (budgetItm.budget / 10).toFixed(2);
+        let itmTotal = await getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd);
+        if (budgetItm.budget - itmTotal <= tenPc) {
+            critItms.push({"category": budgetItm.category, "amountLeft": (budgetItm.budget - itmTotal).toFixed(2)});
+        };
+    };
+    return (critItms);
+};
+
 async function getBudgetItms(mysql) {
     let sql = "SELECT * FROM BUDGETS;";
     let myPromise = new Promise((resolve, reject) => {
@@ -183,9 +142,7 @@ async function getBudgetItms(mysql) {
     return(await myPromise);
 };
 
-// * this will return the total spend of a category after
 async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd) {
-    
     let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
     let myPromise = new Promise((resolve, reject) => {
         let totalSpend = 0;
@@ -200,8 +157,8 @@ async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd)
     });
     return (await myPromise);
 };
+//* END CRITICAL BUDGET ITEMS
 
-//! END BUG SECTION
 module.exports = {
     addBudgetTotals: addBudgetTotals,
     getMonthlyGrossIncome: getMonthlyGrossIncome,
@@ -216,8 +173,5 @@ module.exports = {
     getMonthName: getMonthName,
     getStandardDateFormat: getStandardDateFormat,
     getCategoryName: getCategoryName,
-    getCriticalBudgetItems: getCriticalBudgetItems,
-
-    //!tests
     getCritItms: getCritItms
 }
