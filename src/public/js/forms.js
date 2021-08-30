@@ -10,6 +10,7 @@
 //     });
 // };
 
+// ! Make these use async/await instead of then to fix load time issue
 async function fetchCall(data, method, route) {
     return (new Promise(function (resolve, reject) {
         let myHeaders = new Headers();
@@ -29,6 +30,21 @@ async function fetchCall(data, method, route) {
         //! how to handle errors?
     })
     );
+};
+//*fetchCall wrewrite-------
+// ! CURRENTLY TESTING
+async function fetchCallTest(data, method, route) {
+    let myPromise = new Promise((resolve, reject) => {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        let servResponse = await fetch(route, {
+            headers: headers,
+            body: JSON.stringify(data),
+            method: method
+        });
+        resolve(servResponse);
+    });
+    return (await myPromise);
 };
 
 // * BUDGET FORMS

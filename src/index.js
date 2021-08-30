@@ -28,7 +28,6 @@ app.route("/overview")
     let ejsObj = {
         critBudgetItems: critItms
     }
-    console.log(critItms);
     res.render("overview", ejsObj);
 });
 
