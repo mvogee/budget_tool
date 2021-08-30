@@ -11,7 +11,7 @@
 // };
 
 // ! Make these use async/await instead of then to fix load time issue
-async function fetchCall(data, method, route) {
+async function fetchCallOLD(data, method, route) {
     return (new Promise(function (resolve, reject) {
         let myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
@@ -33,34 +33,35 @@ async function fetchCall(data, method, route) {
 };
 //*fetchCall wrewrite-------
 // ! CURRENTLY TESTING
-async function fetchCallTest(data, method, route) {
-    let myPromise = new Promise((resolve, reject) => {
+async function fetchCall(data, method, route) {
+    let myPromise = new Promise(async (resolve, reject) => {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        let servResponse = await fetch(route, {
+        let servResponse = fetch(route, {
             headers: headers,
             body: JSON.stringify(data),
             method: method
         });
-        resolve(servResponse);
+        console.log("servResponse" + servResponse);
+        resolve(await servResponse);
     });
     return (await myPromise);
 };
 
 // * BUDGET FORMS
+
 async function newBudgetItem(form) {
     let data = {
         category: form.category.value,
         budgeted: form.budgeted.value
     };
-    let fcPromise = fetchCall(data, "POST", "/budgets");
-    fcPromise.then(() => {
-        console.log("fcPromise resolved, page reloading");
+    await fetchCall(data, "POST", "/budgets")
+    .then((response) => {
+        console.log(response);
         location.reload();
-    })
-    fcPromise.catch(() => {
+    }).catch((err) => {
         location.reload();
-        console.log(fcPromise);
+        console.log(err);
     });
 };
 
@@ -68,14 +69,14 @@ async function deleteBudgetItem(form) {
     let data = {
         deleteCategory: form.deleteCategory.value,
     };
-    let fcPromise = fetchCall(data, "DELETE", "/budgets");
-    fcPromise.then(() => {
-        console.log("fcPromise resolved, page reloading");
+    await fetchCall(data, "DELETE", "/budgets")
+    .then((response) => {
+        console.log(response);
         location.reload();
-    });
-    fcPromise.catch(() => {
+    })
+    .catch(() => {
         location.reload();
-        console.log(fcPromise);
+        console.log("error occured");
     });
 };
 
@@ -85,14 +86,14 @@ async function updateBudgetItem(form) {
         budgeted: form.budgeted.value,
         itemId: form.id.value
     };
-    let fcPromise = fetchCall(data, "PATCH", "/budgets");
-    fcPromise.then(() => {
-        console.log("fcPromise resolved, page reloading");
+    await fetchCall(data, "PATCH", "/budgets")
+    .then((response) => {
+        console.log(response);
         location.reload();
-    });
-    fcPromise.catch(() => {
+    })
+    .catch((err) => {
         location.reload();
-        console.log(fcPromise);
+        console.log(err);
     });
 };
 
