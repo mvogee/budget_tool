@@ -30,7 +30,32 @@ app.route("/overview")
     }
     res.render("overview", ejsObj);
 });
-
+app.get("/getYearPurchases", (req, res) => {
+    const year = new Date().getFullYear();
+    const endYear = year + "-12-31";
+    const begYear = year + "-01-01";
+    let sql = "SELECT amount, purchaseDate FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?";
+    mysql.query(sql, [begYear, endYear], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        res.send(result);
+    });
+});
+app.get("/getYearIncomes", (req, res) => {
+    const year = new Date().getFullYear();
+    const endYear = year + "-12-31";
+    const begYear = year + "-01-01";
+    let sql = "SELECT amount, depositDate FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?";
+    mysql.query(sql, [begYear, endYear], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        res.send(result);
+    });
+});
 
  //! Income routes
 app.route("/income")
