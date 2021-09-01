@@ -56,13 +56,22 @@ async function mapIncomes(incomes) {
 };
 
 async function monthToMonthGraph(purchases, incomes) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let purchaseMap = await mapPurchases(purchases);
     let incomeMap = await mapIncomes(incomes);
-    let monthToMonth = new Map();
+    let monthToMonth = [];
 
     for (let i = 1; i <= new Date().getMonth() + 1; i++) {
-        monthToMonth.set(i, ((incomeMap.has(i) ? incomeMap.get(i) : 0) - (purchaseMap.has(i) ? purchaseMap.get(i) : 0)));
-    }
+        monthToMonth.push({x: monthNames[i - 1],
+            y : ((incomeMap.has(i) ? incomeMap.get(i) : 0) - (purchaseMap.has(i) ? purchaseMap.get(i) : 0))
+        });
+    };
+    JSC.chart("chartDiv", {
+        xAxis_label_text: "Month",
+        yAxis_label_text: "$",
+        zAxis_label_text: "Savings",
+        series: [{points: monthToMonth}, {type: ""}],
+    });
     console.log(monthToMonth);
 }
 
