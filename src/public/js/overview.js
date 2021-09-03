@@ -1,4 +1,4 @@
-//! route is not set up for this yet
+
 async function getData(route) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -66,7 +66,7 @@ async function monthToMonthGraph(purchases, incomes) {
             y : ((incomeMap.has(i) ? incomeMap.get(i) : 0) - (purchaseMap.has(i) ? purchaseMap.get(i) : 0))
         });
     };
-    JSC.chart("chartDiv", {
+    JSC.chart("graphChartDiv", {
         xAxis_label_text: "Month",
         yAxis_label_text: "$",
         zAxis_label_text: "Savings",
@@ -75,11 +75,39 @@ async function monthToMonthGraph(purchases, incomes) {
     console.log(monthToMonth);
 }
 
+
+async function monthPieChart() {
+    JSC.chart("pieChartDiv", {
+        debug: true,
+        legend_position: 'inside left bottom',
+        defaultSeries: { type: 'pie', pointSelection: true },
+        defaultPoint_label: {
+          text: '<b>%name</b>',
+          placement: 'auto',
+          autoHide: false,
+        },
+          title_label_text: 'Spending',
+          yAxis: { label_text: 'Spending', formatString: 'c' },
+          series: [
+            {
+              name: 'Categories',
+              points: [ // Get months data and replace these placeholders
+                { name: 'Spending', y: 500 },
+                { name: 'Rent', y: 2404 },
+                { name: 'subscriptions', y: 50 },
+                { name: 'Food out', y: 400 },
+              ],
+            },
+          ],
+    });
+}
+
 async function overView() {
     let purchases = await getData("/getYearPurchases");
     let incomes = await getData("/getYearIncomes");
     setYearTotal(purchases, incomes);
     monthToMonthGraph(purchases, incomes);
+    monthPieChart();
 }
 
 overView();

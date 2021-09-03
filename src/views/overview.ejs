@@ -38,16 +38,18 @@
 <!-- * each month so far savings and losses. (could be a good opportunity for a graph??) -->
 <div class="stats graph">
     <h3>Month to month graph</h3>
-    <div id="chartDiv" class="stats graph"></div>
+    <div id="graphChartDiv" class="stats graph"></div>
     
 </div>
 
 <!-- * pie chart of spending for chosen month -->
 <div class="stat pieChart">
     <h3>Pie chart of spending this month</h3>
-    <span class="pieChart">pie chart here</span>
+    <span class="pieChartDiv">pie chart here</span>
+    <div id="pieChartDiv" class="stats pieChart"></div>
 </div>
 
-<script src="https://code.jscharting.com/latest/jscharting.js"></script>
+<script type="text/javascript" src="https://code.jscharting.com/latest/jscharting.js"></script>
+<script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
 <script src="./js/overview.js"></script>
 <%- include("./partials/footer.ejs") %> 

@@ -307,20 +307,6 @@ app.route("/budgets")
     });
 });
 
-    // app.post("/updateBudgetItm", (req, res) => {
-    //     let sql = "UPDATE budgets SET category=?, budget=? WHERE id=?";
-    //     mysql.query(sql, [req.body.category, req.body.budgeted, req.body.id], (err, result) => {
-    //         if (err) {
-    //             console.log(err);
-    //             res.send(err);
-    //         }
-    //         else {
-    //             console.log(result);
-    //             res.send(result);
-    //         }
-    //     });
-    // });
-
 app.listen(port, () => {
     console.log("hello world");
 });
