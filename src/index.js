@@ -307,6 +307,17 @@ app.route("/budgets")
     });
 });
 
+app.get("/getBudgetItems", (req, res) => {
+    let sql = "SELECT id, category FROM budgets;";
+    mysql.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        res.send(result);
+    });
+});
+
 app.listen(port, () => {
     console.log("hello world");
 });

@@ -1,10 +1,11 @@
 
-async function getData(route) {
+async function getData(route, method, reqData) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let opts = {
         headers: headers,
-        method: "GET"
+        method: method,
+        body: method === "GET" ? null : JSON.stringify(reqData)
     };
     const res = await fetch(route, opts);
     console.log(res);
@@ -68,15 +69,26 @@ async function monthToMonthGraph(purchases, incomes) {
     };
     JSC.chart("graphChartDiv", {
         xAxis_label_text: "Month",
-        yAxis_label_text: "$",
-        zAxis_label_text: "Savings",
+        yAxis: {label_text: "Savings", formatString: 'c'},
         series: [{points: monthToMonth}, {type: ""}],
     });
     console.log(monthToMonth);
 }
 
 
+async function getCatSpendingDataPoints() {
+    let categorys = await getData("/getBudgetItems", "GET", null);
+    let allCatSpending = [];
+    for (const cat of categorys) {
+        let catSpending = await getData("/queryBudgetItem", "POST", {categoryId: cat.id});
+        allCatSpending.push({name: cat.category, y: catSpending.total});
+    };
+    return (allCatSpending);
+};
+
+
 async function monthPieChart() {
+    let dataPoints = await getCatSpendingDataPoints();
     JSC.chart("pieChartDiv", {
         debug: true,
         legend_position: 'inside left bottom',
@@ -91,20 +103,15 @@ async function monthPieChart() {
           series: [
             {
               name: 'Categories',
-              points: [ // Get months data and replace these placeholders
-                { name: 'Spending', y: 500 },
-                { name: 'Rent', y: 2404 },
-                { name: 'subscriptions', y: 50 },
-                { name: 'Food out', y: 400 },
-              ],
+              points: dataPoints,
             },
           ],
     });
 }
 
 async function overView() {
-    let purchases = await getData("/getYearPurchases");
-    let incomes = await getData("/getYearIncomes");
+    let purchases = await getData("/getYearPurchases", "GET", null);
+    let incomes = await getData("/getYearIncomes", "GET", null);
     setYearTotal(purchases, incomes);
     monthToMonthGraph(purchases, incomes);
     monthPieChart();
