@@ -84,7 +84,6 @@ app.route("/income")
                 res.send(err);
             }
             else {
-                console.log(result);
                 res.send(result);
             }
     });
@@ -98,7 +97,6 @@ app.route("/income")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -113,7 +111,6 @@ app.route("/income")
                 res.send(err);
             }
             else {
-                console.log(result);
                 res.send(result);
             }
         });
@@ -154,7 +151,6 @@ app.route("/spendingItem")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -181,15 +177,36 @@ app.route("/spendingItem")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
 });
-
-app.post("/queryBudgetItem", (req, res) => {
-    let monthStart = utils.getMonthStart(dt);
-    let monthEnd = utils.getMonthEnd(dt);
+// ! making sure I didn't use this anywhere else before I delete
+// app.post("/queryBudgetItem", (req, res) => {
+//     let monthStart = utils.getMonthStart(dt);
+//     let monthEnd = utils.getMonthEnd(dt);
+//     let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
+//     mysql.query(sql, [req.body.categoryId, monthStart, monthEnd], (err, result) => {
+//         let total = 0;
+//         result.forEach(element => {
+//             total += element.amount;
+//         });
+//         res.send({total: total});
+//     });
+// });
+app.post("/queryMonthSpendCategory", (req, res) => {
+    let monthStart = utils.getMonthStart(new Date());
+    let monthEnd = utils.getMonthEnd(new Date());
+    if (req.body.date) {
+        if (req.body.date === "selected") {
+            monthStart = utils.getMonthStart(dt);
+            monthEnd = utils.getMonthEnd(dt);
+        }
+        else {
+            monthStart = utils.getMonthStart(req.body.date);
+            monthEnd = utils.getMonthEnd(req.body.date);
+        }
+    };
     let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
     mysql.query(sql, [req.body.categoryId, monthStart, monthEnd], (err, result) => {
         let total = 0;
@@ -198,7 +215,7 @@ app.post("/queryBudgetItem", (req, res) => {
         });
         res.send({total: total});
     });
-});
+})
 
 app.route("/depositItem")
 .post((req, res) => {
@@ -209,7 +226,6 @@ app.route("/depositItem")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -222,7 +238,6 @@ app.route("/depositItem")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -235,9 +250,21 @@ app.route("/depositItem")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
+    });
+});
+
+app.get("/getMonthIncome", (req, res) => {
+    let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?";
+    let monthStart = utils.getMonthStart(new Date());
+    let monthEnd = utils.getMonthEnd(new Date());
+    mysql.query(sql, [monthStart, monthEnd], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        }
+        res.send(result);
     });
 });
 
@@ -274,7 +301,6 @@ app.route("/budgets")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -287,7 +313,6 @@ app.route("/budgets")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -301,7 +326,6 @@ app.route("/budgets")
             res.send(err);
         }
         else {
-            console.log(result);
             res.send(result);
         }
     });

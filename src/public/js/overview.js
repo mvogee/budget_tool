@@ -80,7 +80,7 @@ async function getCatSpendingDataPoints() {
     let categorys = await getData("/getBudgetItems", "GET", null);
     let allCatSpending = [];
     for (const cat of categorys) {
-        let catSpending = await getData("/queryBudgetItem", "POST", {categoryId: cat.id});
+        let catSpending = await getData("/queryMonthSpendCategory", "POST", {categoryId: cat.id});
         allCatSpending.push({name: cat.category, y: catSpending.total});
     };
     return (allCatSpending);
@@ -117,4 +117,38 @@ async function overView() {
     monthPieChart();
 }
 
+async function monthTotalSpend() {
+    let monthTotal = 0;
+    let monthData = await getCatSpendingDataPoints();
+    
+    monthData.forEach(element => {
+        monthTotal += element.y;
+    });
+    return (monthTotal);
+}
+
+async function monthTotalIncome() {
+    let monthIncome = await getData("/getMonthIncome", "GET", null);
+    let totalIncome = 0;
+    
+    monthIncome.forEach(element => {
+        totalIncome += element.amount;
+    });
+    return (totalIncome);
+}
+
+async function monthTotals() {
+    let spendSelector = document.querySelector(".monthTotals #totalSpending");
+    let savingsSelector = document.querySelector(".monthTotals #totalSavings");
+    let incomeSelector = document.querySelector(".monthTotals #totalIncome");
+    let totalSpending = await monthTotalSpend();
+    let totalIncome = await monthTotalIncome();
+    let totalSavings = totalIncome - totalSpending;
+
+    spendSelector.innerText = totalSpending;
+    incomeSelector.innerText = totalIncome;
+    savingsSelector.innerText = totalSavings;
+}
+
+monthTotals();
 overView();

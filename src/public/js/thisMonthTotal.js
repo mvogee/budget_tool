@@ -31,8 +31,9 @@ budgetrows.forEach(element => {
     // make request to server for all the spending items from monthSpending with the current dt purchaseDate and with ccategory = category
     let data = {
         categoryId: category,
+        date: "selected"
     }
-    fetch("/queryBudgetItem",
+    fetch("/queryMonthSpendCategory",
             {headers: myHeaders,
             body: JSON.stringify(data),
             method: "POST"})
