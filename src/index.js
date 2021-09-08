@@ -20,6 +20,21 @@ var dt = new Date(); // ~ dt is used to save state of chosen month view in thisM
 app.get("/", (req, res) => {
     res.render("home");
 });
+app.post("/login", (req, res) => {
+    const pw = req.body.password;
+    const email = req.body.userEmail;
+    console.log(pw);
+    console.log(email);
+
+    let sql = "SELECT * FROM users WHERE email=? AND password=?";
+    mysql.query(sql, [email, pw], (err, result) => {
+        if (err) {
+            res.send(err);
+            console.log(err);
+        }
+    });
+    res.redirect("/");
+});
 
 //! Overview routes
 app.route("/overview")

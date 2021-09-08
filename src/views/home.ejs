@@ -1,14 +1,15 @@
 <%- include("partials/header.ejs")  %>
 <%- include("partials/nav.ejs") %>
-
+<script src="./js/login.js"></script>
 <h1>Welcome to the budgeting tool</h1>
-
-<form name="login" action="/" method="post">
-    <input type="text" name="userName" id="userNameInput" autocomplete="off" placeholder="userName / email">
-    <input type="password" name="password" id="userPassInput" autocomplete="off" placeholder="password">
-    <button type="submit">Log in</button>
+<p class="infoText">Enter your login information</p>
+<form id="loginForm" name="login" action="/login" method="POST">
+    <input type="email" name="userEmail" id="loginEmailInput" autocomplete="off" placeholder="email">
+    <input type="password" name="password" id="loginPassInput" autocomplete="off" placeholder="password">
+    <button type="submit" onclick="validateLogin(event)">Log in</button>
 </form>
 <p>Don't have an account yet?</p>
 <a href="">create account</a>
 
+<script src="./js/login.js"></script>
 <%- include("partials/footer.ejs") %> 

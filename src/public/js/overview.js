@@ -8,7 +8,6 @@ async function getData(route, method, reqData) {
         body: method === "GET" ? null : JSON.stringify(reqData)
     };
     const res = await fetch(route, opts);
-    console.log(res);
     const data = await res.json();
     return (data);
 };
@@ -72,8 +71,7 @@ async function monthToMonthGraph(purchases, incomes) {
         yAxis: {label_text: "Savings", formatString: 'c'},
         series: [{points: monthToMonth}, {type: ""}],
     });
-    console.log(monthToMonth);
-}
+};
 
 
 async function getCatSpendingDataPoints() {
@@ -107,7 +105,7 @@ async function monthPieChart() {
             },
           ],
     });
-}
+};
 
 async function overView() {
     let purchases = await getData("/getYearPurchases", "GET", null);
@@ -115,7 +113,7 @@ async function overView() {
     setYearTotal(purchases, incomes);
     monthToMonthGraph(purchases, incomes);
     monthPieChart();
-}
+};
 
 async function monthTotalSpend() {
     let monthTotal = 0;
@@ -125,7 +123,7 @@ async function monthTotalSpend() {
         monthTotal += element.y;
     });
     return (monthTotal);
-}
+};
 
 async function monthTotalIncome() {
     let monthIncome = await getData("/getMonthIncome", "GET", null);
@@ -135,7 +133,7 @@ async function monthTotalIncome() {
         totalIncome += element.amount;
     });
     return (totalIncome);
-}
+};
 
 async function monthTotals() {
     let spendSelector = document.querySelector(".monthTotals #totalSpending");
@@ -148,7 +146,7 @@ async function monthTotals() {
     spendSelector.innerText = totalSpending;
     incomeSelector.innerText = totalIncome;
     savingsSelector.innerText = totalSavings;
-}
+};
 
 monthTotals();
 overView();
