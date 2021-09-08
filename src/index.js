@@ -1,10 +1,10 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
-
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
 const mysql = require("./js/db/mysql.js").pool;
 var utils = require("./js/utils.js");
-
 
 app = express();
 const port = 3000;
@@ -14,6 +14,24 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(new LocalStrategy(
+    function (username, password, done) {
+        let sql = "SELECT * FROM users WHERE email=?";
+        mysql.query(sql, [username], (err, user) => {
+            if (err) {
+                return done(err)
+            };
+            if (!user) {
+                return (done(null, false, {message: "Incorrect email."}));
+            }
+            if (user.password !== password) {
+                return (done(null, false, {message: "Incorrect password."}))
+            }
+            return (done, user);
+        });
+    }
+));
 
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
@@ -29,11 +47,39 @@ app.post("/login", (req, res) => {
     let sql = "SELECT * FROM users WHERE email=? AND password=?";
     mysql.query(sql, [email, pw], (err, result) => {
         if (err) {
-            res.send(err);
             console.log(err);
+            res.send(err);
         }
+        // ! here is where i need to figure out keeping this person logged in. how to handle this??
+        res.redirect()
     });
     res.redirect("/");
+});
+
+app.post("/newAcc", (req, res) => {
+    const pw = req.body.password;
+    const email = req.body.userEmail;
+    const userName = req.body.userName;
+    let sql = "SELECT email FROM users WHERE email=?";
+    mysql.query(sql, [email], (err, result) => {
+        if (err) {
+            console.log(err);
+            return (err);
+        }
+        if (result) {
+            res.redirect('/');
+        }
+        else {
+            let insertSql = "INSET INTO users(email, password, username) VALUES(?,?,?)";
+            mysql.query(sql, [email, pw, userName], (error, created) => {
+                if (error) {
+                    console.log(error);
+                    return (error);
+                }
+                
+            });
+        }
+    });
 });
 
 //! Overview routes

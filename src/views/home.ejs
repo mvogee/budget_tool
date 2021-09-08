@@ -1,6 +1,6 @@
 <%- include("partials/header.ejs")  %>
 <%- include("partials/nav.ejs") %>
-<script src="./js/login.js"></script>
+
 <h1>Welcome to the budgeting tool</h1>
 <p class="infoText">Enter your login information</p>
 <form id="loginForm" name="login" action="/login" method="POST">
@@ -9,7 +9,7 @@
     <button type="submit" onclick="validateLogin(event)">Log in</button>
 </form>
 <p>Don't have an account yet?</p>
-<a href="">create account</a>
+<a href="/createAcc">create account</a> <!-- this will be a button that shows the below form to creat an account-->
 
 <script src="./js/login.js"></script>
 <%- include("partials/footer.ejs") %> 

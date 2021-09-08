@@ -1,0 +1,14 @@
+<%- include("partials/header.ejs")  %>
+<%- include("partials/nav.ejs") %>
+<h1>Welcome to the budgeting tool</h1>
+<p class="infoText">Create your account</p>
+<form id="newAccountForm" name="newAcc" action="/newAcc" method="POST">
+    <input type="email" name="userEmail" id="createEmailInput" autocomplete="off" placeholder="Email">
+    <input type="text" name="userName" id="createUserNameInput" autocomplete="off" placeholder="User Name">
+    <input type="password" name="password" id="createPassInput" autocomplete="off" placeholder="Password">
+    <input type="password" name="confirmpassword" id="creatPassConf" autocomplete="off" placeholder="Confirm password">
+    <button type="submit" onclick="validateNewAcc(event)">Create Account</button>
+</form>
+
+<script src="./js/login.js"></script>
+<%- include("partials/footer.ejs") %> 

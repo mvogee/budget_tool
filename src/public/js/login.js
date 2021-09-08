@@ -23,3 +23,21 @@ function validateLogin(event) {
         event.preventDefault();
     }
 };
+
+
+function validateNewAcc(event) {
+    let form = document.querySelector("#newAccForm");
+    let email = document.querySelector("#createEmailInput").value;
+    let pw = document.querySelector("#createPassInput").value;
+    let conf = document.querySelector("#createPassConf").value;
+    if (pw != conf) {
+        form.reset();
+        document.querySelector(".infoText").innerHTML = "Your passwords didn't match.";
+        event.preventDefault();
+    }
+    else if (!validateEmail()) {
+        form.reset();
+        document.querySelector(".infoText").innerHTML = "Please enter a valid email address.";
+        event.preventDefault();
+    }
+}
