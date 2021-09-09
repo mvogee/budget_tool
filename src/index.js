@@ -1,10 +1,11 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 const mysql = require("./js/db/mysql.js").pool;
 var utils = require("./js/utils.js");
+const session = require("express-session");
 
 app = express();
 const port = 3000;
@@ -12,26 +13,54 @@ const port = 3000;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
 app.use(express.static(__dirname + '/public'));
+app.set("trust proxy", 1);
+app.use(session({
+    secret: process.env.SESSIONSECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: false}
+    })
+    );
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use(new LocalStrategy(
-    function (username, password, done) {
-        let sql = "SELECT * FROM users WHERE email=?";
-        mysql.query(sql, [username], (err, user) => {
+passport.serializeUser(function(user, done) {
+    console.log("serializing user");
+    done(null, user.id);
+  });
+  
+passport.deserializeUser(function(id, done) {
+    console.log("deserial user");
+    mysql.query("SELECT * FROM users WHERE id=?;",[id], (err, user) => {
+        done(err, user[0]);
+    });
+});
+
+passport.use('local-strat', new LocalStrategy(
+    {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback : true
+  },
+    function (req, email, password, done) {
+        console.log("hello");
+        let sql = "SELECT * FROM users WHERE email=?;";
+        mysql.query(sql, [email], (err, user) => {
             if (err) {
                 return done(err)
             };
-            if (!user) {
-                return (done(null, false, {message: "Incorrect email."}));
+            if (!user.length) {
+                return (done(null, false, req.flash("Incorrect Email.")));
             }
-            if (user.password !== password) {
-                return (done(null, false, {message: "Incorrect password."}))
+            if (user[0].password !== password) {
+                return (done(null, false, req.flash("Incorrect Password.")))
             }
-            return (done, user);
+            return (done, user[0]);
         });
     }
 ));
+// * --- END BOILERPLATE ----- *
 
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
@@ -39,48 +68,63 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 app.post("/login", (req, res) => {
-    const pw = req.body.password;
-    const email = req.body.userEmail;
-    console.log(pw);
-    console.log(email);
+    console.log(req.body);
+    passport.authenticate('local-strat', { successRedirect: "/overview",
+                                    failureRedirect: "/",
+                                    failureFlash: true }, () => {console.log("here")});
+    // const pw = req.body.password;
+    // const email = req.body.email;
+    // console.log(pw);
+    // console.log(email);
 
-    let sql = "SELECT * FROM users WHERE email=? AND password=?";
-    mysql.query(sql, [email, pw], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        // ! here is where i need to figure out keeping this person logged in. how to handle this??
-        res.redirect()
-    });
-    res.redirect("/");
+    // let sql = "SELECT * FROM users WHERE email=? AND password=?";
+    // mysql.query(sql, [email, pw], (err, result) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.send(err);
+    //     }
+    //     // ! here is where i need to figure out keeping this person logged in. how to handle this??
+    //     res.redirect()
+    // });
+    // res.redirect("/");
 });
-
-app.post("/newAcc", (req, res) => {
+app.get("/createAcc", (req, res) => {
+    res.render("createAcc");
+});
+app.post("/createAcc", (req, res) => {
     const pw = req.body.password;
     const email = req.body.userEmail;
     const userName = req.body.userName;
     let sql = "SELECT email FROM users WHERE email=?";
     mysql.query(sql, [email], (err, result) => {
+        console.log(result);
         if (err) {
             console.log(err);
             return (err);
         }
-        if (result) {
+        if (result[0]) {
+            console.log("email already used for another account");
             res.redirect('/');
         }
         else {
-            let insertSql = "INSET INTO users(email, password, username) VALUES(?,?,?)";
-            mysql.query(sql, [email, pw, userName], (error, created) => {
+            let insertSql = "INSERT INTO users(email, password, username) VALUES(?,?,?)";
+            mysql.query(insertSql, [email, pw, userName], (error, created) => {
+                console.log("acount created");
                 if (error) {
                     console.log(error);
                     return (error);
                 }
-                
+                console.log(created);
+                res.redirect("/");
             });
         }
     });
 });
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+}); 
 
 //! Overview routes
 app.route("/overview")
