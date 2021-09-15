@@ -112,15 +112,15 @@ function getCategoryName(categorys, id) {
 };
 
 //* CRITICAL BUDGET ITEMS
-async function getCritItms(mysql) {
+async function getCritItms(mysql, userId) {
     let monthStart = getMonthStart(new Date());
     let monthEnd = getMonthEnd(new Date());
     let critItms = [];
     
-    let budgetItms = await getBudgetItms(mysql);
+    let budgetItms = await getBudgetItms(mysql, userId);
     for (budgetItm of budgetItms) {
         let tenPc = (budgetItm.budget / 10).toFixed(2);
-        let itmTotal = await getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd);
+        let itmTotal = await getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd, userId);
         if (budgetItm.budget - itmTotal <= tenPc) {
             critItms.push({"category": budgetItm.category, "amountLeft": (budgetItm.budget - itmTotal).toFixed(2)});
         };
@@ -128,10 +128,10 @@ async function getCritItms(mysql) {
     return (critItms);
 };
 
-async function getBudgetItms(mysql) {
-    let sql = "SELECT * FROM BUDGETS;";
+async function getBudgetItms(mysql, userId) {
+    let sql = "SELECT * FROM BUDGETS WHERE userId=?;";
     let myPromise = new Promise((resolve, reject) => {
-        mysql.query(sql, (err, budgets) => {
+        mysql.query(sql,[userId], (err, budgets) => {
             if (err) {
                 console.log(err);
                 reject(err);
@@ -142,11 +142,11 @@ async function getBudgetItms(mysql) {
     return(await myPromise);
 };
 
-async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd) {
-    let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
+async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd, userId) {
+    let sql = "SELECT amount FROM monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
     let myPromise = new Promise((resolve, reject) => {
         let totalSpend = 0;
-        mysql.query(sql, [categoryItmId, monthStart, monthEnd], (err, amounts) => {
+        mysql.query(sql, [categoryItmId, monthStart, monthEnd, userId], (err, amounts) => {
             if (err) {
                 console.log(err);
                 reject(err);

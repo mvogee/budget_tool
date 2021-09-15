@@ -35,16 +35,18 @@ app.use(flash());
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
 app.get("/", (req, res) => {
+    res.redirect("/login");
+});
+app.get("/login", (req, res) => {
     res.render("login");
 });
 app.post("/login",
         passport.authenticate('local', {
             successRedirect: '/overview',
-            failureRedirect: '/',
+            failureRedirect: '/login',
             failurFlash: true
              }),
         (req, res) => {
-            console.log("Hello I am alive");
             res.redirect("/overview");
         });
 app.get("/createAcc", (req, res) => {
@@ -52,7 +54,7 @@ app.get("/createAcc", (req, res) => {
 });
 app.post("/createAcc", (req, res) => {
     const pw = req.body.password;
-    const email = req.body.userEmail;
+    const email = req.body.email;
     const userName = req.body.userName;
     let sql = "SELECT email FROM users WHERE email=?";
     mysql.query(sql, [email], (err, result) => {
@@ -74,7 +76,7 @@ app.post("/createAcc", (req, res) => {
                     return (error);
                 }
                 console.log(created);
-                res.redirect("/");
+                res.redirect("/login");
             });
         }
     });
@@ -82,43 +84,59 @@ app.post("/createAcc", (req, res) => {
 
 app.get("/logout", (req, res) => {
     req.logout();
-    res.redirect("/");
+    res.redirect("/login");
 });
 
+//* EVERYTHING BELOW HERE SHOULD REQUIRE AUTH
 //! Overview routes
 app.route("/overview")
 .get(async (req, res) => {
-    let critItms = await utils.getCritItms(mysql);
-    let ejsObj = {
-        critBudgetItems: critItms
+    if (req.isAuthenticated) {
+        let critItms = await utils.getCritItms(mysql, req.user.id);
+        let ejsObj = {
+            critBudgetItems: critItms
+        }
+        res.render("overview", ejsObj);
     }
-    res.render("overview", ejsObj);
+    else {
+        res.redirect("/login");
+    }
 });
 app.get("/getYearPurchases", (req, res) => {
-    const year = new Date().getFullYear();
-    const endYear = year + "-12-31";
-    const begYear = year + "-01-01";
-    let sql = "SELECT amount, purchaseDate FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?";
-    mysql.query(sql, [begYear, endYear], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        res.send(result);
-    });
+    if (req.isAuthenticated) {
+        const year = new Date().getFullYear();
+        const endYear = year + "-12-31";
+        const begYear = year + "-01-01";
+        let sql = "SELECT amount, purchaseDate FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
+        mysql.query(sql, [begYear, endYear, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            res.send(result);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 app.get("/getYearIncomes", (req, res) => {
-    const year = new Date().getFullYear();
-    const endYear = year + "-12-31";
-    const begYear = year + "-01-01";
-    let sql = "SELECT amount, depositDate FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?";
-    mysql.query(sql, [begYear, endYear], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        res.send(result);
-    });
+    if (req.isAuthenticated) {
+        const year = new Date().getFullYear();
+        const endYear = year + "-12-31";
+        const begYear = year + "-01-01";
+        let sql = "SELECT amount, depositDate FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
+        mysql.query(sql, [begYear, endYear, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            res.send(result);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
  //! Income routes
