@@ -414,68 +414,93 @@ app.post("/changeMonth", (req, res) => {
 
 app.route("/budgets")
 .get((req, res) => {
-    let sql = "SELECT * FROM budgets;";
-    sql += "SELECT * FROM projectedIncome;";
-    mysql.query(sql, (err, result) => {
-        if (err) {
-        return (console.log(err));
-        }
-        let ejsObj = {
-            budgets: result[0],
-            budgetTotal: utils.addBudgetTotals(result[0]),
-            projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
-        }
-        res.render("budgets", ejsObj);
-    });
+    if (req.isAuthenticated) {
+        let sql = "SELECT * FROM budgets WHERE userId=?;";
+        sql += "SELECT * FROM projectedIncome WHERE userId=?;";
+        mysql.query(sql,[req.user.id, req.user.id], (err, result) => {
+            if (err) {
+            return (console.log(err));
+            }
+            let ejsObj = {
+                budgets: result[0],
+                budgetTotal: utils.addBudgetTotals(result[0]),
+                projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
+            }
+            res.render("budgets", ejsObj);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .post((req, res) => {
-    console.log(req.body.category + " " + req.body.budgeted);
-    let sql = "INSERT INTO budgets(category, budget) VALUES (?, ?)";
-    mysql.query(sql,[req.body.category, req.body.budgeted] , (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        console.log(req.body.category + " " + req.body.budgeted);
+        let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?)";
+        mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .patch((req, res) => {
-    let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ?";
-    mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ? AND userId=?;";
+        mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .delete((req, res) => {
-    console.log(req.body.categoryId);
-    let sql = "DELETE FROM budgets WHERE id=?";
-    mysql.query(sql, req.body.deleteCategory, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        console.log(req.body.categoryId);
+        let sql = "DELETE FROM budgets WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/getBudgetItems", (req, res) => {
-    let sql = "SELECT id, category FROM budgets;";
-    mysql.query(sql, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        res.send(result);
-    });
+    if (req.isAuthenticated) {
+        let sql = "SELECT id, category FROM budgets WHERE userId=?;";
+        mysql.query(sql, req.user.id , (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            res.send(result);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
 app.listen(port, () => {
