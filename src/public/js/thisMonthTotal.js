@@ -42,7 +42,6 @@ budgetrows.forEach(element => {
                     let totalSpent = data.total.toFixed(2);
                     let budgeted = element.querySelector(".budgeted").innerText.substring(1);
                     element.querySelector(".spent").innerHTML = "$"+ totalSpent;
-                    console.log(budgeted - totalSpent);
                     element.querySelector(".leftInBudget").innerHTML = "$"+(budgeted - totalSpent).toFixed(2);
 
                 })

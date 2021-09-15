@@ -91,8 +91,12 @@ app.get("/logout", (req, res) => {
 //! Overview routes
 app.route("/overview")
 .get(async (req, res) => {
-    if (req.isAuthenticated) {
-        let critItms = await utils.getCritItms(mysql, req.user.id);
+    if (req.isAuthenticated()) {
+        let critItms = await utils.getCritItms(mysql, req.user.id)
+        .catch(reason => {
+            console.log("reject: " + reason);
+            res.redirect("/login");
+        });
         let ejsObj = {
             critBudgetItems: critItms
         }
@@ -103,7 +107,7 @@ app.route("/overview")
     }
 });
 app.get("/getYearPurchases", (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         const year = new Date().getFullYear();
         const endYear = year + "-12-31";
         const begYear = year + "-01-01";
@@ -121,7 +125,7 @@ app.get("/getYearPurchases", (req, res) => {
     }
 });
 app.get("/getYearIncomes", (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         const year = new Date().getFullYear();
         const endYear = year + "-12-31";
         const begYear = year + "-01-01";
@@ -142,7 +146,7 @@ app.get("/getYearIncomes", (req, res) => {
  //! Income routes
 app.route("/income")
 .get((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "SELECT * FROM projectedIncome WHERE userId=?;";
         mysql.query(sql, req.user.id, (err, result) => {
             if (err) {
@@ -162,7 +166,7 @@ app.route("/income")
     }
 })
 .post((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log("adding item to projectedIncome");
         let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement, hoursPerWeek, userId) VALUES(?,?,?,?,?,?,?);";
         mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.user.id],
@@ -181,7 +185,7 @@ app.route("/income")
     }
 })
 .delete((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log("deleting income item");
         let sql = "DELETE FROM projectedIncome WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.deleteIncome, req.user.id], (err, result) => {
@@ -199,7 +203,7 @@ app.route("/income")
     }
 })
 .patch((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log("updating income item");
         let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, tithe=?, retirement=?, hoursPerWeek=? WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId, req.user.id],
@@ -251,7 +255,7 @@ app.route("/thisMonth")
 });
 app.route("/spendingItem")
 .post((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate, userId) VALUES(?, ?, ?, ?, ?);";
         mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date, req.user.id], (err, result) => {
             if (err) {
@@ -268,7 +272,7 @@ app.route("/spendingItem")
     }
 })
 .delete((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log("deleting income item");
         let sql = "DELETE FROM monthSpending WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.deleteSpendingItm, req.user.id] ,(err, result) => {
@@ -287,7 +291,7 @@ app.route("/spendingItem")
     }
 })
 .patch((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
             if (err) {
@@ -305,7 +309,7 @@ app.route("/spendingItem")
 });
 
 app.post("/queryMonthSpendCategory", (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let monthStart = utils.getMonthStart(new Date());
         let monthEnd = utils.getMonthEnd(new Date());
         if (req.body.date) {
@@ -334,7 +338,7 @@ app.post("/queryMonthSpendCategory", (req, res) => {
 
 app.route("/depositItem")
 .post((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate, userId) VALUES(?, ?, ?, ?);";
         mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.user.id], (err, result) => {
             if (err) {
@@ -351,7 +355,7 @@ app.route("/depositItem")
     }
 })
 .patch((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
             if (err) {
@@ -368,7 +372,7 @@ app.route("/depositItem")
     }
 })
 .delete((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "DELETE FROM monthIncome WHERE id=? AND userId=?";
         mysql.query(sql, [req.body.deleteIncomeItm, req.user.id], (err, result) => {
             if (err) {
@@ -386,7 +390,7 @@ app.route("/depositItem")
 });
 
 app.get("/getMonthIncome", (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
         let monthStart = utils.getMonthStart(new Date());
         let monthEnd = utils.getMonthEnd(new Date());
@@ -414,7 +418,7 @@ app.post("/changeMonth", (req, res) => {
 
 app.route("/budgets")
 .get((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "SELECT * FROM budgets WHERE userId=?;";
         sql += "SELECT * FROM projectedIncome WHERE userId=?;";
         mysql.query(sql,[req.user.id, req.user.id], (err, result) => {
@@ -434,7 +438,7 @@ app.route("/budgets")
     }
 })
 .post((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log(req.body.category + " " + req.body.budgeted);
         let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?)";
         mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
@@ -452,7 +456,7 @@ app.route("/budgets")
     }
 })
 .patch((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "UPDATE budgets SET category = ?, budget = ? WHERE id= ? AND userId=?;";
         mysql.query(sql, [req.body.category, req.body.budgeted, req.body.itemId, req.user.id], (err, result) => {
             if (err) {
@@ -469,7 +473,7 @@ app.route("/budgets")
     }
 })
 .delete((req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         console.log(req.body.categoryId);
         let sql = "DELETE FROM budgets WHERE id=? AND userId=?;";
         mysql.query(sql, [req.body.deleteCategory, req.user.id], (err, result) => {
@@ -488,7 +492,7 @@ app.route("/budgets")
 });
 
 app.get("/getBudgetItems", (req, res) => {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         let sql = "SELECT id, category FROM budgets WHERE userId=?;";
         mysql.query(sql, req.user.id , (err, result) => {
             if (err) {
