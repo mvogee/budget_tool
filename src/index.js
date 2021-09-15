@@ -223,146 +223,187 @@ app.route("/income")
 app.route("/thisMonth")
 .get((req, res) => {
     if (req.isAuthenticated()) {
-        console.log(req.user);
-        // only load pave for authenticated users
-        // otherwise direct back to login page
+        let monthStart = utils.getMonthStart(dt);
+        let monthEnd = utils.getMonthEnd(dt);
+        let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
+        sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
+        sql += "SELECT * FROM budgets WHERE userId=?;";
+        mysql.query(sql,[monthStart, monthEnd, req.user.id, monthStart, monthEnd, req.user.id, req.user.id], (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            let ejsObj = {
+                today: new Date(),
+                deposits: result[0],
+                purchases: result[1],
+                budgets: result[2],
+                month: utils.getMonthName(dt),
+                date: utils.getStandardDateFormat(dt),
+                getCategoryName: utils.getCategoryName,
+                formatDate: utils.getStandardDateFormat
+            }
+            res.render("thisMonth", ejsObj);
+        });
     }
-    let monthStart = utils.getMonthStart(dt);
-    let monthEnd = utils.getMonthEnd(dt);
-    let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?;";
-    sql += "SELECT * FROM monthSpending WHERE purchaseDate >= ? AND purchaseDate <= ?;";
-    sql += "SELECT * FROM budgets;";
-    mysql.query(sql,[monthStart, monthEnd, monthStart, monthEnd], (err, result) => {
-        if (err) {
-            return (console.log(err));
-        }
-        let ejsObj = {
-            today: new Date(),
-            deposits: result[0],
-            purchases: result[1],
-            budgets: result[2],
-            month: utils.getMonthName(dt),
-            date: utils.getStandardDateFormat(dt),
-            getCategoryName: utils.getCategoryName,
-            formatDate: utils.getStandardDateFormat
-        }
-        res.render("thisMonth", ejsObj);
-    });
+    else {
+        res.redirect("/login");
+    }
 });
 app.route("/spendingItem")
 .post((req, res) => {
-    let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate) VALUES(?, ?, ?, ?)";
-    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate, userId) VALUES(?, ?, ?, ?, ?);";
+        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .delete((req, res) => {
-    console.log("deleting income item");
-    let sql = "DELETE FROM monthSpending WHERE id=?";
-    mysql.query(sql, req.body.deleteSpendingItm ,(err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            console.log(result);
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        console.log("deleting income item");
+        let sql = "DELETE FROM monthSpending WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteSpendingItm, req.user.id] ,(err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                console.log(result);
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .patch((req, res) => {
-    let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=?";
-    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
 app.post("/queryMonthSpendCategory", (req, res) => {
-    let monthStart = utils.getMonthStart(new Date());
-    let monthEnd = utils.getMonthEnd(new Date());
-    if (req.body.date) {
-        if (req.body.date === "selected") {
-            monthStart = utils.getMonthStart(dt);
-            monthEnd = utils.getMonthEnd(dt);
-        }
-        else {
-            monthStart = utils.getMonthStart(req.body.date);
-            monthEnd = utils.getMonthEnd(req.body.date);
-        }
-    };
-    let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ?;";
-    mysql.query(sql, [req.body.categoryId, monthStart, monthEnd], (err, result) => {
-        let total = 0;
-        result.forEach(element => {
-            total += element.amount;
+    if (req.isAuthenticated) {
+        let monthStart = utils.getMonthStart(new Date());
+        let monthEnd = utils.getMonthEnd(new Date());
+        if (req.body.date) {
+            if (req.body.date === "selected") {
+                monthStart = utils.getMonthStart(dt); // ! dt will not work when we have concurrent users
+                monthEnd = utils.getMonthEnd(dt);   // ! will need to be changed to a local variable in future
+            }
+            else {
+                monthStart = utils.getMonthStart(req.body.date);
+                monthEnd = utils.getMonthEnd(req.body.date);
+            }
+        };
+        let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
+        mysql.query(sql, [req.body.categoryId, monthStart, monthEnd, req.user.id], (err, result) => {
+            let total = 0;
+            result.forEach(element => {
+                total += element.amount;
+            });
+            res.send({total: total});
         });
-        res.send({total: total});
-    });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 
 app.route("/depositItem")
 .post((req, res) => {
-    let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate) VALUES(?, ?, ?)";
-    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate, userId) VALUES(?, ?, ?, ?);";
+        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .patch((req, res) => {
-    let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=?";
-    mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .delete((req, res) => {
-    let sql = "DELETE FROM monthIncome WHERE id=?";
-    mysql.query(sql, req.body.deleteIncomeItm, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
+    if (req.isAuthenticated) {
+        let sql = "DELETE FROM monthIncome WHERE id=? AND userId=?";
+        mysql.query(sql, [req.body.deleteIncomeItm, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            else {
+                res.send(result);
+            }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
 app.get("/getMonthIncome", (req, res) => {
-    let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ?";
-    let monthStart = utils.getMonthStart(new Date());
-    let monthEnd = utils.getMonthEnd(new Date());
-    mysql.query(sql, [monthStart, monthEnd], (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        res.send(result);
-    });
+    if (req.isAuthenticated) {
+        let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
+        let monthStart = utils.getMonthStart(new Date());
+        let monthEnd = utils.getMonthEnd(new Date());
+        mysql.query(sql, [monthStart, monthEnd, req.user.id], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            }
+            res.send(result);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
+// ! this is going to need to be changed
 app.post("/changeMonth", (req, res) => {
     dt = new Date(req.body.month + "-02");
     res.redirect("/thisMonth");
