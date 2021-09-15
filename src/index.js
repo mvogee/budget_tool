@@ -142,52 +142,49 @@ app.get("/getYearIncomes", (req, res) => {
  //! Income routes
 app.route("/income")
 .get((req, res) => {
-    let sql = "SELECT * FROM projectedIncome";
-    mysql.query(sql, (err, result) => {
-        if (err) {
-            return (console.log(err));
-        }
-        ejsObj = {
-            incomes: result,
-            grossIncomeAll: utils.getMonthlyGrossIncomeAll(result),
-            netIncomeAll: utils.getMonthlyNetIncomeAll(result),
-            utils: utils
-        };
-        res.render("income", ejsObj);
-    });
+    if (req.isAuthenticated) {
+        let sql = "SELECT * FROM projectedIncome WHERE userId=?;";
+        mysql.query(sql, req.user.id, (err, result) => {
+            if (err) {
+                return (console.log(err));
+            }
+            ejsObj = {
+                incomes: result,
+                grossIncomeAll: utils.getMonthlyGrossIncomeAll(result),
+                netIncomeAll: utils.getMonthlyNetIncomeAll(result),
+                utils: utils
+            };
+            res.render("income", ejsObj);
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .post((req, res) => {
-    console.log("adding item to projectedIncome");
-    let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement, hoursPerWeek) VALUES(?,?,?,?,?,?)";
-    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.send(err);
-            }
-            else {
-                res.send(result);
-            }
-    });
+    if (req.isAuthenticated) {
+        console.log("adding item to projectedIncome");
+        let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, tithe, retirement, hoursPerWeek, userId) VALUES(?,?,?,?,?,?,?);";
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.user.id],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                }
+                else {
+                    res.send(result);
+                }
+        });
+    }
+    else {
+        res.redirect("/login");
+    }
 })
 .delete((req, res) => {
-    console.log("deleting income item");
-    let sql = "DELETE FROM projectedIncome WHERE id=?";
-    mysql.query(sql, req.body.deleteIncome, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        }
-        else {
-            res.send(result);
-        }
-    });
-})
-.patch((req, res) => {
-    console.log("updating income item");
-    let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, tithe=?, retirement=?, hoursPerWeek=? WHERE id=?";
-    mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId],
-        (err, result) => {
+    if (req.isAuthenticated) {
+        console.log("deleting income item");
+        let sql = "DELETE FROM projectedIncome WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.deleteIncome, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err);
@@ -196,6 +193,29 @@ app.route("/income")
                 res.send(result);
             }
         });
+    }
+    else {
+        res.redirect("/login");
+    }
+})
+.patch((req, res) => {
+    if (req.isAuthenticated) {
+        console.log("updating income item");
+        let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, tithe=?, retirement=?, hoursPerWeek=? WHERE id=? AND userId=?;";
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.tithe, req.body.retirement, req.body.hoursPerWeek, req.body.itmId, req.user.id],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                }
+                else {
+                    res.send(result);
+                }
+            });
+    }
+    else {
+        res.redirect("/login");
+    }
 });
 
 
