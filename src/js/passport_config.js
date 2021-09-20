@@ -1,6 +1,7 @@
 require('dotenv').config();
 var LocalStrategy = require('passport-local').Strategy;
 const mysql = require("./db/mysql.js").pool;
+const bcrypt = require("bcryptjs");
 
 module.exports = function(passport) {
     
@@ -30,11 +31,18 @@ passport.use(new LocalStrategy(
             if (!user.length) {
                 return (done(null, false, req.flash("Incorrect Email.")));
             }
-            if (user[0].password !== password) {
-                return (done(null, false, req.flash("Incorrect Password.")));
-            }
-            console.log("returning " + user[0]);
-            return (done(null, user[0]));
+            bcrypt.compare(password, user[0].password, (err, correctPw) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (!correctPw) {
+                    return (done(null, false, req.flash("Incorrect Password.")));
+                }
+                else {
+                    console.log("returning " + user[0]);
+                    return (done(null, user[0]));
+                }
+            });
         });
     }
 ));

@@ -7,6 +7,7 @@ var passport = require('passport');
 var mysql = require("./js/db/mysql.js").pool;
 var session = require("express-session");
 var flash = require("connect-flash");
+var bcrypt = require("bcryptjs");
 
 app = express();
 const port = 3000;
@@ -23,7 +24,9 @@ app.use(session({
     secret: process.env.SESSIONSECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {secure: false}
+    cookie: {
+        secure: false,
+        sameSite: 'strict'}
     })
     );
 app.use(passport.initialize());
@@ -69,14 +72,24 @@ app.post("/createAcc", (req, res) => {
         }
         else {
             let insertSql = "INSERT INTO users(email, password, username) VALUES(?,?,?)";
-            mysql.query(insertSql, [email, pw, userName], (error, created) => {
-                console.log("acount created");
-                if (error) {
-                    console.log(error);
-                    return (error);
+            bcrypt.genSalt(10, (err, salt) => {
+                if (err) {
+                    return (err);
                 }
-                console.log(created);
-                res.redirect("/login");
+                bcrypt.hash(pw, salt, (err, hash) => {
+                    if (err) {
+                        return (err);
+                    }
+                    mysql.query(insertSql, [email, hash, userName], (error, created) => {
+                        console.log("acount created");
+                        if (error) {
+                            console.log(error);
+                            return (error);
+                        }
+                        console.log(created);
+                        res.redirect("/login");
+                    });
+                });
             });
         }
     });
