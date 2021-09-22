@@ -1,13 +1,14 @@
 require('dotenv').config();
-var express = require("express");
-var bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
-var utils = require("./js/utils.js");
-var passport = require('passport');
-var mysql = require("./js/db/mysql.js").pool;
-var session = require("express-session");
-var flash = require("connect-flash");
-var bcrypt = require("bcryptjs");
+const express = require("express");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const utils = require("./js/utils.js");
+const passport = require('passport');
+const mysql = require("./js/db/mysql.js").pool;
+const session = require("express-session");
+const flash = require("connect-flash");
+const bcrypt = require("bcryptjs");
+const cipher = require("./js/cipher.js");
 
 app = express();
 const port = 3000;
@@ -34,6 +35,13 @@ app.use(passport.session());
 app.use(flash());
 
 // * --- END BOILERPLATE ----- *
+
+//! TESTING
+//let ciphertext = cipher.encrypt("Make me secret!");
+//console.log(ciphertext);
+//let deciphered = cipher.decrypt(ciphertext);
+//console.log(deciphered);
+//! END TESTING
 
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
