@@ -37,10 +37,19 @@ app.use(flash());
 // * --- END BOILERPLATE ----- *
 
 //! TESTING
-//let ciphertext = cipher.encrypt("Make me secret!");
-//console.log(ciphertext);
-//let deciphered = cipher.decrypt(ciphertext);
-//console.log(deciphered);
+let password = process.env.KEY;
+//let byteLen = Buffer.byteLength(key, 'utf8');
+let key = cipher.getKeyFromPassword(Buffer.from(password, 'utf-8'), cipher.getSalt());
+let cipherText = cipher.encrypt("Make me a secret!", key);
+console.log(cipherText);
+let cipherString = cipherText.toString('hex');
+console.log(cipherString);
+// * convert back to plaintext from cipherString;
+let bufString =  Buffer.from(cipherString, 'hex');
+console.log(bufString);
+let plainText = cipher.decrypt(bufString, key);
+console.log(plainText.toString());
+
 //! END TESTING
 
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route

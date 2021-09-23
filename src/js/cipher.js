@@ -49,10 +49,21 @@ module.exports = {
       return (Buffer.concat([iv, encryptedMessage, cipher.getAuthTag()]));
   },
 
-  // decrypt(key, ciphertext) {
-  //   const cryptKey = crypto.scryptSync(key, 'salt', 24);
-  //   const iv = ciphertext.slice(0, -15);
-  //   const text = ciphertext.slice(16);
-
-  // }
+  /**
+   * 
+   * @param {Buffer} ciphertext - Cipher text
+   * @param {Buffer} key - The key to be used for decryption
+   * clear the buffer after use.
+   */
+  decrypt(ciphertext, key) {
+    const authTag = ciphertext.slice(-16);
+    const iv = ciphertext.slice(0, 12);
+    const encryptedMessage = ciphertext.slice(12, -16);
+    const decipher = crypto.createDecipheriv(ALGORITHM.BLOCK_CIPHER, key, iv, {
+       authTagLength: ALGORITHM.AUTH_TAG_BYTE_LEN 
+      });
+      decipher.setAuthTag(authTag);
+      const messageText = decipher.update(encryptedMessage);
+      return (Buffer.concat([messageText, decipher.final()]));
+  }
 };
