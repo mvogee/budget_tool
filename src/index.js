@@ -38,17 +38,11 @@ app.use(flash());
 
 //! TESTING
 let password = process.env.KEY;
-//let byteLen = Buffer.byteLength(key, 'utf8');
-let key = cipher.getKeyFromPassword(Buffer.from(password, 'utf-8'), cipher.getSalt());
-let cipherText = cipher.encrypt("Make me a secret!", key);
-console.log(cipherText);
-let cipherString = cipherText.toString('hex');
-console.log(cipherString);
-// * convert back to plaintext from cipherString;
-let bufString =  Buffer.from(cipherString, 'hex');
-console.log(bufString);
-let plainText = cipher.decrypt(bufString, key);
-console.log(plainText.toString());
+
+let ciphertext = cipher.encryptString("hello World!", password);
+console.log(ciphertext);
+let decrypted = cipher.decryptString(ciphertext, password);
+console.log(decrypted);
 
 //! END TESTING
 

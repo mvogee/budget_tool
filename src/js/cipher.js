@@ -6,11 +6,11 @@ const ALGORITHM = {
   IV_BYTE_LEN: 12,
   KEY_BYTE_LEN: 32,
   SALT_BYTE_LEN: 16
-}
+};
 
 function getIV() {
   return (crypto.randomBytes(ALGORITHM.IV_BYTE_LEN));
-}
+};
 
 module.exports = {
 
@@ -65,5 +65,19 @@ module.exports = {
       decipher.setAuthTag(authTag);
       const messageText = decipher.update(encryptedMessage);
       return (Buffer.concat([messageText, decipher.final()]));
+  },
+
+  encryptString(text, key) {
+    bufkey = this.getKeyFromPassword(Buffer.from(key), 'utf-8');
+    let encryptedBuff = this.encrypt(text, bufkey);
+    return encryptedBuff.toString('hex');
+  },
+
+  decryptString(ciphertext, key) {
+    bufkey = this.getKeyFromPassword(Buffer.from(key), 'utf-8');
+    buffText = Buffer.from(ciphertext, 'hex');
+    let decrypted = this.decrypt(buffText, bufkey);
+    return(decrypted.toString());
   }
+
 };
