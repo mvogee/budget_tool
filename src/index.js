@@ -260,6 +260,14 @@ app.route("/thisMonth")
             if (err) {
                 return (console.log(err));
             }
+            result[0].forEach(item => {
+                item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
+                item.amount = cipher.decryptString(item.amount, process.env.KEY);
+            });
+            result[1].forEach(item => {
+                item.itmDescription = cipher.decryptString(item.itmDescription, process.env.KEY);
+                item.amount = cipher.decryptString(item.amount, process.env.KEY);
+            });
             let ejsObj = {
                 today: new Date(),
                 deposits: result[0],
@@ -281,7 +289,9 @@ app.route("/spendingItem")
 .post((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "INSERT INTO monthSpending(itmDescription, amount, category, purchaseDate, userId) VALUES(?, ?, ?, ?, ?);";
-        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category, req.body.date, req.user.id], (err, result) => {
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.category, req.body.date, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err);
@@ -317,7 +327,9 @@ app.route("/spendingItem")
 .patch((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "UPDATE monthSpending SET itmDescription=?, amount=?, category=?, purchaseDate=?  WHERE id=? AND userId=?;";
-        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.category ,req.body.date , req.body.itmId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err);
@@ -350,8 +362,11 @@ app.post("/queryMonthSpendCategory", (req, res) => {
         mysql.query(sql, [req.body.categoryId, monthStart, monthEnd, req.user.id], (err, result) => {
             let total = 0;
             result.forEach(element => {
-                total += element.amount;
+                element.amount = cipher.decryptString(element.amount, process.env.KEY);
+                console.log(element.amount);
+                total += parseFloat(element.amount);
             });
+            console.log(total);
             res.send({total: total});
         });
     }
@@ -364,7 +379,9 @@ app.route("/depositItem")
 .post((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "INSERT INTO monthIncome(inDescription, amount, depositDate, userId) VALUES(?, ?, ?, ?);";
-        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.user.id], (err, result) => {
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err);
@@ -381,7 +398,9 @@ app.route("/depositItem")
 .patch((req, res) => {
     if (req.isAuthenticated()) {
         let sql = "UPDATE monthIncome SET inDescription=?, amount=?, depositDate=? WHERE id=? AND userId=?;";
-        mysql.query(sql, [req.body.itemName, req.body.amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
+        let itemName = cipher.encryptString(req.body.itemName, process.env.KEY);
+        let amount = cipher.encryptString(req.body.amount, process.env.KEY);
+        mysql.query(sql, [itemName, amount, req.body.date, req.body.itmId, req.user.id], (err, result) => {
             if (err) {
                 console.log(err);
                 res.send(err);
@@ -423,6 +442,10 @@ app.get("/getMonthIncome", (req, res) => {
                 console.log(err);
                 res.send(err);
             }
+            result.forEach(item => {
+                item.itemName = cipher.decryptString(item.itemName, process.env.KEY);
+                item.amount = cipher.decryptString(item.amount, process.env.KEY);
+            });
             res.send(result);
         });
     }
