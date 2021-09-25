@@ -36,16 +36,6 @@ app.use(flash());
 
 // * --- END BOILERPLATE ----- *
 
-//! TESTING
-let password = process.env.KEY;
-
-let ciphertext = cipher.encryptString("hello World!", password);
-console.log(ciphertext);
-let decrypted = cipher.decryptString(ciphertext, password);
-console.log(decrypted);
-
-//! END TESTING
-
 var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
 app.get("/", (req, res) => {
@@ -141,6 +131,9 @@ app.get("/getYearPurchases", (req, res) => {
                 console.log(err);
                 res.send(err);
             }
+            result.forEach(amount => {
+                amount.amount = parseFloat(cipher.decryptString(amount.amount, process.env.KEY));
+            });
             res.send(result);
         });
     }
@@ -159,6 +152,9 @@ app.get("/getYearIncomes", (req, res) => {
                 console.log(err);
                 res.send(err);
             }
+            result.forEach(amount => {
+                amount.amount = parseFloat(cipher.decryptString(amount.amount, process.env.KEY));
+            });
             res.send(result);
         });
     }
@@ -363,10 +359,8 @@ app.post("/queryMonthSpendCategory", (req, res) => {
             let total = 0;
             result.forEach(element => {
                 element.amount = cipher.decryptString(element.amount, process.env.KEY);
-                console.log(element.amount);
                 total += parseFloat(element.amount);
             });
-            console.log(total);
             res.send({total: total});
         });
     }
@@ -443,7 +437,7 @@ app.get("/getMonthIncome", (req, res) => {
                 res.send(err);
             }
             result.forEach(item => {
-                item.itemName = cipher.decryptString(item.itemName, process.env.KEY);
+                item.inDescription = cipher.decryptString(item.inDescription, process.env.KEY);
                 item.amount = cipher.decryptString(item.amount, process.env.KEY);
             });
             res.send(result);

@@ -79,7 +79,7 @@ async function getCatSpendingDataPoints() {
     let allCatSpending = [];
     for (const cat of categorys) {
         let catSpending = await getData("/queryMonthSpendCategory", "POST", {categoryId: cat.id});
-        allCatSpending.push({name: cat.category, y: catSpending.total});
+        allCatSpending.push({name: cat.category, y: parseFloat(catSpending.total)});
     };
     return (allCatSpending);
 };

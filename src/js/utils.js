@@ -1,4 +1,4 @@
-
+const cipher = require("../js/cipher.js");
 function addBudgetTotals(budgets) {
     //budgets is a [{id, category, budget:}]
     let total = 0;
@@ -151,7 +151,9 @@ async function getTotalCategorySpend(mysql, categoryItmId, monthStart, monthEnd,
                 console.log(err);
                 reject(err);
             }
-            amounts.forEach(amount => totalSpend += amount.amount);
+            amounts.forEach(amount => {
+                totalSpend += parseFloat(cipher.decryptString(amount.amount, process.env.KEY));
+            });
             resolve(totalSpend);
         });
     });
