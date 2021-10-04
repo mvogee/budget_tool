@@ -130,7 +130,7 @@ async function monthTotalIncome() {
     let totalIncome = 0;
     
     monthIncome.forEach(element => {
-        totalIncome += element.amount;
+        totalIncome += parseFloat(element.amount);
     });
     return (totalIncome);
 };
@@ -140,8 +140,11 @@ async function monthTotals() {
     let savingsSelector = document.querySelector(".monthTotals #totalSavings");
     let incomeSelector = document.querySelector(".monthTotals #totalIncome");
     let totalSpending = await monthTotalSpend();
+    totalSpending = totalSpending.toFixed(2);
     let totalIncome = await monthTotalIncome();
+    totalIncome = totalIncome.toFixed(2);
     let totalSavings = totalIncome - totalSpending;
+    totalSavings = totalSavings.toFixed(2);
 
     spendSelector.innerText = totalSpending;
     incomeSelector.innerText = totalIncome;
