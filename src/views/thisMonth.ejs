@@ -5,7 +5,7 @@
 <!-- expenses/incomes can be pulled from database based on the month they are for -->
 <h1><%= month %> </h1>
 <form action="/changeMonth" method="POST">
-  <input type="month" name="month" value="<%= date.slice(0,7) %>" onChange="this.form.submit()">
+  <input id="changeMonthInput" type="month" name="month" value="<%= date.slice(0,7) %>" onChange="changeMonth()">
 </form>
 <p>Total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
 <p>Total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
@@ -141,6 +141,6 @@
 </table>
 </div>
 <%- include("./partials/footer.ejs"); %>
-<script src="./js/forms.js"></script>
-<script src="./js/thisMonthBtns.js"></script>
-<script src="./js/thisMonthTotal.js" ></script>
+<script src="/js/forms.js"></script>
+<script src="/js/thisMonthBtns.js"></script>
+<script src="/js/thisMonthTotal.js" ></script>

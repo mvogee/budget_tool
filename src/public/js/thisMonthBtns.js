@@ -73,3 +73,8 @@ cancelEditBtnDeposit.addEventListener("click", (type) => {
     document.querySelector("#popupEditDeposit").classList.toggle("hidePopupEdit");
     document.querySelector("#updateDepositItem").reset();
 });
+
+function changeMonth() {
+    let date = document.querySelector("#changeMonthInput").value;
+    window.location.href = "/thisMonth/" + date;
+}

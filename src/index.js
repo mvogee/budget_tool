@@ -36,7 +36,6 @@ app.use(flash());
 
 // * --- END BOILERPLATE ----- *
 
-var dt = new Date(); // ~ dt is used to save state of chosen month view in thisMonth route
 //! home page routes
 app.get("/", (req, res) => {
     res.redirect("/login");
@@ -244,9 +243,15 @@ app.route("/income")
 
 
 // ! thisMonth routes
-app.route("/thisMonth")
+
+app.route("/thisMonth/:month?")
 .get((req, res) => {
     if (req.isAuthenticated()) {
+        let dt = new Date();
+        if (req.params.month) {
+            dt = new Date(req.params.month + "-02");
+        }
+
         let monthStart = utils.getMonthStart(dt);
         let monthEnd = utils.getMonthEnd(dt);
         let sql = "SELECT * FROM monthIncome WHERE depositDate >= ? AND depositDate <= ? AND userId=?;";
@@ -342,18 +347,16 @@ app.route("/spendingItem")
 
 app.post("/queryMonthSpendCategory", (req, res) => {
     if (req.isAuthenticated()) {
-        let monthStart = utils.getMonthStart(new Date());
-        let monthEnd = utils.getMonthEnd(new Date());
+        let monthStart;
+        let monthEnd;
         if (req.body.date) {
-            if (req.body.date === "selected") {
-                monthStart = utils.getMonthStart(dt); // ! dt will not work when we have concurrent users
-                monthEnd = utils.getMonthEnd(dt);   // ! will need to be changed to a local variable in future
-            }
-            else {
-                monthStart = utils.getMonthStart(req.body.date);
-                monthEnd = utils.getMonthEnd(req.body.date);
-            }
-        };
+            monthStart = utils.getMonthStart(new Date(req.body.date + "-02"));
+            monthEnd = utils.getMonthEnd(new Date(req.body.date + "-02"));
+        }
+        else {
+            monthStart = utils.getMonthStart(new Date());
+            monthEnd = utils.getMonthEnd(new Date());
+        }
         let sql = "SELECT amount from monthSpending WHERE category=? AND purchaseDate >= ? AND purchaseDate <= ? AND userId=?;";
         mysql.query(sql, [req.body.categoryId, monthStart, monthEnd, req.user.id], (err, result) => {
             let total = 0;
@@ -447,13 +450,6 @@ app.get("/getMonthIncome", (req, res) => {
         res.redirect("/login");
     }
 });
-
-// ! this is going to need to be changed
-app.post("/changeMonth", (req, res) => {
-    dt = new Date(req.body.month + "-02");
-    res.redirect("/thisMonth");
-});
-
 
 //! routes for budgets
 
