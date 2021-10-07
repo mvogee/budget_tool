@@ -477,7 +477,7 @@ app.route("/budgets")
 .post((req, res) => {
     if (req.isAuthenticated()) {
         console.log(req.body.category + " " + req.body.budgeted);
-        let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?)";
+        let sql = "INSERT INTO budgets(category, budget, userId) VALUES (?, ?, ?);";
         mysql.query(sql,[req.body.category, req.body.budgeted, req.user.id] , (err, result) => {
             if (err) {
                 console.log(err);

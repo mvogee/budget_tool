@@ -1,7 +1,64 @@
+:root {
+  --main-color: #242540;
+  --main-blue: #4907D9;
+  --main-text-white: #E5E5E5;
+  --secondary-text: #8B8CAC;
+  --second-blue: #03A7DB;
+  --main-green: #0B8C68;
+  --second-green: #0B8C68;
+  --black: #000;
+  --white: #fff;
+}
+
 * {
   text-align: center;
   margin: auto auto;
 }
+
+body {
+  background-color: var(--main-color);
+  color: var(--main-text-white);
+  font-family: Roboto, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, -apple-system;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+p {
+  font-size: 1rem;
+}
+
+a:link, a:visited a:hover, a:active {
+  text-decoration: none;
+}
+
+input, select, textarea, textarea:focus, input:focus {
+  color:var(--main-text-white);
+}
+
+/* * NAV STYLE */
+nav {
+  margin-bottom: 2rem;
+  background-color: var(--main-text-white);
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav ul li, nav ul li a, nav ul li a:visited {
+  color: var(--main-color);
+  margin: 0 12px;
+}
+
+/* * TABLE STYLES */
 
 table {
     margin: 0 auto;
@@ -29,10 +86,90 @@ table {
     border: 1px solid lightgrey;
   }
 
+/* *POPUP STYLES */
+
   .popupEdit {
     display: block;
   }
 
   .hidePopupEdit {
     display: none;
+  }
+
+  /* *Login page styles */
+
+  .login {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .secondary-text{
+    color: var(--secondary-text);
+  }
+
+  .login-form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-form input{
+    text-align: left;
+    height: 2rem;
+    color: var(--main-text-white);
+    background-color: var(--main-color);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--main-text-white);
+    margin: 1rem 0;
+  }
+  
+  .login-form ::placeholder {
+    color: var(--main-text-white);
+    opacity: .8;
+  }
+
+  .login button {
+    background-color: var(--main-blue);
+    color: var(--main-text-white);
+    width: 15rem;
+    height: 2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 2rem 0;
+  }
+  
+  .create-acc {
+    margin-bottom: 2rem;
+  }
+
+  a.creat-acc-link {
+    color: var(--second-blue);
+    text-decoration: none;
+  }
+
+
+  /* *FOOTER STYLES */
+
+  footer {
+    border-top: 1px solid var(--main-text-white);
+    display: flex;
+    flex-direction: column;
+    color: var(--secondary-text);
+    font-size: .8rem;
+    padding: 1rem;
+  }
+
+  footer p {
+    margin: .5rem;
+    font-size: .8rem;
+  }
+
+  footer a:link, footer a:visited{
+    color:var(--second-blue);
+    margin: .1rem;
   }
