@@ -49,13 +49,28 @@ nav {
 }
 
 nav ul {
+  width: 75%;
   display: flex;
   list-style: none;
+  align-items: flex-start;
 }
 
 nav ul li, nav ul li a, nav ul li a:visited {
   color: var(--main-color);
   margin: 0 12px;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+nav ul li:hover {
+  opacity: 1;
+}
+
+#logout-button {
+  width: 15%;
+}
+#logout-button, #logout-button a:visited {
+  color: var(--main-color);
 }
 
 /* * TABLE STYLES */
@@ -101,6 +116,7 @@ table {
   .login {
     display: flex;
     flex-direction: column;
+    row-gap: 1rem;
   }
 
   .secondary-text{
@@ -111,6 +127,8 @@ table {
     text-align: left;
     display: flex;
     flex-direction: column;
+    row-gap: 2rem;
+    margin-top: 2rem;
   }
 
   .login-form input{
@@ -135,12 +153,17 @@ table {
     background-color: var(--main-blue);
     color: var(--main-text-white);
     width: 15rem;
-    height: 2rem;
+    height: 3rem;
     border: none;
     border-radius: 6px;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
+    transition: 0.4s;
+  }
+
+  .login button:hover {
+    background-color: var(--second-blue);
   }
   
   .create-acc {
