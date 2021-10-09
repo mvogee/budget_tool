@@ -7,20 +7,33 @@
 
 <h1>Overview</h1>
 
-<!-- ! need javascript to fill in stats -->
 <div class="stat monthTotals">
-    <h3>This month overview</h3>
-    <p>Total spending: $<span class="monthTotal" id="totalSpending">00.00</span></p>
-    <p>Total income: $<span class="monthTotal" id="totalIncome">00.00</span></p>
-    <p>Savings: $<span class="monthTotal" id="totalSavings">00.00</span></p>
+    <h2>This Month</h2>
+    <table>
+        <tr>
+            <td>Spending</td>
+            <td>$<span class="monthTotal" id="totalSpending">00.00</span></td>
+        </tr>
+        <tr>
+            <td>Income</td>
+            <td>$<span class="monthTotal" id="totalIncome">00.00</span></td>
+        </tr>
+        <tr>
+            <td>Savings</td>
+            <td>$<span class="monthTotal" id="totalSavings">00.00</span></td>
+        </tr>
+    </table>
 </div>
 
-<!-- * this months any budget items this month that are %10 or less until out or over budget-->
-
+<hr>
+<!-- * any budget items this month that are %10 or less until out or over budget-->
 <div class="watch criticalBudgetItems">
     <h3>Critical budget items</h3>
     <ul>
         <li>category : remaining</li>
+        <% if (!critBudgetItems) {%>
+            <p>No Critical Budget Items. Good Job!</p>
+        <% } %> 
         <% critBudgetItems.forEach(element => { %>
             <li><%= element.category %>: $<%= element.amountLeft %>  </li>
         <%}); %>
@@ -28,6 +41,7 @@
     <!-- going to be a table?? or just a list?? -->
 </div>
 
+<hr>
 <!-- * stats: years total +- -->
 <div class="stat yearSavings">
     <h3>Savings for the whole year</h3>
@@ -35,12 +49,16 @@
     <!-- get all the spending and all the income from Date year, add up both and subtract -->
 </div>
 
+<hr>
+
 <!-- * each month so far savings and losses. (could be a good opportunity for a graph??) -->
 <div class="stats graph">
     <h3>Month to month graph</h3>
     <div id="graphChartDiv" class="stats graph"></div>
     
 </div>
+
+<hr>
 
 <!-- * pie chart of spending for chosen month -->
 <div class="stat pieChart">
