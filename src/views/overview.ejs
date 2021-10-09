@@ -6,8 +6,9 @@
 
 
 <h1>Overview</h1>
-
+<div class="overview-page">
 <div class="stat monthTotals">
+    <hr>
     <h2>This Month</h2>
     <table>
         <tr>
@@ -28,24 +29,37 @@
 <hr>
 <!-- * any budget items this month that are %10 or less until out or over budget-->
 <div class="watch criticalBudgetItems">
-    <h3>Critical budget items</h3>
-    <ul>
-        <li>category : remaining</li>
-        <% if (!critBudgetItems) {%>
-            <p>No Critical Budget Items. Good Job!</p>
+    <h2>Critical budget items</h2>
+        <% if (!critBudgetItems[0]) {%>
+            <p>No critical budget items. Good job!</p>
+        <% } else { %>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Amount left</th>
+            </tr>
+            <% critBudgetItems.forEach(element => { %>
+                <tr>
+                    <td><%= element.category %></td>
+                    <td>$<%= element.amountLeft %></td>
+                </tr>
+            <%}); %>
+        </table>    
         <% } %> 
-        <% critBudgetItems.forEach(element => { %>
-            <li><%= element.category %>: $<%= element.amountLeft %>  </li>
-        <%}); %>
-    </ul> 
+    
     <!-- going to be a table?? or just a list?? -->
 </div>
 
 <hr>
 <!-- * stats: years total +- -->
 <div class="stat yearSavings">
-    <h3>Savings for the whole year</h3>
-    <p>This years savings: $<span class="stat yearSavings data">00.00</span></p>
+    <h2>This years savings</h2>
+    <table>
+        <tr>
+            <td>Savings -</td>
+            <td>$<span class="stat yearSavings data">00.00</span></td>
+        </tr>
+    </table>
     <!-- get all the spending and all the income from Date year, add up both and subtract -->
 </div>
 
@@ -53,7 +67,7 @@
 
 <!-- * each month so far savings and losses. (could be a good opportunity for a graph??) -->
 <div class="stats graph">
-    <h3>Month to month graph</h3>
+    <h2>Month to month graph</h2>
     <div id="graphChartDiv" class="stats graph"></div>
     
 </div>
@@ -62,10 +76,11 @@
 
 <!-- * pie chart of spending for chosen month -->
 <div class="stat pieChart">
-    <h3>Spending this month</h3>
+    <h2>Spending this month</h2>
     <div id="pieChartDiv" class="stats pieChart" style="height: 500px;"></div>
 </div>
 
+</div>
 <script type="text/javascript" src="https://code.jscharting.com/latest/jscharting.js"></script>
 <script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
 <script src="./js/overview.js"></script>

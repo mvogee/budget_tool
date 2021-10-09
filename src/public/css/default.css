@@ -23,12 +23,20 @@ body {
 
 h1 {
   font-size: 2.5rem;
+  margin: 1rem 0;
 }
 h2 {
   font-size: 1.6rem;
+   margin: 1rem 0;
 }
 p {
   font-size: 1rem;
+}
+
+hr {
+  border-color: var(--main-green);
+  border-bottom-width: 2px;
+  max-width: 13rem;
 }
 
 a:link, a:visited a:hover, a:active {
@@ -65,6 +73,10 @@ nav ul li, nav ul li a, nav ul li a:visited {
 
 nav ul li:hover {
   opacity: 1;
+}
+
+.login h1 {
+  margin-bottom: 0;
 }
 
 #logout-button {
@@ -178,18 +190,28 @@ table {
 
   /* *Overview Styles */
 
-  .monthTotals table{
+  .overview-page table {
     background: var(--main-color);
     color:var(--main-text-white);
     border: none;
+    margin-bottom: 1rem;
   }
 
-  .monthTotals td {
+  .overview-page td {
     text-align: left;
     border: none;
   }
 
+  .overview-page th {
+    border: none;
+    color: var(--secondary-text);
+    font-size: 0.8rem;
+  }
 
+  .overview-page p {
+    color: var(--secondary-text);
+    margin-bottom: 1rem;
+  }
   /* *FOOTER STYLES */
 
   footer {
