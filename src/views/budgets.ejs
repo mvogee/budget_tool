@@ -3,17 +3,24 @@
 <!-- requires a budget: [{category, budgeted}] -->
 <!-- requires a budgetTotal -->
 <h1>Budgets</h1>
-        <div>
+<hr>
+        <div class="top-stats">
         <p>Total budgeted: $<%= budgetTotal %> </p>
         <p>Projected Income: $<%= projectedIncome %> </p>
         <p>left to alocate:$ <%= projectedIncome - budgetTotal %>  </p>
         </div>
+        <hr>
         <%- include("./partials/budgetPopEdit.ejs") %> 
-        <table>
+        <form class="budget-item-form" name="newBudgetItm" onsubmit="newBudgetItem(this)">
+                <input type="text" autocomplete="off" name="category" placeholder="category" autofocus required>
+                <input type="number" step=".01" name="budgeted" placeholder="100" required>
+                <button type="submit">Save</button>
+        </form>
+        <table class="budgets-table">
                 <thead>
                         <tr>
-                                <th>category</th>
-                                <th>budgeted</th>
+                                <th>Category</th>
+                                <th>Budget</th>
                         </tr>
                 </thead>
                 <tbody>
@@ -36,12 +43,7 @@
                         <% } %>
                 </tbody>
         </table>
-        <form name="newBudgetItm" onsubmit="newBudgetItem(this)">
-                <input type="text" autocomplete="off" name="category" placeholder="category" autofocus required>
-                <input type="number" step=".01" name="budgeted" placeholder="100" required>
-                <button type="submit">Add</button>
-        </form>
         <script src="./js/forms.js"></script>
         <script src="./js/budgetBtns.js"></script>
-        
+
 <%- include("partials/footer.ejs") %>

@@ -8,6 +8,7 @@
   --second-green: #0B8C68;
   --black: #000;
   --white: #fff;
+  --off-main: #2a2b4e;
 }
 
 * {
@@ -45,6 +46,12 @@ a:link, a:visited a:hover, a:active {
 
 input, select, textarea, textarea:focus, input:focus {
   color:var(--main-text-white);
+}
+
+button {
+  background-color: var(--main-text-white);
+  color: var(--main-color);
+  border: none;
 }
 
 /* * NAV STYLE */
@@ -89,29 +96,38 @@ nav ul li:hover {
 /* * TABLE STYLES */
 
 table {
-    margin: 0 auto;
+    margin: 1.5rem auto;
   }
   
   /* Default Table Style */
   table {
-    color: #333;
-    background: white;
-    border: 1px solid grey;
-    font-size: 12pt;
+    color: var(--main-text-white);
+    background: var(--main-color);
+    border: none;
+    font-size: 1rem;
     border-collapse: collapse;
+    
   }
+
+  table tr:nth-child(even)  {
+    background-color: var(--off-main);
+  }
+
   table thead th,
   table tfoot th {
-    color: #777;
-    background: rgba(0,0,0,.1);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--secondary-text);
+    background: var(--main-color);
   }
   table caption {
-    padding:.5em;
+    padding:.5rem;
   }
   table th,
   table td {
-    padding: .5em;
-    border: 1px solid lightgrey;
+    padding: .5rem;
+    border: none;
+    text-align: left;
   }
 
 /* *POPUP STYLES */
@@ -212,6 +228,48 @@ table {
     color: var(--secondary-text);
     margin-bottom: 1rem;
   }
+
+  .pieChart, .graph {
+    margin-bottom: 1rem;
+  }
+
+  /* *Budget Styles */
+
+  .top-stats p {
+    margin: 1rem 0;
+  }
+
+  .budget-item-form {
+    margin-top: 1.5rem;
+  }
+  .budget-item-form input {
+    width: 10rem;
+    height: 20px;
+    border-radius: 2px;
+    margin: 0 .2rem;
+    border-color: var(--main-text-white);
+    color: var(--main-color);
+  }
+
+  .budget-item-form input:focus {
+    outline: none !important;
+    border: 1px solid var(--second-blue);
+  }
+
+  .budget-item-form button {
+    height: 20px;
+  }
+
+  .budgets-table tr td button {
+    background-color: var(--main-color);
+    font-size: .8rem;
+    padding: 5px 10px;
+    color: var(--main-text-white);
+  }
+  .budgets-table tr:nth-child(even) td button {
+    background-color: var(--off-main);
+  }
+
   /* *FOOTER STYLES */
 
   footer {

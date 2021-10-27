@@ -151,5 +151,7 @@ async function monthTotals() {
     savingsSelector.innerText = totalSavings;
 };
 
+
+
 monthTotals();
 overView();
