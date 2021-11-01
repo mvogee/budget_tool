@@ -10,12 +10,20 @@
         <p>left to alocate:$ <%= projectedIncome - budgetTotal %>  </p>
         </div>
         <hr>
-        <%- include("./partials/budgetPopEdit.ejs") %> 
-        <form class="budget-item-form" name="newBudgetItm" onsubmit="newBudgetItem(this)">
-                <input type="text" autocomplete="off" name="category" placeholder="category" autofocus required>
-                <input type="number" step=".01" name="budgeted" placeholder="100" required>
-                <button type="submit">Save</button>
-        </form>
+        <%- include("./partials/budgetPopEdit.ejs") %>
+        <div class="form_div">
+                <form class="budget-item-form" name="newBudgetItm" onsubmit="newBudgetItem(this)">
+                        <div class="input_div">
+                                <label for="category">Category</label>
+                                <input type="text" autocomplete="off" name="category" placeholder="Category Name" autofocus required>
+                        </div>
+                        <div class="input_div">
+                                <label for="budgeted">Budget</label>
+                                <input type="number" step=".01" name="budgeted" placeholder="100.00" required>
+                        </div>
+                        <button type="submit">Save</button>
+                </form>
+        </div>
         <table class="budgets-table">
                 <thead>
                         <tr>

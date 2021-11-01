@@ -54,6 +54,47 @@ button {
   border: none;
 }
 
+.form_div {
+  margin-top: 1.5rem;
+}
+
+.form_div form input {
+  width: 10rem;
+  height: 20px;
+  border-radius: 2px;
+  margin: 0 .2rem;
+  border-color: var(--main-text-white);
+  color: var(--main-color);
+}
+
+.form_div form input:focus {
+  outline: none !important;
+  border: 1px solid var(--second-blue);
+}
+
+.form_div button {
+  height: 24px;
+  width: 60px;
+  background-color: var(--main-text-white);
+}
+
+.top-stats p {
+  margin: 1rem 0;
+}
+
+.input_div {
+  display: inline-block;
+  text-align: left;
+}
+.input_div label{
+  margin-bottom: 5px;
+  display: inline-block;
+}
+.input_div input {
+  display: block;
+  width: 100%;
+}
+
 /* * NAV STYLE */
 nav {
   margin-bottom: 2rem;
@@ -235,31 +276,6 @@ table {
 
   /* *Budget Styles */
 
-  .top-stats p {
-    margin: 1rem 0;
-  }
-
-  .budget-item-form {
-    margin-top: 1.5rem;
-  }
-  .budget-item-form input {
-    width: 10rem;
-    height: 20px;
-    border-radius: 2px;
-    margin: 0 .2rem;
-    border-color: var(--main-text-white);
-    color: var(--main-color);
-  }
-
-  .budget-item-form input:focus {
-    outline: none !important;
-    border: 1px solid var(--second-blue);
-  }
-
-  .budget-item-form button {
-    height: 20px;
-  }
-
   .budgets-table tr td button {
     background-color: var(--main-color);
     font-size: .8rem;
@@ -269,6 +285,9 @@ table {
   .budgets-table tr:nth-child(even) td button {
     background-color: var(--off-main);
   }
+
+/* * Income Styles */
+
 
   /* *FOOTER STYLES */
 

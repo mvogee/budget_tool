@@ -14,7 +14,6 @@ function edtiIncomeBtnClick(event) {
     let hourlyRate = event.target.getAttribute("hourlyRate");
     let hoursPerWeek = event.target.getAttribute("hoursPerWeek");
     let taxRate = event.target.getAttribute("taxRate");
-    let tithe = event.target.getAttribute("tithe");
     let retirement = event.target.getAttribute("retirement");
 
     let idField = document.querySelector(".incomeItemUpdate .idInput");
@@ -22,7 +21,6 @@ function edtiIncomeBtnClick(event) {
     let hourlyRateField = document.querySelector(".incomeItemUpdate .hourlyRateInput");
     let hoursPerWeekField = document.querySelector(".incomeItemUpdate .hoursPerWeek");
     let taxRateField = document.querySelector(".incomeItemUpdate .taxRateInput");
-    let titheFeild = document.querySelector(".incomeItemUpdate .titheInput");
     let retirementField = document.querySelector(".incomeItemUpdate .retirementInput");
 
     idField.setAttribute("value", itmId);
@@ -30,7 +28,6 @@ function edtiIncomeBtnClick(event) {
     hourlyRateField.setAttribute("value", hourlyRate);
     hoursPerWeekField.setAttribute("value", hoursPerWeek);
     taxRateField.setAttribute("value", taxRate);
-    titheFeild.setAttribute("value", tithe);
     retirementField.setAttribute("value", retirement);
 
     document.querySelector("#popupIncomeItemUpdate").classList.toggle("hidePopupEdit");

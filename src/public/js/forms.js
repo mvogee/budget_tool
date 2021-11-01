@@ -104,7 +104,6 @@ async function newIncomeItem(form) {
         incomeName: form.incomeName.value,
         hourlyRate: form.hourlyRate.value,
         taxRate: form.taxRate.value,
-        tithe: form.tithe.value,
         retirement: form.retirement.value,
         hoursPerWeek: form.hoursPerWeek.value
     };
@@ -139,7 +138,6 @@ async function updateIncomeItem(form) {
         incomeName: form.incomeName.value,
         hourlyRate: form.hourlyRate.value,
         taxRate: form.taxRate.value,
-        tithe: form.tithe.value,
         retirement: form.retirement.value,
         hoursPerWeek: form.hoursPerWeek.value,
         itmId: form.itmId.value

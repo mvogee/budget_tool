@@ -13,7 +13,7 @@ function addBudgetTotals(budgets) {
 function getMonthlyGrossIncomeAll(incomes) {
     let workWeeksPerMonth = 4;
     let grossIncome = 0;
-    // income.incomeName, income.hourlyRate, income.taxRate, income.tithe income.retirement
+    // income.incomeName, income.hourlyRate, income.taxRate, income.retirement
     incomes.forEach(element => {
         grossIncome += (element.hourlyRate * element.hoursPerWeek * workWeeksPerMonth);
     });
@@ -28,10 +28,10 @@ function getMonthlyGrossIncome(income) {
 
 // net
 function getMonthlyNetIncome(income) {
-    return (getMonthlyGrossIncome(income) - getTaxAmount(income) - getTitheAmount(income) - getRetirementAmount(income));
+    return (getMonthlyGrossIncome(income) - getTaxAmount(income) - getRetirementAmount(income));
 }
 // exports.getMonthlyNetIncome = function(income) {
-//     return (getMonthlyGrossIncome(income) - getTaxAmount(income) - getTitheAmount(income) - getRetirementAmount(income));
+//     return (getMonthlyGrossIncome(income) - getTaxAmount(income) - getRetirementAmount(income));
 // };
 
 function getMonthlyNetIncomeAll(incomes) {
@@ -41,12 +41,6 @@ function getMonthlyNetIncomeAll(incomes) {
         netIncome += thisNet;
     });
     return netIncome;
-};
-
-
-function getTitheAmount(income) {
-    let thisGross = getMonthlyGrossIncome(income);
-    return (thisGross * income.tithe);
 };
 
 function getTaxAmount(income) {
@@ -167,7 +161,6 @@ module.exports = {
     getMonthlyNetIncomeAll: getMonthlyNetIncomeAll,
     getMonthlyNetIncome: getMonthlyNetIncome,
     getMonthlyGrossIncomeAll: getMonthlyGrossIncomeAll,
-    getTitheAmount: getTitheAmount,
     getTaxAmount: getTaxAmount,
     getRetirementAmount: getRetirementAmount,
     getMonthStart: getMonthStart,

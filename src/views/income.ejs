@@ -1,28 +1,39 @@
 <%- include("./partials/header.ejs") %>
 <%- include("./partials/nav.ejs") %>
 
-<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, tithe, retirement}], grossIncomeAll, netIncomeAll, utils-->
+<!-- requires a incomes: [{id, incomeName, hourlyRate, taxRate, retirement}], grossIncomeAll, netIncomeAll, utils-->
 
 <h1>Projected Income</h1>
-
-<form name="newIncomeItm" onsubmit="newIncomeItem(this)">
-    <label for="incomeName">Income Name</label>
-    <input name="incomeName" type="text" required autofocus placeholder="income name">
-    <label for="hourlyRate">Hourly Rate</label>
-    <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
-    <label for="hoursPerWeek">Hrs/Week</label>
-    <input name="hoursPerWeek" type="number" step="0.01" required placeholder="40">
-    <label for="taxRrate">Tax Rate</label>
-    <input name="taxRate" type="number" step=".01" placeholder="tax rate">
-    <label for="tithe">Tithe</label>
-    <input name="tithe" type="number" step=".01" placeholder="tithe %">
-    <label for="retirement">retirement</label>
-    <input name="retirement" type="number" step=".01" placeholder="retirement %">
-    <button type="submit">Add</button>
-</form>
-<div>
+<hr>
+<div class="top-stats">
     <p>Gross income: <%= grossIncomeAll %> </p>
     <p>Net income:  <%= netIncomeAll %> </p>
+</div>
+<hr>
+<div class="form_div">
+    <form name="newIncomeItm" onsubmit="newIncomeItem(this)">
+        <div class="input_div">
+            <label for="incomeName">Income Name</label>
+            <input name="incomeName" type="text" required autofocus placeholder="income name">
+        </div>
+        <div class="input_div">
+            <label for="hourlyRate">Hourly Rate</label>
+            <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
+        </div>
+        <div class="input_div">
+            <label for="hoursPerWeek">Hrs/Week</label>
+            <input name="hoursPerWeek" type="number" step="0.01" required placeholder="40">
+        </div>
+        <div class="input_div">
+            <label for="taxRrate">Tax Rate</label>
+            <input name="taxRate" type="number" step=".01" placeholder="tax rate">
+        </div>
+        <div class="input_div">
+            <label for="retirement">retirement</label>
+            <input name="retirement" type="number" step=".01" placeholder="retirement %">
+        </div>
+        <button type="submit">Add</button>
+    </form>
 </div>
 <%- include("./partials/incomePopEdit.ejs") %> 
 <table>
@@ -32,7 +43,6 @@
             <td>Hourly Rate</td>
             <td>Hr/Week</td>
             <td colspan="2">Tax Rate</td>
-            <td colspan="2">Tithe</td>
             <td colspan="2">Retirement</td>
             <td>Gross income</td>
             <td>Net Income</td>
@@ -46,8 +56,6 @@
             <td><%= element.hoursPerWeek %> </td>
             <td ><%= element.taxRate %></td>
             <td><%= utils.getTaxAmount(element) %></td>
-            <td><%= element.tithe %></td>
-            <td><%= utils.getTitheAmount(element) %></td>
             <td><%= element.retirement %></td>
             <td><%= utils.getRetirementAmount(element) %></td>
             <td><%= utils.getMonthlyGrossIncome(element) %> </td>
@@ -59,7 +67,6 @@
                 hourlyRate="<%= element.hourlyRate %>"
                 hoursPerWeek="<%= element.hoursPerWeek %>"
                 taxRate="<%= element.taxRate %>"
-                tithe="<%= element.tithe %>"
                 retirement="<%= element.retirement %>"
                 >Edit</button>
             </td>
