@@ -87,6 +87,7 @@ button {
   text-align: left;
 }
 .input_div label{
+  padding-left: 2px;
   margin-bottom: 5px;
   display: inline-block;
 }
@@ -169,6 +170,16 @@ table {
     padding: .5rem;
     border: none;
     text-align: left;
+  }
+
+  tr td button {
+    background-color: var(--main-color);
+    font-size: .8rem;
+    padding: 5px 10px;
+    color: var(--main-text-white);
+  }
+  tr:nth-child(even) td button {
+    background-color: var(--off-main);
   }
 
 /* *POPUP STYLES */
@@ -276,15 +287,7 @@ table {
 
   /* *Budget Styles */
 
-  .budgets-table tr td button {
-    background-color: var(--main-color);
-    font-size: .8rem;
-    padding: 5px 10px;
-    color: var(--main-text-white);
-  }
-  .budgets-table tr:nth-child(even) td button {
-    background-color: var(--off-main);
-  }
+
 
 /* * Income Styles */
 

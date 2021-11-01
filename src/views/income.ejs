@@ -6,31 +6,31 @@
 <h1>Projected Income</h1>
 <hr>
 <div class="top-stats">
-    <p>Gross income: <%= grossIncomeAll %> </p>
-    <p>Net income:  <%= netIncomeAll %> </p>
+    <p>Gross income: $<%= grossIncomeAll.toFixed(2) %> </p>
+    <p>Net income: $<%= netIncomeAll.toFixed(2) %> </p>
 </div>
 <hr>
 <div class="form_div">
     <form name="newIncomeItm" onsubmit="newIncomeItem(this)">
         <div class="input_div">
             <label for="incomeName">Income Name</label>
-            <input name="incomeName" type="text" required autofocus placeholder="income name">
+            <input name="incomeName" type="text" required autofocus placeholder="My Paycheck">
         </div>
         <div class="input_div">
             <label for="hourlyRate">Hourly Rate</label>
-            <input name="hourlyRate" type="number" step=".01" required placeholder="hourly Rate">
+            <input name="hourlyRate" type="number" step=".01" required placeholder="35.25">
         </div>
         <div class="input_div">
             <label for="hoursPerWeek">Hrs/Week</label>
             <input name="hoursPerWeek" type="number" step="0.01" required placeholder="40">
         </div>
         <div class="input_div">
-            <label for="taxRrate">Tax Rate</label>
-            <input name="taxRate" type="number" step=".01" placeholder="tax rate">
+            <label for="taxRrate">Tax Rate %</label>
+            <input name="taxRate" type="number" step="1" placeholder="15">
         </div>
         <div class="input_div">
-            <label for="retirement">retirement</label>
-            <input name="retirement" type="number" step=".01" placeholder="retirement %">
+            <label for="retirement">Retirement %</label>
+            <input name="retirement" type="number" step="1" placeholder="7">
         </div>
         <button type="submit">Add</button>
     </form>
@@ -52,14 +52,14 @@
         <% incomes.forEach(element => { %>
         <tr>
             <td><%= element.incomeName %></td>
-            <td><%= element.hourlyRate %></td>
+            <td>$<%= element.hourlyRate.toFixed(2) %></td>
             <td><%= element.hoursPerWeek %> </td>
-            <td ><%= element.taxRate %></td>
-            <td><%= utils.getTaxAmount(element) %></td>
-            <td><%= element.retirement %></td>
-            <td><%= utils.getRetirementAmount(element) %></td>
-            <td><%= utils.getMonthlyGrossIncome(element) %> </td>
-            <td><%= utils.getMonthlyNetIncome(element) %> </td>
+            <td >%<%= (element.taxRate * 100).toFixed(1)%></td>
+            <td>$<%= utils.getTaxAmount(element).toFixed(2) %></td>
+            <td>%<%= (element.retirement * 100).toFixed(1) %></td>
+            <td>$<%= utils.getRetirementAmount(element).toFixed(2) %></td>
+            <td>$<%= utils.getMonthlyGrossIncome(element).toFixed(2) %> </td>
+            <td>$<%= utils.getMonthlyNetIncome(element).toFixed(2) %> </td>
             <td>
                 <button class="editButton editButtonIncome" type="button"
                 itmId="<%= element.id %>"

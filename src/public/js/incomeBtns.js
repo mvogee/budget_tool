@@ -27,8 +27,8 @@ function edtiIncomeBtnClick(event) {
     nameField.setAttribute("value", name);
     hourlyRateField.setAttribute("value", hourlyRate);
     hoursPerWeekField.setAttribute("value", hoursPerWeek);
-    taxRateField.setAttribute("value", taxRate);
-    retirementField.setAttribute("value", retirement);
+    taxRateField.setAttribute("value", taxRate * 100);
+    retirementField.setAttribute("value", retirement * 100);
 
     document.querySelector("#popupIncomeItemUpdate").classList.toggle("hidePopupEdit");
 };

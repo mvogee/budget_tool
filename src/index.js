@@ -187,8 +187,8 @@ app.route("/income")
 .post((req, res) => {
     if (req.isAuthenticated()) {
         console.log("adding item to projectedIncome");
-        let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, retirement, hoursPerWeek, userId) VALUES(?,?,?,?,?,?,?);";
-        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.retirement, req.body.hoursPerWeek, req.user.id],
+        let sql = "INSERT INTO projectedIncome(incomeName, hourlyRate, taxRate, retirement, hoursPerWeek, userId) VALUES(?,?,?,?,?,?);";
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, (req.body.taxRate / 100), (req.body.retirement / 100), req.body.hoursPerWeek, req.user.id],
             (err, result) => {
                 if (err) {
                     console.log(err);
@@ -225,7 +225,7 @@ app.route("/income")
     if (req.isAuthenticated()) {
         console.log("updating income item");
         let sql = "UPDATE projectedIncome SET incomeName=?, hourlyRate=?, taxRate=?, retirement=?, hoursPerWeek=? WHERE id=? AND userId=?;";
-        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, req.body.taxRate, req.body.retirement, req.body.hoursPerWeek, req.body.itmId, req.user.id],
+        mysql.query(sql, [req.body.incomeName, req.body.hourlyRate, (req.body.taxRate / 100), (req.body.retirement / 100), req.body.hoursPerWeek, req.body.itmId, req.user.id],
             (err, result) => {
                 if (err) {
                     console.log(err);
