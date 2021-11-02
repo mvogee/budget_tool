@@ -44,7 +44,7 @@ a:link, a:visited a:hover, a:active {
   text-decoration: none;
 }
 
-input, select, textarea, textarea:focus, input:focus {
+input, select, textarea, select, textarea:focus, input:focus {
   color:var(--main-text-white);
 }
 
@@ -58,7 +58,7 @@ button {
   margin-top: 1.5rem;
 }
 
-.form_div form input {
+.form_div form input, .form_div form select{
   width: 10rem;
   height: 20px;
   border-radius: 2px;
@@ -67,7 +67,7 @@ button {
   color: var(--main-color);
 }
 
-.form_div form input:focus {
+.form_div form input:focus, .form_div form select:focus{
   outline: none !important;
   border: 1px solid var(--second-blue);
 }
@@ -91,7 +91,7 @@ button {
   margin-bottom: 5px;
   display: inline-block;
 }
-.input_div input {
+.input_div input, .input_div select {
   display: block;
   width: 100%;
 }
@@ -289,9 +289,19 @@ table {
 
 
 
-/* * Income Styles */
+  /* * Income Styles */
 
 
+  /* * This month Styles */
+
+  #changeMonthInput {
+    margin-bottom: 1.5rem;
+  }
+
+  .spending h3, .deposit h3, .budgetProgress h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
   /* *FOOTER STYLES */
 
   footer {
