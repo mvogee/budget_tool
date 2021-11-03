@@ -1,14 +1,22 @@
 <%- include("partials/header.ejs")  %>
 <%- include("partials/nav.ejs") %>
 <h1>Welcome to the budgeting tool</h1>
-<p class="infoText">Create your account</p>
-<form id="newAccountForm" name="createAcc" action="/createAcc" method="POST">
-    <input type="email" name="email" id="createEmailInput" autocomplete="off" placeholder="Email">
-    <input type="text" name="userName" id="createUserNameInput" autocomplete="off" placeholder="User Name">
-    <input type="password" name="password" id="createPassInput" autocomplete="off" placeholder="Password">
-    <input type="password" name="confirmpassword" id="creatPassConf" autocomplete="off" placeholder="Confirm password">
-    <button type="submit" onclick="validateNewAcc(event)">Create Account</button>
-</form>
+<p class="infoText secondary-text">Create your account</p>
+<div class="new-acc">
+    <form class="new-acc-form" id="newAccountForm" name="createAcc" action="/createAcc" method="POST">
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="createEmailInput" autocomplete="off" placeholder="Youremail@email.com">
+            <label for="userName">UserName</label>
+            <input type="text" name="userName" id="createUserNameInput" autocomplete="off" placeholder="User Name">
+            <label for="password">Create a Password</label>
+            <input type="password" name="password" id="createPassInput" autocomplete="off" placeholder="Password">
+            <label for="confirmpassword">Confirm Password</label>
+            <input type="password" name="confirmpassword" id="creatPassConf" autocomplete="off" placeholder="Retype password">
+        <button type="submit" onclick="validateNewAcc(event)">Create Account</button>
+    </form>
+</div>
+<p class="create-acc secondary-text">Already have an account?<a class="creat-acc-link" href="/login"> Log In!</a></p>
 
 <script src="./js/login.js"></script>
 <%- include("partials/footer.ejs") %> 
