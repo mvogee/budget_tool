@@ -1,5 +1,12 @@
 let editBtns = document.querySelectorAll(".editButtonBudgets");
 
+window.onclick = function (event) {
+    let modal = document.querySelector("#popupBudgetItemUpdate");
+    if (event.target == modal) {
+        document.querySelector("#popupBudgetItemUpdate").classList.toggle("hidePopupEdit");
+    }
+}
+
 editBtns.forEach(btn => {
     btn.addEventListener("click", (event) => {
         editBudgetBtnClick(event);

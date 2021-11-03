@@ -1,4 +1,15 @@
 
+window.onclick = function (event) {
+    let modalSpend = document.querySelector("#popupEditSpending");
+    let modalIncome = document.querySelector("#popupEditDeposit")
+    if (event.target == modalSpend) {
+        document.querySelector("#popupEditSpending").classList.toggle("hidePopupEdit");
+    }
+    else if (event.target == modalIncome) {
+        document.querySelector("#popupEditDeposit").classList.toggle("hidePopupEdit");
+    }
+}
+
 let editBtnSpending = document.querySelectorAll(".editBtnSpend");
 editBtnSpending.forEach(btn => {
     btn.addEventListener("click", (event) => {

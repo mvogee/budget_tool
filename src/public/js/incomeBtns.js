@@ -1,4 +1,9 @@
-
+window.onclick = function (event) {
+    let modal = document.querySelector("#popupIncomeItemUpdate");
+    if (event.target == modal) {
+        document.querySelector("#popupIncomeItemUpdate").classList.toggle("hidePopupEdit");
+    }
+}
 
 let editBtns = document.querySelectorAll(".editButton");
 editBtns.forEach(btn => {
