@@ -73,6 +73,7 @@
             <td>
             <form onsubmit="deleteIncomeItem(this)">
                 <input name="deleteIncome" value="<%= element.id %>" hidden>
+                <input name="deleteName" value="<%= element.incomeName %>" hidden>
                 <button class="deleteBtn" type="submit">Delete</button>
             </form>
         </td>

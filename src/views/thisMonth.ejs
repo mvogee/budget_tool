@@ -84,6 +84,7 @@
           <td>
             <form onsubmit="deleteSpendingItem(this)">
               <input hidden name="deleteSpendingItm" value="<%= element.id %>">
+              <input hidden name="deleteName" value="<%= element.itmDescription %>">
               <button class="deleteBtn" type="submit">Delete</button>
             </form>
         </td>
@@ -141,6 +142,7 @@
           <td>
             <form onsubmit="deleteDepositItem(this)">
             <input hidden name="deleteIncomeItm" value="<%= element.id %>">
+            <input hidden name="deleteName" value="<%= element.inDescription %>">
             <button class="deleteBtn" type="submit" name="deleteBtn">Delete</button>
             </form>
           </td>
