@@ -1,28 +1,30 @@
-<div id="popupIncomeItemUpdate" class="form_div popupEdit hidePopupEdit">
-    <h3>Edit Row</h3>
-    <form class="incomeItemUpdate" onsubmit="updateIncomeItem(this)">
-        <div class="input_div">
-            <label for="incomeName">Income Name</label>
-            <input class="nameInput" name="incomeName" type="text" required autofocus value="">
-        </div>
-        <div class="input_div">
-            <label for="hourlyRate"> Hourly Rate</label>
-            <input class="hourlyRateInput" name="hourlyRate" type="number" step=".01" required value="">
-        </div>
-        <div class="input_div">
-            <label for="hoursPerWeek">Hr/Week</label>
-            <input class="hoursPerWeek" name="hoursPerWeek" type="number" step="0.01" required value="">
-        </div>
-        <div class="input_div">
-            <label for="taxRate">Tax Rate %</label>
-            <input class="taxRateInput" name="taxRate" type="number" step=".01" value="">
-        </div>
-        <div class="input_div">
-            <label for="retirement">Retirement %</label>
-            <input class="retirementInput" name="retirement" type="number" step=".01" value="">
-        </div>
-            <input hidden class="idInput" name="itmId" value="0">
-    <button class="submitBtn" type="submit">Save</button>
-    <button class="cancelBtn" type="button">Cancel</button>
-    </form>
+<div class="popup-container">
+    <div id="popupIncomeItemUpdate" class="form_div popupEdit hidePopupEdit">
+        <form class="incomeItemUpdate" onsubmit="updateIncomeItem(this)">
+            <p>Update income item</p>
+            <div class="input_div">
+                <label for="incomeName">Income Name</label>
+                <input class="nameInput" name="incomeName" type="text" required autofocus value="">
+            </div>
+            <div class="input_div">
+                <label for="hourlyRate"> Hourly Rate</label>
+                <input class="hourlyRateInput" name="hourlyRate" type="number" step=".01" required value="">
+            </div>
+            <div class="input_div">
+                <label for="hoursPerWeek">Hr/Week</label>
+                <input class="hoursPerWeek" name="hoursPerWeek" type="number" step="0.01" required value="">
+            </div>
+            <div class="input_div">
+                <label for="taxRate">Tax Rate %</label>
+                <input class="taxRateInput" name="taxRate" type="number" step=".01" value="">
+            </div>
+            <div class="input_div">
+                <label for="retirement">Retirement %</label>
+                <input class="retirementInput" name="retirement" type="number" step=".01" value="">
+            </div>
+                <input hidden class="idInput" name="itmId" value="0">
+        <button class="submitBtn" type="submit">Save</button>
+        <button class="cancelBtn" type="button">Cancel</button>
+        </form>
+    </div>
 </div>
