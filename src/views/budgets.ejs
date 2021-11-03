@@ -45,6 +45,7 @@
                                 </td>
                                 <form onsubmit="deleteBudgetItem(this)">
                                         <input name="deleteCategory" value="<%= budgets[i].id %>" hidden>
+                                        <input name="deleteName" value="<%= budgets[i].category %>" hidden>
                                         <td><button class="deleteBtn" type="submit">delete</button></td>
                                 </form>
                         </tr>

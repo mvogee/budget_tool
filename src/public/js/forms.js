@@ -30,7 +30,7 @@ async function fetchCallOLD(data, method, route) {
         //! how to handle errors?
     })
     );
-};
+}
 //*fetchCall wrewrite-------
 // ! CURRENTLY TESTING
 async function fetchCall(data, method, route) {
@@ -46,7 +46,7 @@ async function fetchCall(data, method, route) {
         resolve(await servResponse);
     });
     return (await myPromise);
-};
+}
 
 // * BUDGET FORMS
 
@@ -63,9 +63,12 @@ async function newBudgetItem(form) {
         location.reload();
         console.log(err);
     });
-};
+}
 
 async function deleteBudgetItem(form) {
+    if (await confirmDelete(form.deleteName.value) === false) {
+        return ;
+    }
     let data = {
         deleteCategory: form.deleteCategory.value,
     };
@@ -78,7 +81,7 @@ async function deleteBudgetItem(form) {
         location.reload();
         console.log("error occured");
     });
-};
+}
 
 async function updateBudgetItem(form) {
     let data = {
@@ -95,7 +98,7 @@ async function updateBudgetItem(form) {
         location.reload();
         console.log(err);
     });
-};
+}
 
 // * INCOME FORMS
 
@@ -107,7 +110,7 @@ async function newIncomeItem(form) {
         retirement: form.retirement.value,
         hoursPerWeek: form.hoursPerWeek.value
     };
-    let fcPromise =  fetchCall(data, "POST", "/income");
+    let fcPromise = fetchCall(data, "POST", "/income");
     fcPromise.then(() => {
         console.log("fcPromise resolved, page reloading");
         location.reload();
@@ -116,9 +119,12 @@ async function newIncomeItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 async function deleteIncomeItem(form) {
+    if (await confirmDelete(form.deleteName.value) === false) {
+        return ;
+    }
     let data = {
         deleteIncome: form.deleteIncome.value
     };
@@ -131,7 +137,7 @@ async function deleteIncomeItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 async function updateIncomeItem(form) {
     let data = {
@@ -151,7 +157,7 @@ async function updateIncomeItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 // * THIS MONTH FORMS
 // - spending items
@@ -171,9 +177,12 @@ async function newSpendingItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 async function deleteSpendingItem(form) {
+    if (await confirmDelete(form.deleteName.value) === false) {
+        return ;
+    }
     let data = {
         deleteSpendingItm: form.deleteSpendingItm.value
     };
@@ -186,7 +195,7 @@ async function deleteSpendingItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 async function updateSpendingItem(form) {
     let data = {
@@ -205,7 +214,7 @@ async function updateSpendingItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 // deposit items
 async function newDepositItem(form) {
@@ -223,9 +232,12 @@ async function newDepositItem(form) {
         location.reload();
         console.log(fcPromise);
     });
-};
+}
 
 async function deleteDepositItem(form) {
+    if (await confirmDelete(form.deleteName.value) === false) {
+        return ;
+    }
     let data = {
         deleteIncomeItm: form.deleteIncomeItm.value
     }
@@ -256,4 +268,15 @@ async function updateDepositItem(form) {
         location.reload();
         console.log(fcPromise);
     });
+}
+
+async function confirmDelete(itemName) {
+    let message = "Delete " + itemName + " ?";
+    // get your userAnswer here;
+    if (confirm(message) === true) {
+        return Promise.resolve(true);
+    }
+    else {
+        return (Promise.resolve(false));
+    }
 }
