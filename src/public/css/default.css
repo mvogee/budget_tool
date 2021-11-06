@@ -129,10 +129,13 @@ nav ul li:hover {
   margin-bottom: 0;
 }
 
-#logout-button {
+#logout-button, .nav-stripped-btn {
   width: 15%;
 }
-#logout-button, #logout-button a:visited {
+.nav-stripped-btn, .nav-stripped-btn a:visited {
+  color: var(--second-blue);
+}
+#logout-button, #logout-button a:visited{
   color: var(--main-color);
 }
 
@@ -335,6 +338,7 @@ table {
     background-color: var(--off-main);
     padding: 10px;
     max-width: 850px;
+    width: 90%;
   }
 
   .home_page_wrapper a {
