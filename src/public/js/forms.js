@@ -10,34 +10,33 @@
 //     });
 // };
 
-// ! Make these use async/await instead of then to fix load time issue
-async function fetchCallOLD(data, method, route) {
-    return (new Promise(function (resolve, reject) {
-        let myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'application/json');
-        fetch(route, {
-            headers: myHeaders,
-            body: JSON.stringify(data),
-            method: method
-        }).then(() => {
-            console.log("fetch resolve");
-            resolve("done");
-        })
-        .catch(() => { // this is sometimes triggering before the database is updated
-            console.log("in catch condition fetchTestCall");
-            reject(new Error("An error occured"));
-        });
-        //! how to handle errors?
-    })
-    );
-}
+// async function fetchCallOLD(data, method, route) {
+//     return (new Promise(function (resolve, reject) {
+//         let myHeaders = new Headers();
+//         myHeaders.append('Content-Type', 'application/json');
+//         fetch(route, {
+//             headers: myHeaders,
+//             body: JSON.stringify(data),
+//             method: method
+//         }).then(() => {
+//             console.log("fetch resolve");
+//             resolve("done");
+//         })
+//         .catch(() => { // this is sometimes triggering before the database is updated
+//             console.log("in catch condition fetchTestCall");
+//             reject(new Error("An error occured"));
+//         });
+//         //! how to handle errors?
+//     })
+//     );
+// }
 //*fetchCall wrewrite-------
-// ! CURRENTLY TESTING
+
 async function fetchCall(data, method, route) {
     let myPromise = new Promise(async (resolve, reject) => {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        let servResponse = fetch(route, {
+        let servResponse = await fetch(route, {
             headers: headers,
             body: JSON.stringify(data),
             method: method
@@ -272,7 +271,6 @@ async function updateDepositItem(form) {
 
 async function confirmDelete(itemName) {
     let message = "Delete " + itemName + " ?";
-    // get your userAnswer here;
     if (confirm(message) === true) {
         return Promise.resolve(true);
     }

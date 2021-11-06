@@ -68,8 +68,12 @@ async function monthToMonthGraph(purchases, incomes) {
     };
     JSC.chart("graphChartDiv", {
         xAxis_label_text: "Month",
-        yAxis: {label_text: "Savings", formatString: 'c'},
-        series: [{points: monthToMonth}, {type: ""}],
+        yAxis: {label_text: "Savings",
+        formatString: 'c',
+        markers: [{value: 0, includeInScale: true, color: "red"}],
+        scale: 100,
+        },
+        series: [{points: monthToMonth}],
     });
 };
 
