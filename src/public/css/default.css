@@ -129,10 +129,13 @@ nav ul li:hover {
   margin-bottom: 0;
 }
 
-#logout-button {
+#logout-button, .nav-stripped-btn {
   width: 15%;
 }
-#logout-button, #logout-button a:visited {
+.nav-stripped-btn, .nav-stripped-btn a:visited {
+  color: var(--second-blue);
+}
+#logout-button, #logout-button a:visited{
   color: var(--main-color);
 }
 
@@ -328,6 +331,50 @@ table {
 
 
   /* * This month Styles */
+
+  /* * Home page styles */
+
+  .home_page_wrapper img {
+    background-color: var(--off-main);
+    padding: 10px;
+    max-width: 850px;
+    width: 90%;
+  }
+
+  .home_page_wrapper a {
+    background-color: var(--main-blue);
+    color:var(--main-text-white);
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 2rem auto;
+    max-width: fit-content;
+    display: block;
+    border-radius: 5px;
+  }
+
+  .description_wrapper {
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px 30px;
+    text-align: left;
+    margin: 2rem auto;
+  }
+  .description_wrapper ul li{
+    text-align: left;
+  }
+  .description_wrapper ul {
+    margin: 0;
+  }
+  .description_wrapper p {
+    margin: 0;
+  }
+
+  .home_page_wrapper h3 {
+    margin: 3rem 0 1rem 0;
+    color: var(--main-green);
+  }
 
   #changeMonthInput {
     margin-bottom: 1.5rem;

@@ -38,7 +38,7 @@ app.use(flash());
 
 //! home page routes
 app.get("/", (req, res) => {
-    res.redirect("/login");
+    res.render("home");
 });
 app.get("/login", (req, res) => {
     res.render("login");
