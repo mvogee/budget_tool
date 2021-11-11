@@ -24,6 +24,7 @@
     }
     .nav-logged-in ul {
         margin-top: 1rem;
+        align-items: center;
     }
     .nav-logged-in a {
         margin-bottom: 1rem;
@@ -44,5 +45,16 @@
     /* *Login create acc */
     .login button, .new-acc button {
         font-size: 1.1rem;
+    }
+
+    /* *Froms */
+    .input_div {
+        margin-top: 1rem;
+    }
+    .form_div button {
+        display: block;
+        margin-top: 1.5rem;
+        height: 36px;
+        width: 90px;
     }
 }
