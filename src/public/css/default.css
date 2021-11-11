@@ -101,7 +101,7 @@ button {
 nav {
   margin-bottom: 2rem;
   background-color: var(--main-text-white);
-  height: 48px;
+  /* height: 48px; */
   display: flex;
   flex-direction: row;
 }
