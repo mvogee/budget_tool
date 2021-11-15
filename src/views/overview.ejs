@@ -30,7 +30,7 @@
 <!-- * any budget items this month that are %10 or less until out or over budget-->
 <div class="watch criticalBudgetItems">
     <h2>Critical budget items</h2>
-        <% if (!critBudgetItems[0]) {%>
+        <% if (!critBudgetItems || !critBudgetItems[0]) {%>
             <p>No critical budget items. Good job!</p>
         <% } else { %>
         <table>
