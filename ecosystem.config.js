@@ -1,7 +1,8 @@
 module.exports = {
   apps: [{
     name: 'budgetTool',
-    script: './src/index.js'
+    script: './src/index.js',
+    node_args : '-r dotenv/config'
   }],
   deploy: {
     production: {
@@ -10,7 +11,7 @@ module.exports = {
       key: '~/.ssh/btoolkey1.pem',
       ref: 'origin/main',
       repo: 'git@github.com:mvogee/budget_tool.git',
-      path: '/home/ubuntu/server/budget_tool',
+      path: '/home/ubuntu/server/budgetTool',
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }
