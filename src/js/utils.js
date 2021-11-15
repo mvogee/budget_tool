@@ -110,20 +110,28 @@ async function getCritItms(mysql, userId) {
     let monthStart = getMonthStart(new Date());
     let monthEnd = getMonthEnd(new Date());
     let critItms = [];
-    
-    let budgetItms = await getBudgetItms(mysql, userId);
-    for (budgetItm of budgetItms) {
-        let tenPc = (budgetItm.budget / 10).toFixed(2);
-        let itmTotal = await getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd, userId);
-        if (budgetItm.budget - itmTotal <= tenPc) {
-            critItms.push({"category": budgetItm.category, "amountLeft": (budgetItm.budget - itmTotal).toFixed(2)});
+    try {
+        let budgetItms = await getBudgetItms(mysql, userId);
+        if (!budgetItms) {
+            return [];
+        }
+        for (budgetItm of budgetItms) {
+            let tenPc = (budgetItm.budget / 10).toFixed(2);
+            let itmTotal = await getTotalCategorySpend(mysql, budgetItm.id, monthStart, monthEnd, userId);
+            if (budgetItm.budget - itmTotal <= tenPc) {
+                critItms.push({"category": budgetItm.category, "amountLeft": (budgetItm.budget - itmTotal).toFixed(2)});
+            };
         };
-    };
+    }
+    catch (e){
+        console.log("somethign went wrong getting critical budget items: message-: " + e);
+        return (critItms);
+    }
     return (critItms);
 };
 
 async function getBudgetItms(mysql, userId) {
-    let sql = "SELECT * FROM BUDGETS WHERE userId=?;";
+    let sql = "SELECT * FROM budgets WHERE userId=?;";
     let myPromise = new Promise((resolve, reject) => {
         mysql.query(sql,[userId], (err, budgets) => {
             if (err) {
