@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'budgetTool',
-    script: './src/index.js',
+    script: './index.js',
     node_args : '-r dotenv/config'
   }],
   deploy: {
