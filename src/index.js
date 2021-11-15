@@ -111,7 +111,8 @@ app.route("/overview")
             res.redirect("/login");
         });
         let ejsObj = {
-            critBudgetItems: critItms
+            critBudgetItems: critItms,
+            userName: req.user.username
         }
         res.render("overview", ejsObj);
     }
@@ -175,7 +176,8 @@ app.route("/income")
                 incomes: result,
                 grossIncomeAll: utils.getMonthlyGrossIncomeAll(result),
                 netIncomeAll: utils.getMonthlyNetIncomeAll(result),
-                utils: utils
+                utils: utils,
+                userName: req.user.username
             };
             res.render("income", ejsObj);
         });
@@ -277,7 +279,8 @@ app.route("/thisMonth/:month?")
                 month: utils.getMonthName(dt),
                 date: utils.getStandardDateFormat(dt),
                 getCategoryName: utils.getCategoryName,
-                formatDate: utils.getStandardDateFormat
+                formatDate: utils.getStandardDateFormat,
+                userName: req.user.username
             }
             res.render("thisMonth", ejsObj);
         });
@@ -465,7 +468,8 @@ app.route("/budgets")
             let ejsObj = {
                 budgets: result[0],
                 budgetTotal: utils.addBudgetTotals(result[0]),
-                projectedIncome: utils.getMonthlyNetIncomeAll(result[1])
+                projectedIncome: utils.getMonthlyNetIncomeAll(result[1]),
+                userName: req.user.username
             }
             res.render("budgets", ejsObj);
         });
