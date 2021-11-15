@@ -10,7 +10,7 @@ module.exports = {
       key: '~/.ssh/btoolkey1.pem',
       ref: 'origin/main',
       repo: 'git@github.com:mvogee/budget_tool.git',
-      path: '/home/ubuntu/server/budget_tool/src',
+      path: '/home/ubuntu/server/budgetTool',
       'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
     }
   }
